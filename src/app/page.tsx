@@ -59,7 +59,7 @@ export default function Home() {
         </div>
 
         {/* Full fade from hero image to blue */}
-        <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-brand-blue via-brand-blue/60 to-transparent z-10" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-brand-blue via-brand-blue/50 to-transparent z-10" />
         {/* No gold lines here — they're in the blue section below */}
       </section>
 
