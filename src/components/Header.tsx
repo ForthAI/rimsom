@@ -23,8 +23,8 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Determine if we're on a page with a dark hero
-  const isDarkHero = pathname === "/";
+  // All pages have dark hero backgrounds
+  const isDarkHero = true;
 
   return (
     <>

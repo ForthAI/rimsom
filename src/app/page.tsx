@@ -27,7 +27,7 @@ export default function Home() {
             <h1 className="animate-fade-up font-sans text-4xl sm:text-5xl md:text-[64px] font-bold leading-[1.05] tracking-wide text-white mb-8">
               What&apos;s your next
               <br />
-              <span className="ml-12 md:ml-20 shimmer-gold">
+              <span className="ml-12 md:ml-20 text-brand-gold-light">
                 focused move?
               </span>
             </h1>
