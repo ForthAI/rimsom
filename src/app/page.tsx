@@ -103,11 +103,11 @@ export default function Home() {
                 className="reveal group"
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >
-                <div className="relative pt-6">
+                <div className="relative">
                   {/* Gold top border */}
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gold" />
+                  <div className="h-[3px] bg-brand-gold mb-0" />
                   <div className="flex gap-5 items-start">
-                    <div className="relative w-24 h-24 md:w-28 md:h-28 flex-shrink-0 overflow-hidden rounded img-zoom">
+                    <div className="relative w-24 h-24 md:w-28 md:h-28 flex-shrink-0 overflow-hidden img-zoom">
                       <Image
                         src={item.img}
                         alt={item.title}
