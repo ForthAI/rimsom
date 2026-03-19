@@ -60,9 +60,13 @@ export default function Home() {
 
         {/* Gradient fade into blue */}
         <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-brand-blue/80 via-brand-blue/30 to-transparent z-10" />
-        {/* Angled divider overlapping bottom of hero */}
+        {/* Angled divider with gold accent lines */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
           <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "100px" }}>
+            {/* Gold accent lines */}
+            <line x1="0" y1="100" x2="1440" y2="18" stroke="#c9a84c" strokeWidth="2" />
+            <line x1="0" y1="94" x2="1440" y2="12" stroke="#c9a84c" strokeWidth="1" opacity="0.4" />
+            {/* Blue fill below */}
             <path d="M0 100L1440 20V100H0Z" fill="#2251ff" />
           </svg>
         </div>
