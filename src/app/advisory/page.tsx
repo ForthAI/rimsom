@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Advisory | Rimsom Global",
@@ -18,6 +19,7 @@ const services = [
       "Development finance institution partnerships",
       "Innovative financing solutions",
     ],
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
   },
   {
     title: "Business Development & Market Entry",
@@ -29,6 +31,7 @@ const services = [
       "Public-private partnership development",
       "Competitive positioning",
     ],
+    img: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=500&fit=crop",
   },
   {
     title: "Government Relations & Trade Policy",
@@ -40,6 +43,7 @@ const services = [
       "Regulatory navigation",
       "Bilateral & multilateral frameworks",
     ],
+    img: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=800&h=500&fit=crop",
   },
   {
     title: "Strategic Advisory & Board Services",
@@ -51,6 +55,7 @@ const services = [
       "Investment due diligence",
       "Risk assessment & mitigation",
     ],
+    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop",
   },
 ];
 
@@ -59,21 +64,25 @@ const sectors = [
     title: "Energy",
     description:
       "Renewable energy systems, power infrastructure, and energy transition projects across emerging markets.",
+    img: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&h=400&fit=crop",
   },
   {
     title: "Infrastructure",
     description:
       "Transportation, logistics, digital infrastructure, and critical facilities that underpin economic growth.",
+    img: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&h=400&fit=crop",
   },
   {
     title: "Digital Technologies",
     description:
       "AI, blockchain, digital transformation, and technology platforms driving the next wave of development.",
+    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
   },
   {
     title: "Critical Industries",
     description:
       "Critical minerals, sustainable agriculture, and supply chain industries vital to global economic security.",
+    img: "https://images.unsplash.com/photo-1473621038790-b778b4750efe?w=600&h=400&fit=crop",
   },
 ];
 
@@ -97,7 +106,7 @@ export default function AdvisoryPage() {
         </div>
       </section>
 
-      {/* Services */}
+      {/* Services — with images */}
       <section className="py-20 md:py-28 bg-white">
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="reveal mb-14">
@@ -109,25 +118,39 @@ export default function AdvisoryPage() {
             </h2>
           </div>
 
-          <div className="space-y-20">
+          <div className="space-y-24">
             {services.map((service, i) => (
               <div
                 key={service.title}
-                className="reveal grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start"
-                style={{ transitionDelay: `${i * 0.1}s` }}
+                className={`reveal grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center ${
+                  i % 2 === 1 ? "md:direction-rtl" : ""
+                }`}
               >
-                <div>
+                {/* Image — alternates left/right */}
+                <div className={`img-zoom ${i % 2 === 1 ? "md:order-2" : ""}`}>
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-lg">
+                    <Image
+                      src={service.img}
+                      alt={service.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/30 to-transparent" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className={i % 2 === 1 ? "md:order-1" : ""}>
                   <div className="relative pt-6">
-                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gold" />
+                    <div className="absolute top-0 left-0 w-16 h-[3px] bg-brand-gold" />
                     <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
                       0{i + 1}
                     </p>
-                    <h3 className="font-sans text-2xl md:text-[28px] font-semibold leading-[1.15] text-brand-dark">
+                    <h3 className="font-sans text-2xl md:text-[28px] font-semibold leading-[1.15] text-brand-dark mb-6">
                       {service.title}
                     </h3>
                   </div>
-                </div>
-                <div>
                   <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-8">
                     {service.description}
                   </p>
@@ -148,7 +171,7 @@ export default function AdvisoryPage() {
         </div>
       </section>
 
-      {/* Sectors */}
+      {/* Sectors — image cards */}
       <section className="py-20 md:py-28 bg-brand-offwhite">
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="reveal mb-14">
@@ -161,17 +184,27 @@ export default function AdvisoryPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-10">
-            {sectors.map((sector, i) => (
+            {sectors.map((sector) => (
               <div
                 key={sector.title}
-                className="reveal bg-white p-8 md:p-10 hover:shadow-lg transition-shadow duration-300"
-                style={{ transitionDelay: `${i * 0.1}s` }}
+                className="reveal group bg-white overflow-hidden rounded-lg hover:shadow-lg transition-shadow duration-300 img-zoom"
               >
-                <div className="relative pt-6">
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gold" />
-                  <h3 className="font-sans text-xl font-medium text-brand-dark mb-3">
-                    {sector.title}
-                  </h3>
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <Image
+                    src={sector.img}
+                    alt={sector.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/50 to-transparent" />
+                  <div className="absolute bottom-4 left-6">
+                    <h3 className="font-sans text-xl font-semibold text-white">
+                      {sector.title}
+                    </h3>
+                  </div>
+                </div>
+                <div className="p-6 md:p-8">
                   <p className="font-sans text-[14px] text-brand-gray leading-relaxed">
                     {sector.description}
                   </p>
