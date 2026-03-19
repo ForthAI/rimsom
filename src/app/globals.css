@@ -80,33 +80,32 @@ body {
   transform: translateY(0);
 }
 
-/* Gold lines draw-in on scroll */
-.gold-lines-draw path,
-.gold-lines-draw line {
-  stroke-dasharray: 3000;
-  stroke-dashoffset: 3000;
-  transition: stroke-dashoffset 2s ease-out, opacity 1.5s ease-out;
-  opacity: 0;
+/* Gold lines draw-in on scroll — no transform, just stroke + opacity */
+.gold-lines-draw {
+  opacity: 1 !important;
+  transform: none !important;
 }
 
-.gold-lines-draw.visible path,
-.gold-lines-draw.visible line {
+.gold-lines-draw svg path,
+.gold-lines-draw svg line {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  opacity: 0;
+  transition: stroke-dashoffset 2s ease-out, opacity 0.8s ease-out;
+}
+
+.gold-lines-draw.visible svg path,
+.gold-lines-draw.visible svg line {
   stroke-dashoffset: 0;
   opacity: 1;
 }
 
-.gold-lines-draw.visible path:nth-child(1),
-.gold-lines-draw.visible line:nth-child(1) { transition-delay: 0s; }
-.gold-lines-draw.visible path:nth-child(2),
-.gold-lines-draw.visible line:nth-child(2) { transition-delay: 0.15s; }
-.gold-lines-draw.visible path:nth-child(3),
-.gold-lines-draw.visible line:nth-child(3) { transition-delay: 0.3s; }
-.gold-lines-draw.visible path:nth-child(4),
-.gold-lines-draw.visible line:nth-child(4) { transition-delay: 0.45s; }
-.gold-lines-draw.visible path:nth-child(5),
-.gold-lines-draw.visible line:nth-child(5) { transition-delay: 0.6s; }
-.gold-lines-draw.visible path:nth-child(6),
-.gold-lines-draw.visible line:nth-child(6) { transition-delay: 0.75s; }
+.gold-lines-draw.visible svg :nth-child(1) { transition-delay: 0s; }
+.gold-lines-draw.visible svg :nth-child(2) { transition-delay: 0.2s; }
+.gold-lines-draw.visible svg :nth-child(3) { transition-delay: 0.4s; }
+.gold-lines-draw.visible svg :nth-child(4) { transition-delay: 0.6s; }
+.gold-lines-draw.visible svg :nth-child(5) { transition-delay: 0.8s; }
+.gold-lines-draw.visible svg :nth-child(6) { transition-delay: 1s; }
 
 /* Arrow link hover */
 .arrow-link .arrow-icon {
