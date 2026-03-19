@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -20,13 +21,15 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-brand-cream/90 backdrop-blur-md border-b border-brand-light/60">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <span className="font-serif text-xl md:text-2xl font-semibold tracking-wide text-brand-dark">
-            RIMSOM
-          </span>
-          <span className="hidden sm:inline text-[10px] font-sans font-medium tracking-widest-plus uppercase text-brand-muted">
-            Global
-          </span>
+        <Link href="/">
+          <Image
+            src="/logo.svg"
+            alt="Rimsom Global"
+            width={160}
+            height={50}
+            className="h-8 md:h-10 w-auto"
+            priority
+          />
         </Link>
 
         {/* Desktop Nav */}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -7,9 +8,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           {/* Brand */}
           <div>
-            <h3 className="font-serif text-2xl font-semibold tracking-wide mb-4">
-              RIMSOM
-            </h3>
+            <Image
+              src="/logo-white.svg"
+              alt="Rimsom Global"
+              width={160}
+              height={50}
+              className="h-10 w-auto mb-4"
+            />
             <p className="text-sm text-white/50 leading-relaxed max-w-xs">
               Trusted relationships that shape global outcomes.
             </p>

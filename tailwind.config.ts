@@ -18,8 +18,9 @@ const config: Config = {
           light: "#e8e8e8",
           offwhite: "#f5f5f3",
           cream: "#faf9f7",
-          gold: "#c9a96e",
-          "gold-light": "#d4bc8e",
+          gold: "#a8843a",
+          "gold-light": "#c9a96e",
+          navy: "#162246",
         },
       },
       fontFamily: {
