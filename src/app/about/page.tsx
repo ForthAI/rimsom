@@ -11,9 +11,11 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-brand-navy text-white overflow-hidden">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-animated text-white overflow-hidden">
+        <div className="absolute top-20 right-[15%] w-48 h-48 rounded-full bg-brand-cyan/10 blur-3xl animate-float-slow" />
+        <div className="absolute bottom-10 left-[10%] w-64 h-64 rounded-full bg-brand-gold/10 blur-3xl animate-float-slower" />
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage:
               "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
@@ -22,11 +24,11 @@ export default function AboutPage() {
         />
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <div className="max-w-3xl">
-            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6 animate-fade-up">
+            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6 animate-fade-up">
               About Rimsom
             </p>
             <h1 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] animate-fade-up-delay-1">
-              A firm built for precision, trust, and lasting influence.
+              A firm built for precision, trust, and <span className="shimmer-gold">lasting influence.</span>
             </h1>
           </div>
         </div>
@@ -121,7 +123,8 @@ export default function AboutPage() {
                 className="reveal bg-white p-8"
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >
-                <div className="border-t-[3px] border-brand-gold pt-6">
+                <div className="relative pt-6">
+                  <div className="absolute top-0 left-0 right-0 h-[3px] shimmer-gold-line" />
                   <h3 className="font-serif text-xl font-medium text-brand-dark mb-3">
                     {value.title}
                   </h3>

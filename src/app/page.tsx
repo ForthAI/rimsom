@@ -1,13 +1,20 @@
 import Link from "next/link";
 import ArrowLink from "@/components/ArrowLink";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <>
-      {/* Hero — full viewport, dark navy */}
-      <section className="relative min-h-screen flex items-end bg-brand-navy overflow-hidden">
+      {/* Hero — animated gradient background */}
+      <section className="relative min-h-screen flex items-end bg-gradient-animated overflow-hidden">
+        {/* Decorative floating shapes */}
+        <div className="absolute top-20 right-[15%] w-64 h-64 rounded-full bg-brand-blue/10 blur-3xl animate-float-slow" />
+        <div className="absolute bottom-32 right-[30%] w-40 h-40 rounded-full bg-brand-gold/10 blur-2xl animate-float-slower" />
+        <div className="absolute top-[40%] left-[60%] w-32 h-32 rounded-full bg-brand-cyan/10 blur-2xl animate-float-slow" />
+
+        {/* Subtle grid */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage:
               "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
@@ -20,7 +27,9 @@ export default function Home() {
             <h1 className="animate-fade-up font-serif text-4xl sm:text-5xl md:text-[64px] font-light leading-[1.08] tracking-wide text-white mb-8">
               What&apos;s your next
               <br />
-              <span className="ml-12 md:ml-20">focused move?</span>
+              <span className="ml-12 md:ml-20 shimmer-gold">
+                focused move?
+              </span>
             </h1>
 
             <p className="animate-fade-up-delay-1 font-sans text-[15px] md:text-[17px] text-white/60 max-w-lg leading-relaxed mb-10">
@@ -29,14 +38,14 @@ export default function Home() {
               to create outcomes that endure.
             </p>
 
-            <div className="animate-fade-up-delay-2">
+            <div className="animate-fade-up-delay-2 flex items-center gap-6">
               <Link
                 href="/advisory"
                 className="group inline-flex items-center gap-4"
               >
-                <span className="flex items-center justify-center w-14 h-14 rounded-full bg-white/10 group-hover:bg-brand-gold/20 transition-colors duration-300">
+                <span className="flex items-center justify-center w-14 h-14 rounded-full bg-brand-gold/20 border border-brand-gold/30 group-hover:bg-brand-gold/40 transition-all duration-300 glow-gold">
                   <svg
-                    className="w-5 h-5 text-white transition-transform duration-200 group-hover:translate-x-0.5"
+                    className="w-5 h-5 text-brand-gold-light transition-transform duration-200 group-hover:translate-x-0.5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -49,13 +58,19 @@ export default function Home() {
                     />
                   </svg>
                 </span>
+                <span className="text-[13px] font-sans font-semibold text-white/70 group-hover:text-white transition-colors">
+                  Explore Advisory
+                </span>
               </Link>
             </div>
           </div>
         </div>
+
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/5 to-transparent" />
       </section>
 
-      {/* Featured — cards with gold top border */}
+      {/* Focus areas — with shimmer gold borders */}
       <section className="py-20 md:py-28 bg-white">
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="reveal">
@@ -93,13 +108,15 @@ export default function Home() {
                 className="reveal group"
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >
-                <div className="border-t-[3px] border-brand-gold pt-6">
+                <div className="relative pt-6">
+                  {/* Shimmer gold top border */}
+                  <div className="absolute top-0 left-0 right-0 h-[3px] shimmer-gold-line" />
                   <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
                     {item.category}
                   </p>
                   <ArrowLink
                     href={item.href}
-                    className="font-serif text-xl md:text-2xl font-medium text-brand-dark group-hover:text-brand-navy transition-colors duration-200 mb-4"
+                    className="font-serif text-xl md:text-2xl font-medium text-brand-dark group-hover:text-brand-blue transition-colors duration-200 mb-4"
                   >
                     {item.title}
                   </ArrowLink>
@@ -113,8 +130,87 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Brand concept — full-width dark band */}
-      <section className="py-20 md:py-28 bg-brand-navy text-white">
+      {/* Vibrant blue band — McKinsey-inspired image cards */}
+      <section className="py-20 md:py-28 bg-brand-blue relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/10 blur-3xl animate-float-slower" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
+
+        <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
+          <div className="reveal mb-14">
+            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-white/60 mb-4">
+              Where We Operate
+            </p>
+            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-white">
+              Emerging markets.<br />
+              <span className="shimmer-gold">Enduring impact.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                region: "Sub-Saharan Africa",
+                description: "Energy, infrastructure, and trade across the continent",
+                img: "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=600&h=400&fit=crop",
+              },
+              {
+                region: "Caribbean & Latin America",
+                description: "Development finance, governance, and digital transformation",
+                img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop",
+              },
+              {
+                region: "Middle East & Asia",
+                description: "Strategic alliances, capital mobilization, and critical industries",
+                img: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600&h=400&fit=crop",
+              },
+            ].map((item, i) => (
+              <div
+                key={item.region}
+                className="reveal img-zoom group"
+                style={{ transitionDelay: `${i * 0.1}s` }}
+              >
+                <div className="relative aspect-[3/2] overflow-hidden rounded-lg mb-5">
+                  <Image
+                    src={item.img}
+                    alt={item.region}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 to-transparent" />
+                </div>
+                <h3 className="font-serif text-xl font-medium text-white mb-2 group-hover:text-brand-gold-light transition-colors inline-flex items-center gap-2">
+                  {item.region}
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </h3>
+                <p className="font-sans text-[14px] text-white/60 leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Brand concept — dark navy with accent elements */}
+      <section className="py-20 md:py-28 bg-brand-navy text-white relative overflow-hidden">
+        <div className="absolute top-10 left-[10%] w-2 h-2 rounded-full bg-brand-gold glow-gold" />
+        <div className="absolute top-[30%] right-[15%] w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse-glow" />
+        <div className="absolute bottom-[20%] left-[25%] w-1 h-1 rounded-full bg-brand-blue-light animate-pulse-glow" />
+
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
             <div className="reveal">
@@ -123,7 +219,7 @@ export default function Home() {
               </p>
               <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] mb-8">
                 Real influence isn&apos;t about being everywhere. It&apos;s
-                about knowing where to move, and when.
+                about knowing <span className="shimmer-gold">where to move, and when.</span>
               </h2>
             </div>
             <div className="reveal" style={{ transitionDelay: "0.1s" }}>
@@ -149,49 +245,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Markets */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="max-w-content mx-auto px-6 md:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-            <div className="reveal">
-              <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-6">
-                Global Reach
-              </p>
-              <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark mb-8">
-                Operating across continents where opportunity meets ambition.
-              </h2>
-              <p className="font-sans text-[15px] text-brand-gray leading-relaxed">
-                With deep roots in Washington, D.C. and relationships spanning
-                the globe, Rimsom Global connects leaders, capital, and ideas at
-                the moments that matter most.
-              </p>
-            </div>
-            <div className="reveal" style={{ transitionDelay: "0.1s" }}>
-              <div className="grid grid-cols-2 gap-y-6 gap-x-8">
-                {[
-                  "Sub-Saharan Africa",
-                  "Caribbean",
-                  "Latin America",
-                  "Middle East",
-                  "Asia",
-                  "North America",
-                ].map((region) => (
-                  <div
-                    key={region}
-                    className="border-t-[2px] border-brand-gold/30 pt-4"
-                  >
-                    <span className="font-serif text-[17px] text-brand-dark">
-                      {region}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Insights preview */}
+      {/* Insights preview — light section */}
       <section className="py-20 md:py-28 bg-brand-offwhite">
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="reveal flex items-end justify-between mb-12">
@@ -228,16 +282,19 @@ export default function Home() {
             ].map((brief, i) => (
               <div
                 key={brief.title}
-                className="reveal group bg-white p-8 hover:shadow-lg transition-shadow duration-300"
+                className="reveal group bg-white p-8 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >
-                <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
+                <div className="relative">
+                  <div className="absolute top-0 left-0 right-0 h-[2px] shimmer-gold-line" />
+                </div>
+                <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mt-4 mb-4">
                   {brief.category}
                 </p>
                 <h3 className="font-serif text-xl font-medium text-brand-dark leading-snug mb-6">
                   {brief.title}
                 </h3>
-                <span className="text-[13px] font-sans font-semibold text-brand-gray group-hover:text-brand-dark transition-colors inline-flex items-center gap-2">
+                <span className="text-[13px] font-sans font-semibold text-brand-gray group-hover:text-brand-blue transition-colors inline-flex items-center gap-2">
                   Forthcoming
                   <svg
                     className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
@@ -268,15 +325,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA — dark band */}
-      <section className="py-20 md:py-28 bg-brand-navy text-white">
-        <div className="max-w-content mx-auto px-6 md:px-10 text-center">
+      {/* CTA — gradient band */}
+      <section className="py-20 md:py-28 bg-gradient-animated text-white relative overflow-hidden">
+        <div className="absolute top-10 right-[20%] w-48 h-48 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
+        <div className="absolute bottom-10 left-[15%] w-64 h-64 rounded-full bg-brand-cyan/5 blur-3xl animate-float-slower" />
+
+        <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 text-center">
           <div className="max-w-2xl mx-auto reveal">
-            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
+            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6">
               The Rimsom Circle
             </p>
             <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] mb-8">
-              Trusted relationships that shape global outcomes.
+              Trusted relationships that shape{" "}
+              <span className="shimmer-gold">global outcomes.</span>
             </h2>
             <p className="font-sans text-[15px] text-white/50 leading-relaxed mb-10">
               We work with a select network of governments, institutions, and
@@ -285,7 +346,7 @@ export default function Home() {
             </p>
             <Link
               href="/contact"
-              className="inline-block px-8 py-3.5 bg-brand-gold text-white text-[13px] font-sans font-semibold hover:bg-brand-gold-light transition-colors duration-200"
+              className="inline-block px-8 py-3.5 bg-brand-gold text-white text-[13px] font-sans font-semibold hover:bg-brand-gold-light transition-colors duration-200 shadow-lg shadow-brand-gold/20"
             >
               Begin a Conversation
             </Link>

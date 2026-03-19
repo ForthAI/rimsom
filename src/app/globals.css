@@ -14,8 +14,57 @@ body {
 }
 
 ::selection {
-  background-color: rgba(168, 132, 58, 0.2);
+  background-color: rgba(201, 168, 76, 0.3);
   color: #1a1a1a;
+}
+
+/* Shimmer gold text */
+.shimmer-gold {
+  background: linear-gradient(
+    90deg,
+    #a8843a 0%,
+    #dfc070 25%,
+    #f5e6b8 50%,
+    #dfc070 75%,
+    #a8843a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Shimmer gold line/border */
+.shimmer-gold-line {
+  background: linear-gradient(
+    90deg,
+    #a8843a 0%,
+    #dfc070 25%,
+    #f5e6b8 50%,
+    #dfc070 75%,
+    #a8843a 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Animated gradient background */
+.bg-gradient-animated {
+  background: linear-gradient(-45deg, #162246, #2251ff, #162246, #1e3060);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 /* Fade-in on load */
@@ -36,17 +85,17 @@ body {
 }
 
 .animate-fade-up-delay-1 {
-  animation: fadeUp 0.7s ease-out 0.12s forwards;
+  animation: fadeUp 0.7s ease-out 0.15s forwards;
   opacity: 0;
 }
 
 .animate-fade-up-delay-2 {
-  animation: fadeUp 0.7s ease-out 0.24s forwards;
+  animation: fadeUp 0.7s ease-out 0.3s forwards;
   opacity: 0;
 }
 
 .animate-fade-up-delay-3 {
-  animation: fadeUp 0.7s ease-out 0.36s forwards;
+  animation: fadeUp 0.7s ease-out 0.45s forwards;
   opacity: 0;
 }
 
@@ -69,4 +118,23 @@ body {
 
 .arrow-link:hover .arrow-icon {
   transform: translateX(4px);
+}
+
+/* Image card hover zoom */
+.img-zoom img {
+  transition: transform 0.5s ease;
+}
+
+.img-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* Glowing dot */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 4px 2px rgba(201, 168, 76, 0.3); }
+  50% { box-shadow: 0 0 12px 4px rgba(201, 168, 76, 0.6); }
+}
+
+.glow-gold {
+  animation: glowPulse 3s ease-in-out infinite;
 }
