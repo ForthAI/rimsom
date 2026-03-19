@@ -59,12 +59,12 @@ export default function Home() {
         </div>
 
         {/* Full fade from hero image to blue */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-brand-blue via-brand-blue/50 to-transparent z-10" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-brand-navy via-brand-navy/50 to-transparent z-10" />
         {/* No gold lines here — they're in the blue section below */}
       </section>
 
       {/* Focus areas — vibrant blue band with large images */}
-      <section className="pt-0 pb-16 md:pb-24 bg-brand-blue relative overflow-hidden">
+      <section className="pt-0 pb-16 md:pb-24 relative overflow-hidden" style={{ background: "linear-gradient(to bottom, #162246 0%, #2251ff 30%, #2251ff 100%)" }}>
         {/* Gold accent lines at top of blue section */}
         <div className="w-full">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
