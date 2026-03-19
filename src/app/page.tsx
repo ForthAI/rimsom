@@ -62,13 +62,13 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-brand-blue/80 via-brand-blue/30 to-transparent z-10" />
         {/* Angled divider with gold accent lines */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
-            {/* Gold lines at different angles */}
-            <line x1="0" y1="78" x2="1440" y2="2" stroke="#c9a84c" strokeWidth="1" opacity="0.25" />
-            <line x1="0" y1="92" x2="1440" y2="28" stroke="#c9a84c" strokeWidth="1.5" opacity="0.5" />
-            <line x1="0" y1="108" x2="1440" y2="18" stroke="#c9a84c" strokeWidth="2" opacity="0.8" />
-            {/* Blue fill — its own angle */}
-            <path d="M0 120L1440 30V120H0Z" fill="#2251ff" />
+          <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "100px" }}>
+            {/* Gold lines — nearly flat, varied angles */}
+            <line x1="0" y1="42" x2="1440" y2="28" stroke="#c9a84c" strokeWidth="1" opacity="0.2" />
+            <line x1="0" y1="56" x2="1440" y2="48" stroke="#c9a84c" strokeWidth="1.5" opacity="0.45" />
+            <line x1="0" y1="68" x2="1440" y2="55" stroke="#c9a84c" strokeWidth="2" opacity="0.7" />
+            {/* Blue fill — gentle angle */}
+            <path d="M0 100L1440 72V100H0Z" fill="#2251ff" />
           </svg>
         </div>
       </section>
