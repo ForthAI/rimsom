@@ -71,7 +71,7 @@ export default function Home() {
             {/* Line 1 — descends left to right, wavy */}
             <path d="M0 15 C300 8, 500 35, 720 25 S1100 45, 1440 70" stroke="#c9a84c" strokeWidth="1" opacity="0.2" fill="none" />
             {/* Line 2 — rises then falls, crosses Line 1 */}
-            <path d="M0 60 C200 45, 400 20, 700 38 S1000 65, 1200 30 Q1350 18, 1440 25" stroke="#c9a84c" strokeWidth="2" opacity="0.45" fill="none" />
+            <path d="M0 60 C240 45, 480 22, 720 38 S960 60, 1200 35 C1320 25, 1380 28, 1440 30" stroke="#c9a84c" strokeWidth="2" opacity="0.45" fill="none" />
             {/* Line 3 — straight diagonal crossing others */}
             <line x1="0" y1="78" x2="1440" y2="22" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3" />
             {/* Line 4 — bold wave, dips and rises */}
