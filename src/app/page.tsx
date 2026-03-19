@@ -58,14 +58,13 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Angled divider overlapping bottom of hero */}
+        <div className="absolute bottom-0 left-0 right-0 z-20">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
+            <path d="M0 120L1440 0V120H0Z" fill="#2251ff" />
+          </svg>
+        </div>
       </section>
-
-      {/* Angled divider — hero to blue */}
-      <div className="relative -mt-1">
-        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none">
-          <path d="M0 80L1440 0V80H0Z" fill="#2251ff" />
-        </svg>
-      </div>
 
       {/* Focus areas — vibrant blue band with large images */}
       <section className="py-16 md:py-24 bg-brand-blue relative overflow-hidden">
