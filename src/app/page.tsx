@@ -5,22 +5,14 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-      {/* Hero — animated gradient background */}
-      <section className="relative min-h-screen flex items-end bg-gradient-animated overflow-hidden">
-        {/* Decorative floating shapes */}
-        <div className="absolute top-20 right-[15%] w-64 h-64 rounded-full bg-brand-blue/10 blur-3xl animate-float-slow" />
-        <div className="absolute bottom-32 right-[30%] w-40 h-40 rounded-full bg-brand-gold/10 blur-2xl animate-float-slower" />
-        <div className="absolute top-[40%] left-[60%] w-32 h-32 rounded-full bg-brand-cyan/10 blur-2xl animate-float-slow" />
-
-        {/* Subtle grid */}
+      {/* Hero — custom background image */}
+      <section className="relative min-h-screen flex items-end overflow-hidden">
         <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero-home.png')" }}
         />
+        {/* Left-side dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
 
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pb-24 md:pb-32 pt-32 w-full">
           <div className="max-w-3xl">
