@@ -62,19 +62,19 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-brand-blue via-brand-blue/60 to-transparent z-10" />
         {/* Gold accent lines — mix of wavy and straight */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
-          <svg viewBox="0 0 1440 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "200px" }}>
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
             {/* Line 1 — descends left to right, wavy */}
-            <path d="M0 40 C300 30, 500 70, 720 55 S1100 80, 1440 120" stroke="#c9a84c" strokeWidth="1" opacity="0.2" fill="none" />
-            {/* Line 2 — rises then falls, crosses Line 1 around 400px and 1100px */}
-            <path d="M0 110 C200 90, 400 50, 700 75 S1000 110, 1200 60 Q1350 40, 1440 55" stroke="#c9a84c" strokeWidth="2" opacity="0.45" fill="none" />
-            {/* Line 3 — starts high right, drops left, straight diagonal crossing others */}
-            <line x1="0" y1="130" x2="1440" y2="50" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3" />
-            {/* Line 4 — bold wave, starts mid, dips down, rises, crosses Line 3 around 700px */}
-            <path d="M0 85 C180 100, 360 140, 600 120 S840 70, 1080 95 Q1260 115, 1440 100" stroke="#c9a84c" strokeWidth="3" opacity="0.55" fill="none" />
-            {/* Line 5 — tight ripple, brightest, weaves through everything */}
-            <path d="M0 155 C120 145, 240 165, 420 140 S600 160, 780 135 S960 155, 1140 130 Q1300 148, 1440 138" stroke="#c9a84c" strokeWidth="2.5" opacity="0.75" fill="none" />
-            {/* Line 6 — gentle rise, thin, crosses Line 5 twice */}
-            <line x1="0" y1="165" x2="1440" y2="125" stroke="#c9a84c" strokeWidth="1" opacity="0.35" />
+            <path d="M0 15 C300 8, 500 35, 720 25 S1100 45, 1440 70" stroke="#c9a84c" strokeWidth="1" opacity="0.2" fill="none" />
+            {/* Line 2 — rises then falls, crosses Line 1 */}
+            <path d="M0 60 C200 45, 400 20, 700 38 S1000 65, 1200 30 Q1350 18, 1440 25" stroke="#c9a84c" strokeWidth="2" opacity="0.45" fill="none" />
+            {/* Line 3 — straight diagonal crossing others */}
+            <line x1="0" y1="78" x2="1440" y2="22" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3" />
+            {/* Line 4 — bold wave, dips and rises */}
+            <path d="M0 42 C180 55, 360 85, 600 70 S840 35, 1080 52 Q1260 68, 1440 58" stroke="#c9a84c" strokeWidth="3" opacity="0.55" fill="none" />
+            {/* Line 5 — tight ripple, brightest */}
+            <path d="M0 95 C120 88, 240 105, 420 85 S600 100, 780 80 S960 95, 1140 78 Q1300 90, 1440 84" stroke="#c9a84c" strokeWidth="2.5" opacity="0.75" fill="none" />
+            {/* Line 6 — gentle rise, thin */}
+            <line x1="0" y1="108" x2="1440" y2="78" stroke="#c9a84c" strokeWidth="1" opacity="0.35" />
           </svg>
         </div>
       </section>
