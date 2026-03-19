@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       {/* Hero — custom background image */}
-      <section className="relative min-h-screen flex items-end overflow-hidden">
+      <section className="relative min-h-screen flex items-end">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/home-hero.jpg')" }}
@@ -58,10 +58,12 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Gradient fade into blue */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-brand-blue/80 via-brand-blue/30 to-transparent z-10" />
         {/* Angled divider overlapping bottom of hero */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
-            <path d="M0 120L1440 0V120H0Z" fill="#2251ff" />
+          <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "100px" }}>
+            <path d="M0 100L1440 20V100H0Z" fill="#2251ff" />
           </svg>
         </div>
       </section>
