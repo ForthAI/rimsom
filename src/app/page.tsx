@@ -9,7 +9,7 @@ export default function Home() {
       <section className="relative min-h-screen flex items-end overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero-home.png')" }}
+          style={{ backgroundImage: "url('/home-hero.jpg')" }}
         />
         {/* Left-side dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
