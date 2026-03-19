@@ -79,6 +79,7 @@ export default function Home() {
                 description:
                   "Structuring bankable projects and mobilizing financing across energy, infrastructure, technology, and critical industries in emerging markets.",
                 href: "/advisory",
+                img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=400&fit=crop",
               },
               {
                 category: "Partnerships",
@@ -86,6 +87,7 @@ export default function Home() {
                 description:
                   "Facilitating high-impact alliances between governments, private sector entities, and international institutions to drive transformative change.",
                 href: "/advisory",
+                img: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=400&fit=crop",
               },
               {
                 category: "Policy",
@@ -93,6 +95,7 @@ export default function Home() {
                 description:
                   "Advising on trade policy, governance, and sustainable development — informed by decades of public service and private-sector leadership.",
                 href: "/advisory",
+                img: "https://images.unsplash.com/photo-1577415124269-fc1140a69e91?w=400&h=400&fit=crop",
               },
             ].map((item, i) => (
               <div
@@ -101,18 +104,31 @@ export default function Home() {
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >
                 <div className="relative pt-6">
-                  {/* Shimmer gold top border */}
+                  {/* Gold top border */}
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gold" />
-                  <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
-                    {item.category}
-                  </p>
-                  <ArrowLink
-                    href={item.href}
-                    className="font-sans text-xl md:text-2xl font-medium text-brand-dark group-hover:text-brand-blue transition-colors duration-200 mb-4"
-                  >
-                    {item.title}
-                  </ArrowLink>
-                  <p className="font-sans text-[14px] text-brand-gray leading-relaxed mt-4">
+                  <div className="flex gap-5 items-start">
+                    <div className="relative w-24 h-24 md:w-28 md:h-28 flex-shrink-0 overflow-hidden rounded img-zoom">
+                      <Image
+                        src={item.img}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                        sizes="112px"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-3">
+                        {item.category}
+                      </p>
+                      <ArrowLink
+                        href={item.href}
+                        className="font-sans text-xl md:text-2xl font-medium text-brand-dark group-hover:text-brand-blue transition-colors duration-200"
+                      >
+                        {item.title}
+                      </ArrowLink>
+                    </div>
+                  </div>
+                  <p className="font-sans text-[14px] text-brand-gray leading-relaxed mt-5">
                     {item.description}
                   </p>
                 </div>
