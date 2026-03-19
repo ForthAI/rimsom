@@ -58,14 +58,17 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom gradient fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-blue to-transparent" />
       </section>
 
+      {/* Angled divider — hero to blue */}
+      <div className="relative -mt-1">
+        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none">
+          <path d="M0 80L1440 0V80H0Z" fill="#2251ff" />
+        </svg>
+      </div>
+
       {/* Focus areas — vibrant blue band with large images */}
-      <section className="py-20 md:py-28 bg-brand-blue relative overflow-hidden -mt-1">
-        {/* Diagonal top edge */}
-        <div className="absolute -top-20 left-0 right-0 h-24 bg-brand-blue" style={{ clipPath: "polygon(0 60%, 100% 0%, 100% 100%, 0% 100%)" }} />
+      <section className="py-16 md:py-24 bg-brand-blue relative overflow-hidden">
         <div className="absolute top-0 left-0 w-80 h-80 rounded-full bg-white/5 blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/8 blur-3xl" />
 
