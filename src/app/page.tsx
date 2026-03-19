@@ -85,7 +85,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-80 h-80 rounded-full bg-white/5 blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/8 blur-3xl" />
 
-        <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
+        <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pt-16 md:pt-20">
           <div className="reveal mb-14">
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-white/50 mb-4">
               Our Focus
