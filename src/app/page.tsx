@@ -66,7 +66,7 @@ export default function Home() {
       {/* Focus areas — vibrant blue band with large images */}
       <section className="pt-0 pb-16 md:pb-24 relative overflow-hidden" style={{ background: "linear-gradient(to bottom, #162246 0%, #2251ff 30%, #2251ff 100%)" }}>
         {/* Gold accent lines at top of blue section */}
-        <div className="w-full">
+        <div className="w-full reveal gold-lines-draw" style={{ transitionDuration: "1.2s" }}>
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
             {/* Line 1 — descends left to right, wavy */}
             <path d="M0 15 C300 8, 500 35, 720 25 S1100 45, 1440 70" stroke="#c9a84c" strokeWidth="1" opacity="0.2" fill="none" />
