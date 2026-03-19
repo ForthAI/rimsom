@@ -59,11 +59,13 @@ export default function Home() {
         </div>
 
         {/* Bottom gradient fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/5 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-blue to-transparent" />
       </section>
 
       {/* Focus areas — vibrant blue band with large images */}
-      <section className="py-20 md:py-28 bg-brand-blue relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-brand-blue relative overflow-hidden -mt-1">
+        {/* Diagonal top edge */}
+        <div className="absolute -top-20 left-0 right-0 h-24 bg-brand-blue" style={{ clipPath: "polygon(0 60%, 100% 0%, 100% 100%, 0% 100%)" }} />
         <div className="absolute top-0 left-0 w-80 h-80 rounded-full bg-white/5 blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/8 blur-3xl" />
 
