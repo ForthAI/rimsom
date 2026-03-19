@@ -58,23 +58,23 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Gradient fade into blue */}
-        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-brand-blue/90 via-brand-blue/40 to-transparent z-10" />
-        {/* Dramatic angled divider with bold gold stripes */}
+        {/* Full fade from hero image to blue */}
+        <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-brand-blue via-brand-blue/60 to-transparent z-10" />
+        {/* Gold accent lines — mix of wavy and straight */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
-          <svg viewBox="0 0 1440 220" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "220px" }}>
-            {/* Outermost gold — steep, thin, ghost */}
-            <line x1="0" y1="60" x2="1440" y2="160" stroke="#c9a84c" strokeWidth="1" opacity="0.15" />
-            {/* Wide gold stripe — bold and visible */}
-            <path d="M0 100L1440 170V178L0 108Z" fill="#c9a84c" opacity="0.6" />
-            {/* Thinner gold stripe — different angle */}
-            <path d="M0 125L1440 145V149L0 129Z" fill="#c9a84c" opacity="0.35" />
-            {/* Fine gold hairline — flattest */}
-            <line x1="0" y1="140" x2="1440" y2="152" stroke="#c9a84c" strokeWidth="1.5" opacity="0.5" />
-            {/* Bold gold bar — nearly flat, brightest */}
-            <path d="M0 155L1440 162V168L0 161Z" fill="#c9a84c" opacity="0.8" />
-            {/* Main blue fill — dramatic cut */}
-            <path d="M0 220L1440 175V220H0Z" fill="#2251ff" />
+          <svg viewBox="0 0 1440 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "200px" }}>
+            {/* Wavy gold — gentle sine, ghost */}
+            <path d="M0 55 C240 35, 480 75, 720 50 S1200 30, 1440 60" stroke="#c9a84c" strokeWidth="1" opacity="0.15" fill="none" />
+            {/* Straight gold — steep angle */}
+            <line x1="0" y1="80" x2="1440" y2="110" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3" />
+            {/* Wavy gold — wider wave, thicker */}
+            <path d="M0 100 C360 80, 540 120, 900 95 S1260 110, 1440 90" stroke="#c9a84c" strokeWidth="3" opacity="0.5" fill="none" />
+            {/* Straight gold — nearly flat, bold */}
+            <path d="M0 125L1440 118V123L0 130Z" fill="#c9a84c" opacity="0.6" />
+            {/* Wavy gold — tight ripple, brightest */}
+            <path d="M0 148 C180 140, 360 155, 540 145 S900 155, 1080 143 S1350 152, 1440 146" stroke="#c9a84c" strokeWidth="2.5" opacity="0.8" fill="none" />
+            {/* Fine straight hairline */}
+            <line x1="0" y1="162" x2="1440" y2="158" stroke="#c9a84c" strokeWidth="1" opacity="0.4" />
           </svg>
         </div>
       </section>
