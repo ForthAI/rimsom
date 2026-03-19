@@ -171,7 +171,7 @@ export default function AboutPage() {
             <div className="reveal">
               <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-brand-offwhite">
                 <Image
-                  src="/ufo-headshot.jpg"
+                  src="/ufo.jpg"
                   alt="Ufo Eric-Atuanya, Esq."
                   fill
                   className="object-cover object-top"
