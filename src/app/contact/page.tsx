@@ -14,23 +14,16 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-animated text-white overflow-hidden">
-        <div className="absolute top-20 left-[20%] w-48 h-48 rounded-full bg-brand-cyan/10 blur-3xl animate-float-slow" />
-        <div className="absolute bottom-10 right-[10%] w-48 h-48 rounded-full bg-brand-gold/10 blur-3xl animate-float-slower" />
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&q=80')" }} />
+        <div className="absolute inset-0 bg-brand-navy/85" />
+        <div className="absolute top-20 left-[20%] w-48 h-48 rounded-full bg-brand-blue/10 blur-3xl animate-float-slow" />
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6 animate-fade-up">
             Contact
           </p>
-          <h1 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] max-w-3xl animate-fade-up-delay-1">
-            Every meaningful partnership begins with <span className="shimmer-gold">a conversation.</span>
+          <h1 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] max-w-3xl animate-fade-up-delay-1">
+            Every meaningful partnership begins with a conversation.
           </h1>
         </div>
       </section>
@@ -44,7 +37,7 @@ export default function ContactPage() {
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Get in Touch
               </p>
-              <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark mb-8">
+              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark mb-8">
                 We welcome inquiries from governments, institutions, and
                 investors exploring opportunities in emerging markets.
               </h2>
@@ -54,7 +47,7 @@ export default function ContactPage() {
                   <h3 className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-2">
                     Location
                   </h3>
-                  <p className="font-serif text-[17px] text-brand-dark">
+                  <p className="font-sans text-[17px] text-brand-dark">
                     Washington, D.C.
                   </p>
                 </div>
@@ -64,7 +57,7 @@ export default function ContactPage() {
                   </h3>
                   <a
                     href="mailto:info@rimsomglobal.com"
-                    className="font-serif text-[17px] text-brand-dark hover:text-brand-gold transition-colors duration-200"
+                    className="font-sans text-[17px] text-brand-dark hover:text-brand-gold transition-colors duration-200"
                   >
                     info@rimsomglobal.com
                   </a>
@@ -80,7 +73,7 @@ export default function ContactPage() {
                     <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
                       Thank You
                     </p>
-                    <h3 className="font-serif text-2xl font-light text-brand-dark mb-4">
+                    <h3 className="font-sans text-2xl font-light text-brand-dark mb-4">
                       Your message has been received.
                     </h3>
                     <p className="font-sans text-[15px] text-brand-gray">
@@ -173,7 +166,7 @@ export default function ContactPage() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
               Advisory
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] mb-8">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] mb-8">
               Explore how Rimsom Global can support your strategic objectives.
             </h2>
             <ArrowLink

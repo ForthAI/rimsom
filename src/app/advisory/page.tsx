@@ -81,24 +81,17 @@ export default function AdvisoryPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-animated text-white overflow-hidden">
-        <div className="absolute top-20 left-[20%] w-48 h-48 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
-        <div className="absolute bottom-10 right-[10%] w-64 h-64 rounded-full bg-brand-cyan/10 blur-3xl animate-float-slower" />
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=80')" }} />
+        <div className="absolute inset-0 bg-brand-navy/85" />
+        <div className="absolute top-20 left-[20%] w-48 h-48 rounded-full bg-brand-blue/10 blur-3xl animate-float-slow" />
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <div className="max-w-3xl">
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6 animate-fade-up">
               Advisory Services
             </p>
-            <h1 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] animate-fade-up-delay-1">
-              Connecting capital, leadership, and opportunity across <span className="shimmer-gold">emerging markets.</span>
+            <h1 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] animate-fade-up-delay-1">
+              Connecting capital, leadership, and opportunity across emerging markets.
             </h1>
           </div>
         </div>
@@ -111,7 +104,7 @@ export default function AdvisoryPage() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
               Services
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
               What We Do
             </h2>
           </div>
@@ -125,11 +118,11 @@ export default function AdvisoryPage() {
               >
                 <div>
                   <div className="relative pt-6">
-                    <div className="absolute top-0 left-0 right-0 h-[3px] shimmer-gold-line" />
+                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gold" />
                     <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
                       0{i + 1}
                     </p>
-                    <h3 className="font-serif text-2xl md:text-[28px] font-light leading-[1.2] text-brand-dark">
+                    <h3 className="font-sans text-2xl md:text-[28px] font-semibold leading-[1.15] text-brand-dark">
                       {service.title}
                     </h3>
                   </div>
@@ -162,7 +155,7 @@ export default function AdvisoryPage() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
               Focus Areas
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
               Sectors
             </h2>
           </div>
@@ -175,8 +168,8 @@ export default function AdvisoryPage() {
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >
                 <div className="relative pt-6">
-                  <div className="absolute top-0 left-0 right-0 h-[3px] shimmer-gold-line" />
-                  <h3 className="font-serif text-xl font-medium text-brand-dark mb-3">
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gold" />
+                  <h3 className="font-sans text-xl font-medium text-brand-dark mb-3">
                     {sector.title}
                   </h3>
                   <p className="font-sans text-[14px] text-brand-gray leading-relaxed">
@@ -197,7 +190,7 @@ export default function AdvisoryPage() {
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Our Approach
               </p>
-              <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15]">
+              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1]">
                 A two-tier model built on signal and trust.
               </h2>
             </div>
@@ -239,7 +232,7 @@ export default function AdvisoryPage() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
               Get Started
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark mb-6">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark mb-6">
               Exploring opportunities in emerging markets?
             </h2>
             <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-10">

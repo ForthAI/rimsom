@@ -18,37 +18,6 @@ body {
   color: #1a1a1a;
 }
 
-/* Shimmer gold text */
-.shimmer-gold {
-  background: linear-gradient(
-    90deg,
-    #a8843a 0%,
-    #dfc070 25%,
-    #f5e6b8 50%,
-    #dfc070 75%,
-    #a8843a 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-/* Shimmer gold line/border */
-.shimmer-gold-line {
-  background: linear-gradient(
-    90deg,
-    #a8843a 0%,
-    #dfc070 25%,
-    #f5e6b8 50%,
-    #dfc070 75%,
-    #a8843a 100%
-  );
-  background-size: 200% auto;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
 /* Animated gradient background */
 .bg-gradient-animated {
   background: linear-gradient(-45deg, #162246, #2251ff, #162246, #1e3060);
@@ -62,9 +31,9 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-@keyframes shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+/* Gold accent text */
+.text-gold-accent {
+  color: #c9a84c;
 }
 
 /* Fade-in on load */
@@ -127,14 +96,4 @@ body {
 
 .img-zoom:hover img {
   transform: scale(1.05);
-}
-
-/* Glowing dot */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 4px 2px rgba(201, 168, 76, 0.3); }
-  50% { box-shadow: 0 0 12px 4px rgba(201, 168, 76, 0.6); }
-}
-
-.glow-gold {
-  animation: glowPulse 3s ease-in-out infinite;
 }

@@ -32,24 +32,17 @@ export default function InsightsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-animated text-white overflow-hidden">
-        <div className="absolute top-20 right-[20%] w-48 h-48 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
-        <div className="absolute bottom-10 left-[15%] w-48 h-48 rounded-full bg-brand-cyan/10 blur-3xl animate-float-slower" />
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=1600&q=80')" }} />
+        <div className="absolute inset-0 bg-brand-navy/85" />
+        <div className="absolute top-20 right-[20%] w-48 h-48 rounded-full bg-brand-blue/10 blur-3xl animate-float-slow" />
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6 animate-fade-up">
             Insights
           </p>
-          <h1 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] max-w-3xl animate-fade-up-delay-1">
+          <h1 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] max-w-3xl animate-fade-up-delay-1">
             Perspectives shaped by decades at the intersection of policy,
-            finance, and <span className="shimmer-gold">global commerce.</span>
+            finance, and global commerce.
           </h1>
         </div>
       </section>
@@ -62,7 +55,7 @@ export default function InsightsPage() {
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Rimsom Dispatch
               </p>
-              <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark mb-8">
+              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark mb-8">
                 Measured analysis for decision-makers.
               </h2>
             </div>
@@ -94,7 +87,7 @@ export default function InsightsPage() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
               Rimsom Briefs
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
               Forthcoming Publications
             </h2>
           </div>
@@ -109,7 +102,7 @@ export default function InsightsPage() {
                 <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
                   {brief.category}
                 </p>
-                <h3 className="font-serif text-xl font-medium text-brand-dark leading-snug mb-4">
+                <h3 className="font-sans text-xl font-medium text-brand-dark leading-snug mb-4">
                   {brief.title}
                 </h3>
                 <p className="font-sans text-[14px] text-brand-gray leading-relaxed">
@@ -129,7 +122,7 @@ export default function InsightsPage() {
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Convenings
               </p>
-              <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark mb-8">
+              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark mb-8">
                 Triple Ai (3Ai)
               </h2>
             </div>
@@ -160,7 +153,7 @@ export default function InsightsPage() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
               Stay Informed
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] mb-8">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] mb-8">
               Stay informed with the Rimsom Dispatch.
             </h2>
             <p className="font-sans text-[15px] text-white/50 leading-relaxed mb-10">

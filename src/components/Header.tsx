@@ -139,7 +139,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="text-white text-2xl font-serif font-light hover:text-brand-gold transition-colors"
+                className="text-white text-2xl font-sans font-light hover:text-brand-gold transition-colors"
               >
                 {link.label}
               </Link>

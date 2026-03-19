@@ -24,7 +24,7 @@ export default function Home() {
 
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pb-24 md:pb-32 pt-32 w-full">
           <div className="max-w-3xl">
-            <h1 className="animate-fade-up font-serif text-4xl sm:text-5xl md:text-[64px] font-light leading-[1.08] tracking-wide text-white mb-8">
+            <h1 className="animate-fade-up font-sans text-4xl sm:text-5xl md:text-[64px] font-bold leading-[1.05] tracking-wide text-white mb-8">
               What&apos;s your next
               <br />
               <span className="ml-12 md:ml-20 shimmer-gold">
@@ -43,7 +43,7 @@ export default function Home() {
                 href="/advisory"
                 className="group inline-flex items-center gap-4"
               >
-                <span className="flex items-center justify-center w-14 h-14 rounded-full bg-brand-gold/20 border border-brand-gold/30 group-hover:bg-brand-gold/40 transition-all duration-300 glow-gold">
+                <span className="flex items-center justify-center w-14 h-14 rounded-full bg-brand-gold/20 border border-brand-gold/30 group-hover:bg-brand-gold/40 transition-all duration-300">
                   <svg
                     className="w-5 h-5 text-brand-gold-light transition-transform duration-200 group-hover:translate-x-0.5"
                     fill="none"
@@ -110,13 +110,13 @@ export default function Home() {
               >
                 <div className="relative pt-6">
                   {/* Shimmer gold top border */}
-                  <div className="absolute top-0 left-0 right-0 h-[3px] shimmer-gold-line" />
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gold" />
                   <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
                     {item.category}
                   </p>
                   <ArrowLink
                     href={item.href}
-                    className="font-serif text-xl md:text-2xl font-medium text-brand-dark group-hover:text-brand-blue transition-colors duration-200 mb-4"
+                    className="font-sans text-xl md:text-2xl font-medium text-brand-dark group-hover:text-brand-blue transition-colors duration-200 mb-4"
                   >
                     {item.title}
                   </ArrowLink>
@@ -141,9 +141,9 @@ export default function Home() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-white/60 mb-4">
               Where We Operate
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-white">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-white">
               Emerging markets.<br />
-              <span className="shimmer-gold">Enduring impact.</span>
+              Enduring impact.
             </h2>
           </div>
 
@@ -180,7 +180,7 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 to-transparent" />
                 </div>
-                <h3 className="font-serif text-xl font-medium text-white mb-2 group-hover:text-brand-gold-light transition-colors inline-flex items-center gap-2">
+                <h3 className="font-sans text-xl font-medium text-white mb-2 group-hover:text-brand-gold-light transition-colors inline-flex items-center gap-2">
                   {item.region}
                   <svg
                     className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
@@ -207,7 +207,7 @@ export default function Home() {
 
       {/* Brand concept — dark navy with accent elements */}
       <section className="py-20 md:py-28 bg-brand-navy text-white relative overflow-hidden">
-        <div className="absolute top-10 left-[10%] w-2 h-2 rounded-full bg-brand-gold glow-gold" />
+        <div className="absolute top-10 left-[10%] w-2 h-2 rounded-full bg-brand-gold" />
         <div className="absolute top-[30%] right-[15%] w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse-glow" />
         <div className="absolute bottom-[20%] left-[25%] w-1 h-1 rounded-full bg-brand-blue-light animate-pulse-glow" />
 
@@ -217,9 +217,9 @@ export default function Home() {
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Focused Power
               </p>
-              <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] mb-8">
+              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] mb-8">
                 Real influence isn&apos;t about being everywhere. It&apos;s
-                about knowing <span className="shimmer-gold">where to move, and when.</span>
+                about knowing where to move, and when.
               </h2>
             </div>
             <div className="reveal" style={{ transitionDelay: "0.1s" }}>
@@ -253,7 +253,7 @@ export default function Home() {
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
                 Insights
               </p>
-              <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] text-brand-dark">
+              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
                 Rimsom Dispatch
               </h2>
             </div>
@@ -286,12 +286,12 @@ export default function Home() {
                 style={{ transitionDelay: `${i * 0.1}s` }}
               >
                 <div className="relative">
-                  <div className="absolute top-0 left-0 right-0 h-[2px] shimmer-gold-line" />
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-brand-gold" />
                 </div>
                 <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mt-4 mb-4">
                   {brief.category}
                 </p>
-                <h3 className="font-serif text-xl font-medium text-brand-dark leading-snug mb-6">
+                <h3 className="font-sans text-xl font-medium text-brand-dark leading-snug mb-6">
                   {brief.title}
                 </h3>
                 <span className="text-[13px] font-sans font-semibold text-brand-gray group-hover:text-brand-blue transition-colors inline-flex items-center gap-2">
@@ -335,9 +335,9 @@ export default function Home() {
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6">
               The Rimsom Circle
             </p>
-            <h2 className="font-serif text-3xl md:text-[42px] font-light leading-[1.15] mb-8">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] mb-8">
               Trusted relationships that shape{" "}
-              <span className="shimmer-gold">global outcomes.</span>
+              global outcomes.
             </h2>
             <p className="font-sans text-[15px] text-white/50 leading-relaxed mb-10">
               We work with a select network of governments, institutions, and
