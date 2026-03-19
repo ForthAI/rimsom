@@ -60,8 +60,13 @@ export default function Home() {
 
         {/* Full fade from hero image to blue */}
         <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-brand-blue via-brand-blue/60 to-transparent z-10" />
-        {/* Gold accent lines — mix of wavy and straight */}
-        <div className="absolute bottom-0 left-0 right-0 z-20">
+        {/* No gold lines here — they're in the blue section below */}
+      </section>
+
+      {/* Focus areas — vibrant blue band with large images */}
+      <section className="pt-0 pb-16 md:pb-24 bg-brand-blue relative overflow-hidden">
+        {/* Gold accent lines at top of blue section */}
+        <div className="w-full">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
             {/* Line 1 — descends left to right, wavy */}
             <path d="M0 15 C300 8, 500 35, 720 25 S1100 45, 1440 70" stroke="#c9a84c" strokeWidth="1" opacity="0.2" fill="none" />
@@ -77,10 +82,6 @@ export default function Home() {
             <line x1="0" y1="108" x2="1440" y2="78" stroke="#c9a84c" strokeWidth="1" opacity="0.35" />
           </svg>
         </div>
-      </section>
-
-      {/* Focus areas — vibrant blue band with large images */}
-      <section className="py-16 md:py-24 bg-brand-blue relative overflow-hidden">
         <div className="absolute top-0 left-0 w-80 h-80 rounded-full bg-white/5 blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/8 blur-3xl" />
 
