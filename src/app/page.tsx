@@ -63,18 +63,18 @@ export default function Home() {
         {/* Gold accent lines — mix of wavy and straight */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
           <svg viewBox="0 0 1440 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "200px" }}>
-            {/* Wavy gold — gentle sine, ghost */}
-            <path d="M0 55 C240 35, 480 75, 720 50 S1200 30, 1440 60" stroke="#c9a84c" strokeWidth="1" opacity="0.15" fill="none" />
-            {/* Straight gold — steep angle */}
-            <line x1="0" y1="80" x2="1440" y2="110" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3" />
-            {/* Wavy gold — wider wave, thicker */}
-            <path d="M0 100 C360 80, 540 120, 900 95 S1260 110, 1440 90" stroke="#c9a84c" strokeWidth="3" opacity="0.5" fill="none" />
-            {/* Straight gold — nearly flat, bold */}
-            <path d="M0 125L1440 118V123L0 130Z" fill="#c9a84c" opacity="0.6" />
-            {/* Wavy gold — tight ripple, brightest */}
-            <path d="M0 148 C180 140, 360 155, 540 145 S900 155, 1080 143 S1350 152, 1440 146" stroke="#c9a84c" strokeWidth="2.5" opacity="0.8" fill="none" />
-            {/* Fine straight hairline */}
-            <line x1="0" y1="162" x2="1440" y2="158" stroke="#c9a84c" strokeWidth="1" opacity="0.4" />
+            {/* Line 1 — descends left to right, wavy */}
+            <path d="M0 40 C300 30, 500 70, 720 55 S1100 80, 1440 120" stroke="#c9a84c" strokeWidth="1" opacity="0.2" fill="none" />
+            {/* Line 2 — rises then falls, crosses Line 1 around 400px and 1100px */}
+            <path d="M0 110 C200 90, 400 50, 700 75 S1000 110, 1200 60 Q1350 40, 1440 55" stroke="#c9a84c" strokeWidth="2" opacity="0.45" fill="none" />
+            {/* Line 3 — starts high right, drops left, straight diagonal crossing others */}
+            <line x1="0" y1="130" x2="1440" y2="50" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3" />
+            {/* Line 4 — bold wave, starts mid, dips down, rises, crosses Line 3 around 700px */}
+            <path d="M0 85 C180 100, 360 140, 600 120 S840 70, 1080 95 Q1260 115, 1440 100" stroke="#c9a84c" strokeWidth="3" opacity="0.55" fill="none" />
+            {/* Line 5 — tight ripple, brightest, weaves through everything */}
+            <path d="M0 155 C120 145, 240 165, 420 140 S600 160, 780 135 S960 155, 1140 130 Q1300 148, 1440 138" stroke="#c9a84c" strokeWidth="2.5" opacity="0.75" fill="none" />
+            {/* Line 6 — gentle rise, thin, crosses Line 5 twice */}
+            <line x1="0" y1="165" x2="1440" y2="125" stroke="#c9a84c" strokeWidth="1" opacity="0.35" />
           </svg>
         </div>
       </section>
