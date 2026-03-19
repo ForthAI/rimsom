@@ -161,8 +161,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Vibrant blue band — McKinsey-inspired image cards */}
-      <section className="py-20 md:py-28 bg-brand-blue relative overflow-hidden">
+      {/* Where We Operate — dark navy */}
+      <section className="py-14 md:py-20 bg-brand-navy relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/10 blur-3xl animate-float-slower" />
         <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
