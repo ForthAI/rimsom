@@ -124,10 +124,10 @@ export default function HeroCarousel() {
           {slides.map((slide, i) => (
             <div
               key={i}
-              className={`absolute top-0 left-0 right-0 transition-all duration-700 ease-out ${
+              className={`absolute top-0 left-0 right-0 transition-opacity duration-700 ease-out ${
                 i === current
-                  ? "opacity-100 translate-y-0 pointer-events-auto"
-                  : "opacity-0 translate-y-4 pointer-events-none"
+                  ? "opacity-100 pointer-events-auto"
+                  : "opacity-0 pointer-events-none"
               }`}
             >
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6">
