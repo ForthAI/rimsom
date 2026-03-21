@@ -66,7 +66,7 @@ export default function HeroCarousel() {
 
   const goTo = useCallback((index: number) => {
     setCurrent(index);
-    setProgressKey((k) => k + 1); // restart progress animation
+    setProgressKey((k) => k + 1);
   }, []);
 
   const startTimer = useCallback(() => {
@@ -88,13 +88,12 @@ export default function HeroCarousel() {
 
   const handleDotClick = (index: number) => {
     goTo(index);
-    // Reset the interval so we get a full INTERVAL after clicking
     startTimer();
   };
 
   return (
     <section
-      className="relative min-h-screen flex items-end overflow-hidden"
+      className="relative h-screen flex flex-col overflow-hidden"
       onMouseEnter={() => { isPausedRef.current = true; }}
       onMouseLeave={() => { isPausedRef.current = false; }}
     >
@@ -113,9 +112,15 @@ export default function HeroCarousel() {
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
 
-      {/* Slide content — use relative container with fixed height area */}
-      <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pb-40 md:pb-48 pt-32 w-full">
-        <div className="max-w-3xl relative" style={{ minHeight: 340 }}>
+      {/* Bottom fade into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-brand-navy via-brand-navy/50 to-transparent z-[1]" />
+
+      {/* Main layout: pushes content to bottom */}
+      <div className="relative z-10 flex-1" />
+
+      {/* Slide content area — fixed height so nav never overlaps */}
+      <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 w-full">
+        <div className="max-w-3xl relative" style={{ height: 380 }}>
           {slides.map((slide, i) => (
             <div
               key={i}
@@ -129,11 +134,11 @@ export default function HeroCarousel() {
                 {slide.label}
               </p>
 
-              <h1 className="font-sans text-4xl sm:text-5xl md:text-[64px] font-bold leading-[1.05] tracking-wide text-white mb-8">
+              <h1 className="font-sans text-4xl sm:text-5xl md:text-[56px] font-bold leading-[1.05] tracking-wide text-white mb-6">
                 {slide.headline}
               </h1>
 
-              <p className="font-sans text-[15px] md:text-[17px] text-white/60 max-w-lg leading-relaxed mb-10">
+              <p className="font-sans text-[15px] md:text-[17px] text-white/60 max-w-lg leading-relaxed mb-8">
                 {slide.description}
               </p>
 
@@ -141,7 +146,7 @@ export default function HeroCarousel() {
                 href={slide.cta.href}
                 className="group inline-flex items-center gap-4"
               >
-                <span className="flex items-center justify-center w-14 h-14 rounded-full bg-brand-gold/20 border border-brand-gold/30 group-hover:bg-brand-gold/40 transition-all duration-300">
+                <span className="flex items-center justify-center w-12 h-12 rounded-full bg-brand-gold/20 border border-brand-gold/30 group-hover:bg-brand-gold/40 transition-all duration-300">
                   <svg
                     className="w-5 h-5 text-brand-gold-light transition-transform duration-200 group-hover:translate-x-0.5"
                     fill="none"
@@ -163,15 +168,18 @@ export default function HeroCarousel() {
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Navigation bars with labels */}
-        <div className="absolute bottom-24 md:bottom-32 left-6 md:left-10 right-6 md:right-10 z-20 flex gap-4">
+      {/* Navigation bars with labels — pinned at bottom */}
+      <div className="relative z-20 max-w-content mx-auto px-6 md:px-10 w-full pb-10 md:pb-14">
+        <div className="flex gap-0">
           {slides.map((slide, i) => (
             <button
               key={i}
               onClick={() => handleDotClick(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="flex-1 cursor-pointer text-left"
+              className="cursor-pointer text-left px-3 first:pl-0 last:pr-0"
+              style={{ width: "33.333%" }}
             >
               <span className="block relative h-[3px] w-full overflow-hidden rounded-full mb-3">
                 <span className="absolute inset-0 bg-white/25 rounded-full" />
@@ -196,9 +204,6 @@ export default function HeroCarousel() {
           ))}
         </div>
       </div>
-
-      {/* Bottom fade into next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-brand-navy via-brand-navy/50 to-transparent z-10" />
     </section>
   );
 }
