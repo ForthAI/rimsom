@@ -6,7 +6,7 @@ import Link from "next/link";
 const slides = [
   {
     image: "/home-hero.jpg",
-    label: "Advisory",
+    label: "International",
     headline: (
       <>
         What&apos;s your next
@@ -22,8 +22,25 @@ const slides = [
   },
   {
     image:
+      "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80",
+    label: "Infrastructure",
+    headline: (
+      <>
+        Building what
+        <br />
+        <span className="ml-12 md:ml-20 text-brand-gold-light">
+          economies need.
+        </span>
+      </>
+    ),
+    description:
+      "From energy systems to digital networks, we help structure and advance the critical infrastructure projects that drive growth across emerging markets.",
+    cta: { label: "Our Services", href: "/advisory" },
+  },
+  {
+    image:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80",
-    label: "Capital Mobilization",
+    label: "Financing",
     headline: (
       <>
         Structuring opportunity
@@ -35,12 +52,12 @@ const slides = [
     ),
     description:
       "We mobilize financing for energy, infrastructure, and critical industries — connecting projects with the capital they need to move from ambition to execution.",
-    cta: { label: "Our Services", href: "/advisory" },
+    cta: { label: "Learn More", href: "/advisory" },
   },
   {
     image:
       "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1600&q=80",
-    label: "Policy & Development",
+    label: "Access",
     headline: (
       <>
         Decades of influence.
@@ -51,7 +68,7 @@ const slides = [
       </>
     ),
     description:
-      "Drawing on 30+ years in trade policy and international diplomacy, we advise governments and institutions navigating complexity with clarity and conviction.",
+      "Drawing on 30+ years in trade policy and international diplomacy, we open doors to governments, institutions, and decision-makers across continents.",
     cta: { label: "About the Firm", href: "/about" },
   },
 ];
@@ -178,7 +195,7 @@ export default function HeroCarousel() {
               onClick={() => handleDotClick(i)}
               aria-label={`Go to slide ${i + 1}`}
               className="cursor-pointer text-left px-3 first:pl-0 last:pr-0"
-              style={{ width: "33.333%" }}
+              style={{ width: "25%" }}
             >
               <span className="block relative h-[3px] w-full overflow-hidden rounded-full mb-3">
                 <span className="absolute inset-0 bg-white/25 rounded-full" />
