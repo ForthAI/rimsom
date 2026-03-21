@@ -165,12 +165,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Brand concept — deep teal */}
-      <section className="relative z-10 py-20 md:py-28 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0c2e3c 0%, #164050 50%, #1a4a5a 100%)" }}>
-        <div className="absolute top-10 left-[10%] w-2 h-2 rounded-full bg-brand-gold" />
-        <div className="absolute top-[30%] right-[15%] w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse-glow" />
-        <div className="absolute bottom-[20%] left-[25%] w-1 h-1 rounded-full bg-brand-blue-light animate-pulse-glow" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-brand-cyan/8 blur-3xl" />
+      {/* Brand concept — dark sky with stars */}
+      <section className="relative z-10 py-20 md:py-28 text-white overflow-hidden" style={{ background: "linear-gradient(180deg, #0a0e1a 0%, #111827 40%, #0f172a 100%)" }}>
+        {/* Stars */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+            radial-gradient(1px 1px at 25% 35%, rgba(255,255,255,0.5) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 40% 8%, rgba(255,255,255,0.8) 0%, transparent 100%),
+            radial-gradient(1px 1px at 55% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+            radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7) 0%, transparent 100%),
+            radial-gradient(1px 1px at 15% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+            radial-gradient(1px 1px at 30% 75%, rgba(255,255,255,0.5) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 50% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+            radial-gradient(1px 1px at 65% 85%, rgba(255,255,255,0.4) 0%, transparent 100%),
+            radial-gradient(1px 1px at 80% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
+            radial-gradient(1px 1px at 92% 12%, rgba(255,255,255,0.6) 0%, transparent 100%),
+            radial-gradient(1px 1px at 5% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 48% 25%, rgba(255,255,255,0.7) 0%, transparent 100%),
+            radial-gradient(1px 1px at 75% 65%, rgba(255,255,255,0.3) 0%, transparent 100%),
+            radial-gradient(1px 1px at 35% 50%, rgba(255,255,255,0.5) 0%, transparent 100%),
+            radial-gradient(1px 1px at 88% 78%, rgba(255,255,255,0.4) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 20% 88%, rgba(255,255,255,0.6) 0%, transparent 100%),
+            radial-gradient(1px 1px at 60% 5%, rgba(255,255,255,0.5) 0%, transparent 100%),
+            radial-gradient(1px 1px at 95% 92%, rgba(255,255,255,0.3) 0%, transparent 100%)
+          `
+        }} />
+        {/* Subtle nebula glow */}
+        <div className="absolute top-[20%] left-[30%] w-96 h-96 rounded-full bg-blue-900/20 blur-3xl" />
+        <div className="absolute bottom-[10%] right-[20%] w-72 h-72 rounded-full bg-indigo-900/15 blur-3xl" />
 
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
