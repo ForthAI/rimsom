@@ -6,7 +6,7 @@ import Link from "next/link";
 const slides = [
   {
     image: "/home-hero.jpg",
-    label: "International",
+    label: "Global Reach",
     headline: (
       <>
         What&apos;s your next
@@ -23,7 +23,7 @@ const slides = [
   {
     image:
       "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80",
-    label: "Infrastructure",
+    label: "Power & Progress",
     headline: (
       <>
         Building what
@@ -40,7 +40,7 @@ const slides = [
   {
     image:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80",
-    label: "Financing",
+    label: "Capital Formation",
     headline: (
       <>
         Structuring opportunity
@@ -57,7 +57,7 @@ const slides = [
   {
     image:
       "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1600&q=80",
-    label: "Access",
+    label: "Access = Success",
     headline: (
       <>
         Decades of influence.
