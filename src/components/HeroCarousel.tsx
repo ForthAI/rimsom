@@ -114,8 +114,8 @@ export default function HeroCarousel() {
       <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
 
       {/* Slide content — use relative container with fixed height area */}
-      <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pb-24 md:pb-32 pt-32 w-full">
-        <div className="max-w-3xl relative" style={{ minHeight: 320 }}>
+      <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pb-40 md:pb-48 pt-32 w-full">
+        <div className="max-w-3xl relative" style={{ minHeight: 340 }}>
           {slides.map((slide, i) => (
             <div
               key={i}
@@ -165,14 +165,13 @@ export default function HeroCarousel() {
         </div>
 
         {/* Navigation bars with labels */}
-        <div className="relative z-20 flex gap-6 mt-12">
+        <div className="absolute bottom-24 md:bottom-32 left-6 md:left-10 right-6 md:right-10 z-20 flex gap-4">
           {slides.map((slide, i) => (
             <button
               key={i}
               onClick={() => handleDotClick(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="cursor-pointer text-left"
-              style={{ width: 120 }}
+              className="flex-1 cursor-pointer text-left"
             >
               <span className="block relative h-[3px] w-full overflow-hidden rounded-full mb-3">
                 <span className="absolute inset-0 bg-white/25 rounded-full" />
@@ -187,7 +186,7 @@ export default function HeroCarousel() {
                 )}
               </span>
               <span
-                className={`block text-[11px] font-sans font-semibold tracking-wider uppercase transition-colors duration-300 ${
+                className={`block text-[11px] font-sans font-semibold tracking-wider uppercase whitespace-nowrap transition-colors duration-300 ${
                   i === current ? "text-white" : "text-white/40"
                 }`}
               >
