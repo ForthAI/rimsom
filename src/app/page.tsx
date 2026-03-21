@@ -92,18 +92,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Where We Operate — dark navy */}
-      <section className="py-14 md:py-20 bg-brand-navy relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/10 blur-3xl animate-float-slower" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
+      {/* Where We Operate — clean white */}
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-blue/5 blur-3xl" />
 
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <div className="reveal mb-14">
-            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-white/60 mb-4">
+            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
               Where We Operate
             </p>
-            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-white">
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
               Emerging markets.<br />
               Enduring impact.
             </h2>
@@ -140,9 +138,9 @@ export default function Home() {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
-                <h3 className="font-sans text-xl font-medium text-white mb-2 group-hover:text-brand-gold-light transition-colors inline-flex items-center gap-2">
+                <h3 className="font-sans text-xl font-medium text-brand-dark mb-2 group-hover:text-brand-blue transition-colors inline-flex items-center gap-2">
                   {item.region}
                   <svg
                     className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
@@ -158,7 +156,7 @@ export default function Home() {
                     />
                   </svg>
                 </h3>
-                <p className="font-sans text-[14px] text-white/60 leading-relaxed">
+                <p className="font-sans text-[14px] text-brand-gray leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -167,11 +165,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Brand concept — dark navy with accent elements */}
-      <section className="py-20 md:py-28 bg-brand-navy text-white relative overflow-hidden">
+      {/* Brand concept — deep teal */}
+      <section className="py-20 md:py-28 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0c2e3c 0%, #164050 50%, #1a4a5a 100%)" }}>
         <div className="absolute top-10 left-[10%] w-2 h-2 rounded-full bg-brand-gold" />
         <div className="absolute top-[30%] right-[15%] w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse-glow" />
         <div className="absolute bottom-[20%] left-[25%] w-1 h-1 rounded-full bg-brand-blue-light animate-pulse-glow" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-brand-cyan/8 blur-3xl" />
 
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
@@ -207,8 +206,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Insights preview — light section */}
-      <section className="py-20 md:py-28 bg-brand-offwhite">
+      {/* Insights preview — warm sand */}
+      <section className="py-20 md:py-28" style={{ background: "#f7f3ec" }}>
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="reveal flex items-end justify-between mb-12">
             <div>
@@ -287,10 +286,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA — gradient band */}
-      <section className="py-20 md:py-28 bg-gradient-animated text-white relative overflow-hidden">
+      {/* CTA — rich emerald gradient */}
+      <section className="py-20 md:py-28 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%)" }}>
         <div className="absolute top-10 right-[20%] w-48 h-48 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
-        <div className="absolute bottom-10 left-[15%] w-64 h-64 rounded-full bg-brand-cyan/5 blur-3xl animate-float-slower" />
+        <div className="absolute bottom-10 left-[15%] w-64 h-64 rounded-full bg-emerald-300/10 blur-3xl animate-float-slower" />
 
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 text-center">
           <div className="max-w-2xl mx-auto reveal">
