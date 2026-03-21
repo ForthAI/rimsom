@@ -112,8 +112,7 @@ export default function HeroCarousel() {
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
 
-      {/* Bottom fade into next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-brand-navy via-brand-navy/50 to-transparent z-[1]" />
+      {/* No bottom fade — next section overlaps on scroll */}
 
       {/* Main layout: pushes content to bottom */}
       <div className="relative z-10 flex-1" />

@@ -6,28 +6,13 @@ import HeroCarousel from "@/components/HeroCarousel";
 export default function Home() {
   return (
     <>
-      {/* Hero carousel */}
-      <HeroCarousel />
+      {/* Hero carousel — sticky so next section scrolls over it */}
+      <div className="sticky top-0 z-0">
+        <HeroCarousel />
+      </div>
 
-      {/* Focus areas — vibrant blue band with large images */}
-      <section className="pt-0 pb-16 md:pb-24 relative overflow-hidden" style={{ background: "linear-gradient(to bottom, #162246 0%, #2251ff 30%, #2251ff 100%)" }}>
-        {/* Gold accent lines at top of blue section */}
-        <div className="w-full reveal gold-lines-draw" style={{ transitionDuration: "1.2s" }}>
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: "120px" }}>
-            {/* Line 1 — descends left to right, wavy */}
-            <path d="M0 15 C300 8, 500 35, 720 25 S1100 45, 1440 70" stroke="#c9a84c" strokeWidth="1" opacity="0.2" fill="none" />
-            {/* Line 2 — rises then falls, crosses Line 1 */}
-            <path d="M0 60 C240 45, 480 22, 720 38 S960 60, 1200 35 C1320 25, 1380 28, 1440 30" stroke="#c9a84c" strokeWidth="2" opacity="0.45" fill="none" />
-            {/* Line 3 — straight diagonal crossing others */}
-            <line x1="0" y1="78" x2="1440" y2="22" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3" />
-            {/* Line 4 — bold wave, dips and rises */}
-            <path d="M0 42 C180 55, 360 85, 600 70 S840 35, 1080 52 Q1260 68, 1440 58" stroke="#c9a84c" strokeWidth="3" opacity="0.55" fill="none" />
-            {/* Line 5 — tight ripple, brightest */}
-            <path d="M0 95 C120 88, 240 105, 420 85 S600 100, 780 80 S960 95, 1140 78 Q1300 90, 1440 84" stroke="#c9a84c" strokeWidth="2.5" opacity="0.75" fill="none" />
-            {/* Line 6 — gentle rise, thin */}
-            <line x1="0" y1="108" x2="1440" y2="78" stroke="#c9a84c" strokeWidth="1" opacity="0.35" />
-          </svg>
-        </div>
+      {/* Focus areas — overlaps hero on scroll */}
+      <section className="relative z-10 pt-0 pb-16 md:pb-24 overflow-hidden rounded-t-[20px]" style={{ background: "linear-gradient(to bottom, #162246 0%, #2251ff 30%, #2251ff 100%)" }}>
         <div className="absolute top-0 left-0 w-80 h-80 rounded-full bg-white/5 blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-brand-cyan/8 blur-3xl" />
 
