@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 
 const slides = [
@@ -60,23 +60,43 @@ const INTERVAL = 6000;
 
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [progressKey, setProgressKey] = useState(0);
+  const isPausedRef = useRef(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length);
+  const goTo = useCallback((index: number) => {
+    setCurrent(index);
+    setProgressKey((k) => k + 1); // restart progress animation
+  }, []);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      if (!isPausedRef.current) {
+        setCurrent((prev) => (prev + 1) % slides.length);
+        setProgressKey((k) => k + 1);
+      }
+    }, INTERVAL);
   }, []);
 
   useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(next, INTERVAL);
-    return () => clearInterval(timer);
-  }, [isPaused, next]);
+    startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [startTimer]);
+
+  const handleDotClick = (index: number) => {
+    goTo(index);
+    // Reset the interval so we get a full INTERVAL after clicking
+    startTimer();
+  };
 
   return (
     <section
       className="relative min-h-screen flex items-end overflow-hidden"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onMouseEnter={() => { isPausedRef.current = true; }}
+      onMouseLeave={() => { isPausedRef.current = false; }}
     >
       {/* Background images — stacked with crossfade */}
       {slides.map((slide, i) => (
@@ -93,16 +113,16 @@ export default function HeroCarousel() {
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
 
-      {/* Slide content */}
+      {/* Slide content — use relative container with fixed height area */}
       <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pb-24 md:pb-32 pt-32 w-full">
-        <div className="max-w-3xl">
+        <div className="max-w-3xl relative" style={{ minHeight: 320 }}>
           {slides.map((slide, i) => (
             <div
               key={i}
-              className={`transition-all duration-700 ease-out ${
+              className={`absolute top-0 left-0 right-0 transition-all duration-700 ease-out ${
                 i === current
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4 absolute pointer-events-none"
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 translate-y-4 pointer-events-none"
               }`}
             >
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6">
@@ -144,25 +164,28 @@ export default function HeroCarousel() {
           ))}
         </div>
 
-        {/* Navigation dots */}
-        <div className="flex items-center gap-3 mt-12">
+        {/* Navigation bars — with generous click target */}
+        <div className="relative z-20 flex items-center gap-3 mt-12">
           {slides.map((_, i) => (
             <button
               key={i}
-              onClick={() => setCurrent(i)}
+              onClick={() => handleDotClick(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="relative h-[3px] transition-all duration-500 overflow-hidden"
+              className="relative cursor-pointer py-3 group"
               style={{ width: i === current ? 48 : 24 }}
             >
-              <span className="absolute inset-0 bg-white/25 rounded-full" />
-              {i === current && (
-                <span
-                  className="absolute inset-0 bg-brand-gold rounded-full"
-                  style={{
-                    animation: `progressBar ${INTERVAL}ms linear`,
-                  }}
-                />
-              )}
+              <span className="block relative h-[3px] w-full overflow-hidden rounded-full">
+                <span className="absolute inset-0 bg-white/25 rounded-full" />
+                {i === current && (
+                  <span
+                    key={progressKey}
+                    className="absolute inset-0 bg-brand-gold rounded-full origin-left"
+                    style={{
+                      animation: `progressBar ${INTERVAL}ms linear forwards`,
+                    }}
+                  />
+                )}
+              </span>
             </button>
           ))}
         </div>
