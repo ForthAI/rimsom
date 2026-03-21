@@ -18,10 +18,16 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      // On homepage, stay transparent until the overlapping section reaches the header
+      const headerH = 72;
+      const threshold = pathname === "/" ? window.innerHeight - headerH : 20;
+      setScrolled(window.scrollY > threshold);
+    };
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
   // All pages have dark hero backgrounds
   const isDarkHero = true;
