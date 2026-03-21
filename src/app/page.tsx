@@ -1,67 +1,13 @@
 import Link from "next/link";
 import ArrowLink from "@/components/ArrowLink";
 import Image from "next/image";
+import HeroCarousel from "@/components/HeroCarousel";
 
 export default function Home() {
   return (
     <>
-      {/* Hero — custom background image */}
-      <section className="relative min-h-screen flex items-end">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/home-hero.jpg')" }}
-        />
-        {/* Left-side dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
-
-        <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 pb-24 md:pb-32 pt-32 w-full">
-          <div className="max-w-3xl">
-            <h1 className="animate-fade-up font-sans text-4xl sm:text-5xl md:text-[64px] font-bold leading-[1.05] tracking-wide text-white mb-8">
-              What&apos;s your next
-              <br />
-              <span className="ml-12 md:ml-20 text-brand-gold-light">
-                focused move?
-              </span>
-            </h1>
-
-            <p className="animate-fade-up-delay-1 font-sans text-[15px] md:text-[17px] text-white/60 max-w-lg leading-relaxed mb-10">
-              Rimsom Global operates where trust, timing, and access shape
-              what happens next — bringing people, capital, and ideas together
-              to create outcomes that endure.
-            </p>
-
-            <div className="animate-fade-up-delay-2 flex items-center gap-6">
-              <Link
-                href="/advisory"
-                className="group inline-flex items-center gap-4"
-              >
-                <span className="flex items-center justify-center w-14 h-14 rounded-full bg-brand-gold/20 border border-brand-gold/30 group-hover:bg-brand-gold/40 transition-all duration-300">
-                  <svg
-                    className="w-5 h-5 text-brand-gold-light transition-transform duration-200 group-hover:translate-x-0.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                </span>
-                <span className="text-[13px] font-sans font-semibold text-white/70 group-hover:text-white transition-colors">
-                  Explore Advisory
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Full fade from hero image to blue */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-brand-navy via-brand-navy/50 to-transparent z-10" />
-        {/* No gold lines here — they're in the blue section below */}
-      </section>
+      {/* Hero carousel */}
+      <HeroCarousel />
 
       {/* Focus areas — vibrant blue band with large images */}
       <section className="pt-0 pb-16 md:pb-24 relative overflow-hidden" style={{ background: "linear-gradient(to bottom, #162246 0%, #2251ff 30%, #2251ff 100%)" }}>

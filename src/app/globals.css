@@ -124,6 +124,13 @@ body {
 }
 
 /* Image card hover zoom */
+/* Carousel progress bar */
+@keyframes progressBar {
+  from { transform: scaleX(0); transform-origin: left; }
+  to { transform: scaleX(1); transform-origin: left; }
+}
+
+/* Image card hover zoom */
 .img-zoom img {
   transition: transform 0.5s ease;
 }
