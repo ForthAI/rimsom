@@ -93,7 +93,7 @@ export default function Home() {
       </section>
 
       {/* Where We Operate — clean white */}
-      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <section className="relative z-10 py-20 md:py-28 bg-white overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-blue/5 blur-3xl" />
 
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
@@ -166,7 +166,7 @@ export default function Home() {
       </section>
 
       {/* Brand concept — deep teal */}
-      <section className="py-20 md:py-28 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0c2e3c 0%, #164050 50%, #1a4a5a 100%)" }}>
+      <section className="relative z-10 py-20 md:py-28 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0c2e3c 0%, #164050 50%, #1a4a5a 100%)" }}>
         <div className="absolute top-10 left-[10%] w-2 h-2 rounded-full bg-brand-gold" />
         <div className="absolute top-[30%] right-[15%] w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse-glow" />
         <div className="absolute bottom-[20%] left-[25%] w-1 h-1 rounded-full bg-brand-blue-light animate-pulse-glow" />
@@ -207,7 +207,7 @@ export default function Home() {
       </section>
 
       {/* Insights preview — warm sand */}
-      <section className="py-20 md:py-28" style={{ background: "#f7f3ec" }}>
+      <section className="relative z-10 py-20 md:py-28" style={{ background: "#f7f3ec" }}>
         <div className="max-w-content mx-auto px-6 md:px-10">
           <div className="reveal flex items-end justify-between mb-12">
             <div>
@@ -287,7 +287,7 @@ export default function Home() {
       </section>
 
       {/* CTA — rich emerald gradient */}
-      <section className="py-20 md:py-28 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%)" }}>
+      <section className="relative z-10 py-20 md:py-28 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%)" }}>
         <div className="absolute top-10 right-[20%] w-48 h-48 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
         <div className="absolute bottom-10 left-[15%] w-64 h-64 rounded-full bg-emerald-300/10 blur-3xl animate-float-slower" />
 
