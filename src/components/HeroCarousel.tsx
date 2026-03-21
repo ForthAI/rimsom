@@ -126,10 +126,8 @@ export default function HeroCarousel() {
         />
       ))}
 
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/60 to-transparent" />
-
-      {/* No bottom fade — next section overlaps on scroll */}
+      {/* Light vignette — just enough to help edges */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
 
       {/* Main layout: pushes content to bottom */}
       <div className="relative z-10 flex-1" />
@@ -146,6 +144,7 @@ export default function HeroCarousel() {
                   : "opacity-0 pointer-events-none"
               }`}
             >
+              <div className="backdrop-blur-md bg-black/30 rounded-2xl p-8 md:p-10 inline-block">
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6">
                 {slide.label}
               </p>
@@ -154,7 +153,7 @@ export default function HeroCarousel() {
                 {slide.headline}
               </h1>
 
-              <p className="font-sans text-[15px] md:text-[17px] text-white/60 max-w-lg leading-relaxed mb-8">
+              <p className="font-sans text-[15px] md:text-[17px] text-white/80 max-w-lg leading-relaxed mb-8">
                 {slide.description}
               </p>
 
@@ -181,6 +180,7 @@ export default function HeroCarousel() {
                   {slide.cta.label}
                 </span>
               </Link>
+              </div>
             </div>
           ))}
         </div>
