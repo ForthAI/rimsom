@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const slides = [
   {
-    image: "/home-hero.jpg",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80",
     label: "Global Reach",
     headline: (
       <>
@@ -56,7 +56,7 @@ const slides = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1600&q=80",
+      "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=1600&q=80",
     label: "Access = Success",
     headline: (
       <>
