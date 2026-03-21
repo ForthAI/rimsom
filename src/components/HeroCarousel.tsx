@@ -164,17 +164,17 @@ export default function HeroCarousel() {
           ))}
         </div>
 
-        {/* Navigation bars — with generous click target */}
-        <div className="relative z-20 flex items-center gap-3 mt-12">
-          {slides.map((_, i) => (
+        {/* Navigation bars with labels */}
+        <div className="relative z-20 flex gap-6 mt-12">
+          {slides.map((slide, i) => (
             <button
               key={i}
               onClick={() => handleDotClick(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="relative cursor-pointer py-3 group"
-              style={{ width: i === current ? 48 : 24 }}
+              className="cursor-pointer text-left"
+              style={{ width: 120 }}
             >
-              <span className="block relative h-[3px] w-full overflow-hidden rounded-full">
+              <span className="block relative h-[3px] w-full overflow-hidden rounded-full mb-3">
                 <span className="absolute inset-0 bg-white/25 rounded-full" />
                 {i === current && (
                   <span
@@ -185,6 +185,13 @@ export default function HeroCarousel() {
                     }}
                   />
                 )}
+              </span>
+              <span
+                className={`block text-[11px] font-sans font-semibold tracking-wider uppercase transition-colors duration-300 ${
+                  i === current ? "text-white" : "text-white/40"
+                }`}
+              >
+                {slide.label}
               </span>
             </button>
           ))}
