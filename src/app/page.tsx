@@ -36,19 +36,19 @@ export default function Home() {
                 title: "Energy & Infrastructure",
                 description: "Structuring bankable projects across oil & gas, power, and critical infrastructure in emerging markets.",
                 href: "/advisory",
-                img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop",
+                img: "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&h=400&fit=crop",
               },
               {
                 title: "Industrial Development",
                 description: "Driving growth in manufacturing, technology, and heavy industry — from concept to commissioning.",
                 href: "/advisory",
-                img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop",
+                img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
               },
               {
                 title: "Sustainable Systems",
                 description: "Integrating renewable energy, resilient design, and responsible governance into every project.",
                 href: "/advisory",
-                img: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&h=400&fit=crop",
+                img: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&h=400&fit=crop",
               },
             ].map((item, i) => (
               <div
@@ -100,7 +100,7 @@ export default function Home() {
         <div className="absolute bottom-[10%] right-[20%] w-72 h-72 rounded-full bg-brand-gold/5 blur-3xl" />
 
         <div className="max-w-content mx-auto px-6 md:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="reveal">
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Capital Formation
@@ -109,8 +109,6 @@ export default function Home() {
                 When capital needs to move, we know{" "}
                 <span className="text-brand-gold">where to direct it.</span>
               </h2>
-            </div>
-            <div className="reveal" style={{ transitionDelay: "0.1s" }}>
               <p className="font-sans text-[15px] text-white/60 leading-relaxed mb-6">
                 Rimsom mobilizes financing for energy, infrastructure, and critical
                 industries — connecting projects with the capital they need to
@@ -129,6 +127,18 @@ export default function Home() {
                 Our advisory services
               </ArrowLink>
             </div>
+            <div className="reveal" style={{ transitionDelay: "0.1s" }}>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=800&h=600&fit=crop"
+                  alt="Financial district skyline at dusk"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/50 to-transparent" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -138,8 +148,20 @@ export default function Home() {
         <div className="absolute top-0 left-[40%] w-80 h-80 rounded-full bg-brand-gold/8 blur-3xl" />
 
         <div className="max-w-content mx-auto px-6 md:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-            <div className="reveal">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div className="reveal order-2 md:order-1">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop"
+                  alt="Executive boardroom meeting"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+            </div>
+            <div className="reveal order-1 md:order-2">
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Access = Success
               </p>
@@ -148,8 +170,6 @@ export default function Home() {
                 about knowing{" "}
                 <span className="text-brand-gold">where to move, and when.</span>
               </h2>
-            </div>
-            <div className="reveal" style={{ transitionDelay: "0.1s" }}>
               <p className="font-sans text-[15px] text-white/60 leading-relaxed mb-6">
                 Rimsom was built for precision. The firm thrives in complexity —
                 operating where trust, timing, and access decide everything.

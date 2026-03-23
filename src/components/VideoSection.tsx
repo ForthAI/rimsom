@@ -7,17 +7,17 @@ const regions = [
   {
     region: "Sub-Saharan Africa",
     description: "Energy, infrastructure, and trade across the continent",
-    img: "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=600&h=400&fit=crop",
+    img: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=600&h=400&fit=crop",
   },
   {
     region: "Caribbean & Latin America",
     description: "Development finance, governance, and digital transformation",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop",
+    img: "https://images.unsplash.com/photo-1500759285222-a95c2a7b4c79?w=600&h=400&fit=crop",
   },
   {
     region: "Middle East & Asia",
     description: "Strategic alliances, capital mobilization, and critical industries",
-    img: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600&h=400&fit=crop",
+    img: "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&h=400&fit=crop",
   },
 ];
 
