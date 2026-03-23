@@ -192,102 +192,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. ACCESS = SUCCESS — warm cream, horizontal scroll cards */}
-      <section className="relative z-10 py-20 md:py-28 overflow-hidden" style={{ background: "#f7f3ec" }}>
-        <div className="max-w-content mx-auto px-6 md:px-10">
-          <div className="reveal mb-6">
-            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
-              Access = Success
-            </p>
-            <h2 className="font-sans text-3xl md:text-[48px] font-bold leading-[1.1] text-brand-dark max-w-2xl">
-              Real influence isn&apos;t about being everywhere.
-            </h2>
+      {/* 4. ACCESS = SUCCESS — warm charcoal, split layout with large image */}
+      <section className="relative z-10 text-white overflow-hidden" style={{ background: "#1a1a1a" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {/* Left — full-height image */}
+          <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[600px]">
+            <Image
+              src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=1000&fit=crop"
+              alt="Executive boardroom"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#1a1a1a]/30 hidden md:block" />
           </div>
-          <div className="reveal mb-14" style={{ transitionDelay: "0.1s" }}>
-            <p className="font-sans text-lg text-brand-gray max-w-xl">
-              It&apos;s about knowing where to move, and when.
-            </p>
-          </div>
-        </div>
 
-        {/* Full-width staggered image + text cards */}
-        <div className="reveal max-w-[1400px] mx-auto px-6 md:px-10" style={{ transitionDelay: "0.15s" }}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
-            {/* Card 1 — tall image */}
-            <div className="relative group">
-              <div className="relative aspect-[3/4] overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=800&fit=crop"
-                  alt="Executive boardroom"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <h3 className="font-sans text-xl font-semibold text-white mb-2">
-                    Government & Institutions
-                  </h3>
-                  <p className="font-sans text-[13px] text-white/70 leading-relaxed">
-                    Decades of relationships across governments, multilateral institutions, and sovereign entities.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2 — offset down */}
-            <div className="relative group md:mt-16">
-              <div className="relative aspect-[3/4] overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&h=800&fit=crop"
-                  alt="Team collaboration"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <h3 className="font-sans text-xl font-semibold text-white mb-2">
-                    Private Sector Leaders
-                  </h3>
-                  <p className="font-sans text-[13px] text-white/70 leading-relaxed">
-                    Connecting global investors and industry leaders with high-impact opportunities.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3 — offset more */}
-            <div className="relative group md:mt-32">
-              <div className="relative aspect-[3/4] overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?w=600&h=800&fit=crop"
-                  alt="Strategic handshake"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <h3 className="font-sans text-xl font-semibold text-white mb-2">
-                    Strategic Alliances
-                  </h3>
-                  <p className="font-sans text-[13px] text-white/70 leading-relaxed">
-                    Precision networking that turns introductions into investments and lasting partnerships.
-                  </p>
-                </div>
-              </div>
+          {/* Right — content */}
+          <div className="flex flex-col justify-center px-8 md:px-16 py-16 md:py-20">
+            <div className="reveal">
+              <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
+                Access = Success
+              </p>
+              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] mb-8">
+                Real influence isn&apos;t about being everywhere. It&apos;s
+                about knowing{" "}
+                <span className="text-brand-gold">where to move, and when.</span>
+              </h2>
+              <p className="font-sans text-[15px] text-white/60 leading-relaxed mb-6">
+                Rimsom was built for precision. The firm thrives in complexity —
+                operating where trust, timing, and access decide everything.
+                Movement is never just activity. It&apos;s alignment: bringing
+                people, capital, and ideas together to create outcomes that last.
+              </p>
+              <p className="font-sans text-[15px] text-white/60 leading-relaxed mb-10">
+                Decades of relationships across governments, institutions, and
+                private sector leaders — that&apos;s the access that drives results.
+              </p>
+              <ArrowLink
+                href="/about"
+                className="text-[13px] font-sans font-semibold text-white"
+                dark
+              >
+                About the firm
+              </ArrowLink>
             </div>
           </div>
-        </div>
-
-        <div className="reveal max-w-content mx-auto px-6 md:px-10 mt-12">
-          <ArrowLink
-            href="/about"
-            className="text-[13px] font-sans font-semibold text-brand-dark"
-          >
-            About the firm
-          </ArrowLink>
         </div>
       </section>
 
