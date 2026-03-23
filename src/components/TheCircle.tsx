@@ -121,85 +121,52 @@ export default function TheCircle() {
             ))}
           </div>
 
-          {/* Right — 3D perspective image stack */}
+          {/* Right — 3D orbital carousel */}
           <div
             className="relative aspect-[4/3]"
-            style={{ perspective: "1200px" }}
+            style={{ perspective: "1000px" }}
           >
-            {slides.map((slide, i) => {
-              const diff =
-                ((i - current + slides.length) % slides.length);
-              // diff: 0 = active, 1 = next, 2 = prev (for 3 slides)
-
-              // Stack: active on top, others behind with depth + slight offset
-              let z = 0;
-              let translateZ = "-80px";
-              let translateX = "24px";
-              let translateY = "12px";
-              let rotateY = "4deg";
-              let opacity = 0.4;
-              let scale = 0.92;
-              let filter = "brightness(0.6)";
-
-              if (diff === 0) {
-                // Active — front and center
-                z = 10;
-                translateZ = "0px";
-                translateX = "0px";
-                translateY = "0px";
-                rotateY = "0deg";
-                opacity = 1;
-                scale = 1;
-                filter = "brightness(1)";
-              } else if (diff === 1) {
-                // Next — behind and to the right
-                z = 5;
-                translateZ = "-60px";
-                translateX = "40px";
-                translateY = "8px";
-                rotateY = "-3deg";
-                opacity = 0.55;
-                scale = 0.93;
-                filter = "brightness(0.65)";
-              } else {
-                // Previous — further back, to the left
-                z = 1;
-                translateZ = "-120px";
-                translateX = "-20px";
-                translateY = "16px";
-                rotateY = "5deg";
-                opacity = 0.25;
-                scale = 0.88;
-                filter = "brightness(0.5)";
-              }
-
-              return (
-                <div
-                  key={slide.title}
-                  className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl"
-                  style={{
-                    zIndex: z,
-                    opacity,
-                    filter,
-                    transform: `translateX(${translateX}) translateY(${translateY}) translateZ(${translateZ}) rotateY(${rotateY}) scale(${scale})`,
-                    transition:
-                      "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-                    cursor: diff !== 0 ? "pointer" : "default",
-                    transformStyle: "preserve-3d",
-                  }}
-                  onClick={() => diff !== 0 && goTo(i)}
-                >
-                  <Image
-                    src={slide.img}
-                    alt={slide.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority={i === 0}
-                  />
-                </div>
-              );
-            })}
+            {/* The entire ring rotates */}
+            <div
+              className="absolute inset-0"
+              style={{
+                transformStyle: "preserve-3d",
+                transform: `rotateY(${-current * (360 / slides.length)}deg)`,
+                transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+            >
+              {slides.map((slide, i) => {
+                const angle = (360 / slides.length) * i;
+                const radius = 280;
+                // Position each card around the ring
+                return (
+                  <div
+                    key={slide.title}
+                    className="absolute rounded-xl overflow-hidden shadow-2xl"
+                    style={{
+                      width: "85%",
+                      height: "85%",
+                      top: "7.5%",
+                      left: "7.5%",
+                      transformStyle: "preserve-3d",
+                      transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
+                      backfaceVisibility: "hidden",
+                      cursor: i !== current ? "pointer" : "default",
+                    }}
+                    onClick={() => i !== current && goTo(i)}
+                  >
+                    <Image
+                      src={slide.img}
+                      alt={slide.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority={i === 0}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
