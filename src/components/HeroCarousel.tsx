@@ -21,8 +21,7 @@ const slides = [
     cta: { label: "Explore Advisory", href: "/advisory" },
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80",
+    image: "/power-hero.jpg",
     label: "Power & Progress",
     headline: (
       <>
