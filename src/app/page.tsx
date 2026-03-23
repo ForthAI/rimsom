@@ -36,7 +36,7 @@ export default function Home() {
                 </p>
                 <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
                   Building what moves{" "}
-                  <span className="text-brand-blue">the world forward.</span>
+                  <span className="text-brand-gold">the world forward.</span>
                 </h2>
               </div>
 
