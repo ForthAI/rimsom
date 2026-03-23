@@ -12,7 +12,7 @@ const slides = [
     description:
       "How emerging economies are reshaping capital flows and redefining the role of development finance institutions.",
     img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=700&fit=crop",
-    href: "/insights",
+    href: "/circle",
   },
   {
     type: "Podcast" as const,
@@ -21,7 +21,7 @@ const slides = [
     description:
       "Why control over rare earths and critical minerals is becoming the defining contest of the next decade.",
     img: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=900&h=700&fit=crop",
-    href: "/insights",
+    href: "/circle",
   },
   {
     type: "Video" as const,
@@ -30,7 +30,7 @@ const slides = [
     description:
       "The intersection of artificial intelligence, regulatory frameworks, and the continent\u2019s path to digital sovereignty.",
     img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&h=700&fit=crop",
-    href: "/insights",
+    href: "/circle",
   },
 ];
 

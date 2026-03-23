@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 const navLinks = [
   { href: "/about", label: "About" },
   { href: "/advisory", label: "Advisory" },
-  { href: "/insights", label: "Insights" },
+  { href: "/circle", label: "The Circle" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -81,6 +81,16 @@ export default function Header() {
                 </Link>
               );
             })}
+            <Link
+              href="/login"
+              className={`text-[12px] font-sans font-semibold tracking-wide uppercase px-5 py-2 rounded-sm border transition-all duration-200 ${
+                scrolled || !isDarkHero
+                  ? "border-brand-dark/30 text-brand-dark hover:bg-brand-dark hover:text-white"
+                  : "border-white/40 text-white hover:bg-white hover:text-brand-dark"
+              }`}
+            >
+              Log In
+            </Link>
           </nav>
 
           {/* Mobile Hamburger (right side) */}
@@ -151,6 +161,13 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/login"
+              onClick={() => setMobileOpen(false)}
+              className="text-brand-gold text-lg font-sans font-medium border border-brand-gold/40 px-8 py-3 rounded-sm hover:bg-brand-gold hover:text-brand-navy transition-colors mt-4"
+            >
+              Log In
+            </Link>
           </nav>
         </div>
       </div>

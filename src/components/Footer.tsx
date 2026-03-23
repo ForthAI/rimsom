@@ -28,7 +28,7 @@ export default function Footer() {
               {[
                 { href: "/about", label: "About" },
                 { href: "/advisory", label: "Advisory" },
-                { href: "/insights", label: "Insights" },
+                { href: "/circle", label: "The Circle" },
                 { href: "/contact", label: "Contact" },
               ].map((link) => (
                 <Link
