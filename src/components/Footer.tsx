@@ -33,7 +33,6 @@ export default function Footer() {
                 { href: "/about", label: "About" },
                 { href: "/advisory", label: "Advisory" },
                 { href: "/circle", label: "The Circle" },
-                { href: "/contact", label: "Contact" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -53,13 +52,13 @@ export default function Footer() {
             </p>
             <div className="space-y-3">
               <p className="text-[13px] text-white/60">Washington, D.C.</p>
-              <a
-                href="mailto:info@rimsomglobal.com"
+              <Link
+                href="/contact"
                 className="block text-[13px] text-white/60 hover:text-white transition-colors duration-200"
               >
-                info@rimsomglobal.com
-              </a>
-              <a
+                Contact Us
+              </Link>
+              <
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
