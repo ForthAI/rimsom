@@ -298,7 +298,7 @@ export default function TheCircle() {
         <div className="max-w-content mx-auto px-6 md:px-10 py-5">
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
             <h4 className="font-sans text-[22px] font-bold text-white whitespace-nowrap">
-              Join the Rimsom Circle
+              Join the Rimsom Circle to gain access
             </h4>
             <input
               type="email"
