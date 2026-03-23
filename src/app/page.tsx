@@ -3,6 +3,7 @@ import ArrowLink from "@/components/ArrowLink";
 import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
 import VideoSection from "@/components/VideoSection";
+import TheCircle from "@/components/TheCircle";
 
 export default function Home() {
   return (
@@ -240,114 +241,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Insights preview — warm sand */}
-      <section className="relative z-10 py-20 md:py-28" style={{ background: "#f7f3ec" }}>
-        <div className="max-w-content mx-auto px-6 md:px-10">
-          <div className="reveal flex items-end justify-between mb-12">
-            <div>
-              <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
-                Insights
-              </p>
-              <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
-                Rimsom Dispatch
-              </h2>
-            </div>
-            <ArrowLink
-              href="/insights"
-              className="hidden md:inline-flex text-[13px] font-sans font-semibold text-brand-dark"
-            >
-              View all
-            </ArrowLink>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                category: "Development Finance",
-                title: "The Outlook on Cross-Continental Development Finance",
-              },
-              {
-                category: "Trade & Geopolitics",
-                title: "Critical Minerals and the New Geopolitics of Supply",
-              },
-              {
-                category: "Technology & Governance",
-                title: "AI, Governance, and Africa\u2019s Digital Future",
-              },
-            ].map((brief, i) => (
-              <div
-                key={brief.title}
-                className="reveal group bg-white p-8 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                style={{ transitionDelay: `${i * 0.1}s` }}
-              >
-                <div className="relative">
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-brand-gold" />
-                </div>
-                <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mt-4 mb-4">
-                  {brief.category}
-                </p>
-                <h3 className="font-sans text-xl font-medium text-brand-dark leading-snug mb-6">
-                  {brief.title}
-                </h3>
-                <span className="text-[13px] font-sans font-semibold text-brand-gray group-hover:text-brand-blue transition-colors inline-flex items-center gap-2">
-                  Forthcoming
-                  <svg
-                    className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="md:hidden mt-8 reveal">
-            <ArrowLink
-              href="/insights"
-              className="text-[13px] font-sans font-semibold text-brand-dark"
-            >
-              View all insights
-            </ArrowLink>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA — rich emerald gradient */}
-      <section className="relative z-10 py-20 md:py-28 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%)" }}>
-        <div className="absolute top-10 right-[20%] w-48 h-48 rounded-full bg-brand-gold/10 blur-3xl animate-float-slow" />
-        <div className="absolute bottom-10 left-[15%] w-64 h-64 rounded-full bg-emerald-300/10 blur-3xl animate-float-slower" />
-
-        <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 text-center">
-          <div className="max-w-2xl mx-auto reveal">
-            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold-light mb-6">
-              The Rimsom Circle
-            </p>
-            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] mb-8">
-              Trusted relationships that shape{" "}
-              global outcomes.
-            </h2>
-            <p className="font-sans text-[15px] text-white/50 leading-relaxed mb-10">
-              We work with a select network of governments, institutions, and
-              investors. If you are exploring strategic partnerships in emerging
-              markets, we welcome the conversation.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block px-8 py-3.5 bg-brand-gold text-white text-[13px] font-sans font-semibold hover:bg-brand-gold-light transition-colors duration-200 shadow-lg shadow-brand-gold/20"
-            >
-              Begin a Conversation
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* The Circle — insights carousel + CTA */}
+      <TheCircle />
     </>
   );
 }
