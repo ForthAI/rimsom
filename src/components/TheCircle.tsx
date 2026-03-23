@@ -103,7 +103,7 @@ export default function TheCircle() {
                 <div className="w-2 h-2 rounded-full bg-brand-gold" />
               </div>
               <span className="text-[11px] font-sans font-bold tracking-[0.2em] uppercase text-brand-dark">
-                The Circle
+                The Rimsom Circle
               </span>
             </div>
 
@@ -291,11 +291,14 @@ export default function TheCircle() {
           </div>
         </div>
 
-        {/* Subscribe bar — full width */}
-        <div className="mt-14 pt-10 border-t border-black/10">
+      </div>
+
+      {/* Join bar — full-bleed black */}
+      <div className="bg-brand-dark">
+        <div className="max-w-content mx-auto px-6 md:px-10 py-5">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
-            <h4 className="font-sans text-[18px] font-bold text-brand-dark whitespace-nowrap flex-shrink-0">
-              Join the Circle
+            <h4 className="font-sans text-[16px] font-bold text-white whitespace-nowrap flex-shrink-0">
+              Join the Rimsom Circle
             </h4>
             <form
               className="flex flex-1 w-full"
@@ -304,11 +307,11 @@ export default function TheCircle() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border border-gray-300 bg-white text-[14px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors duration-200 rounded-l"
+                className="flex-1 px-4 py-2.5 border border-white/20 bg-white/10 text-[14px] text-white font-sans outline-none focus:border-white/50 transition-colors duration-200 rounded-l placeholder:text-white/40"
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-brand-dark text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-navy transition-colors duration-200 rounded-r whitespace-nowrap"
+                className="px-6 py-2.5 bg-brand-gold text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-gold-light transition-colors duration-200 rounded-r whitespace-nowrap"
               >
                 Subscribe
               </button>
