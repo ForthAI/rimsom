@@ -58,7 +58,7 @@ export default function Footer() {
               >
                 Contact Us
               </Link>
-              <
+              <a
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
