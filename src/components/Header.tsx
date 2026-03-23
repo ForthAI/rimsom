@@ -39,7 +39,7 @@ export default function Header() {
           scrolled
             ? "bg-white shadow-sm"
             : isDarkHero
-            ? "bg-transparent"
+            ? "bg-black/20 backdrop-blur-sm"
             : "bg-white"
         }`}
       >
