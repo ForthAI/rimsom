@@ -122,13 +122,7 @@ export default function TheCircle() {
                     left: 0,
                     right: 0,
                     opacity: i === current ? 1 : 0,
-                    transform:
-                      i === current
-                        ? "translateY(0)"
-                        : direction === "next"
-                          ? "translateY(16px)"
-                          : "translateY(-16px)",
-                    transition: "opacity 0.8s ease, transform 0.8s ease",
+                    transition: "opacity 0.8s ease",
                     pointerEvents: i === current ? "auto" : "none",
                   }}
                 >
