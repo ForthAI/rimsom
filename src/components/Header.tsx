@@ -45,44 +45,6 @@ export default function Header() {
       >
         <div className="max-w-content mx-auto px-6 md:px-10 flex items-center justify-between h-16 md:h-[72px]">
           {/* Hamburger */}
-          <button
-            className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 mr-6"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle navigation"
-          >
-            <span
-              className={`block w-5 h-[1.5px] transition-all duration-200 ${
-                mobileOpen
-                  ? `rotate-45 translate-y-[6.5px] ${
-                      scrolled || !isDarkHero ? "bg-brand-dark" : "bg-white"
-                    }`
-                  : scrolled || !isDarkHero
-                  ? "bg-brand-dark"
-                  : "bg-white"
-              }`}
-            />
-            <span
-              className={`block w-5 h-[1.5px] transition-all duration-200 ${
-                mobileOpen
-                  ? "opacity-0"
-                  : scrolled || !isDarkHero
-                  ? "bg-brand-dark"
-                  : "bg-white"
-              }`}
-            />
-            <span
-              className={`block w-5 h-[1.5px] transition-all duration-200 ${
-                mobileOpen
-                  ? `-rotate-45 -translate-y-[6.5px] ${
-                      scrolled || !isDarkHero ? "bg-brand-dark" : "bg-white"
-                    }`
-                  : scrolled || !isDarkHero
-                  ? "bg-brand-dark"
-                  : "bg-white"
-              }`}
-            />
-          </button>
-
           {/* Logo */}
           <Link href="/" className="mr-auto">
             <Image
@@ -120,6 +82,45 @@ export default function Header() {
               );
             })}
           </nav>
+
+          {/* Mobile Hamburger (right side) */}
+          <button
+            className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 ml-4"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle navigation"
+          >
+            <span
+              className={`block w-5 h-[1.5px] transition-all duration-200 ${
+                mobileOpen
+                  ? `rotate-45 translate-y-[6.5px] ${
+                      scrolled || !isDarkHero ? "bg-brand-dark" : "bg-white"
+                    }`
+                  : scrolled || !isDarkHero
+                  ? "bg-brand-dark"
+                  : "bg-white"
+              }`}
+            />
+            <span
+              className={`block w-5 h-[1.5px] transition-all duration-200 ${
+                mobileOpen
+                  ? "opacity-0"
+                  : scrolled || !isDarkHero
+                  ? "bg-brand-dark"
+                  : "bg-white"
+              }`}
+            />
+            <span
+              className={`block w-5 h-[1.5px] transition-all duration-200 ${
+                mobileOpen
+                  ? `-rotate-45 -translate-y-[6.5px] ${
+                      scrolled || !isDarkHero ? "bg-brand-dark" : "bg-white"
+                    }`
+                  : scrolled || !isDarkHero
+                  ? "bg-brand-dark"
+                  : "bg-white"
+              }`}
+            />
+          </button>
         </div>
       </header>
 
