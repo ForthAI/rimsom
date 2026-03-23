@@ -56,7 +56,6 @@ const SLIDE_GAP = 24;
 
 export default function TheCircle() {
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState<"next" | "prev">("next");
   const containerRef = useRef<HTMLDivElement>(null);
   const [slideWidth, setSlideWidth] = useState(0);
 
@@ -73,19 +72,16 @@ export default function TheCircle() {
 
   const goTo = useCallback(
     (index: number) => {
-      setDirection(index > current ? "next" : "prev");
       setCurrent(index);
     },
     [current]
   );
 
   const next = useCallback(() => {
-    setDirection("next");
     setCurrent((c) => (c + 1) % slides.length);
   }, []);
 
   const prev = useCallback(() => {
-    setDirection("prev");
     setCurrent((c) => (c - 1 + slides.length) % slides.length);
   }, []);
 
