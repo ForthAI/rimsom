@@ -192,77 +192,102 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. ACCESS = SUCCESS — full-bleed image with centered quote + cards */}
-      <section className="relative z-10 text-white overflow-hidden">
-        {/* Full background image */}
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&q=80"
-            alt="Executive meeting"
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(26,26,26,0.93) 0%, rgba(42,37,32,0.88) 50%, rgba(26,26,26,0.95) 100%)" }} />
-        </div>
-
-        <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 py-20 md:py-28">
-          {/* Large centered pull quote */}
-          <div className="reveal text-center max-w-4xl mx-auto mb-16">
-            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-8">
+      {/* 4. ACCESS = SUCCESS — warm cream, horizontal scroll cards */}
+      <section className="relative z-10 py-20 md:py-28 overflow-hidden" style={{ background: "#f7f3ec" }}>
+        <div className="max-w-content mx-auto px-6 md:px-10">
+          <div className="reveal mb-6">
+            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
               Access = Success
             </p>
-            <h2 className="font-sans text-3xl md:text-[52px] font-bold leading-[1.1] mb-8">
+            <h2 className="font-sans text-3xl md:text-[48px] font-bold leading-[1.1] text-brand-dark max-w-2xl">
               Real influence isn&apos;t about being everywhere.
             </h2>
-            <p className="font-sans text-xl md:text-2xl text-brand-gold/80 font-medium leading-snug">
+          </div>
+          <div className="reveal mb-14" style={{ transitionDelay: "0.1s" }}>
+            <p className="font-sans text-lg text-brand-gray max-w-xl">
               It&apos;s about knowing where to move, and when.
             </p>
           </div>
+        </div>
 
-          {/* Two-column feature cards */}
-          <div className="reveal grid grid-cols-1 md:grid-cols-2 gap-8" style={{ transitionDelay: "0.15s" }}>
-            <div className="p-8 md:p-10 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="w-12 h-12 rounded-full bg-brand-gold/20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-brand-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5a17.92 17.92 0 01-8.716-2.247m0 0A9.015 9.015 0 003 12c0-1.605.42-3.113 1.157-4.418" />
-                </svg>
+        {/* Full-width staggered image + text cards */}
+        <div className="reveal max-w-[1400px] mx-auto px-6 md:px-10" style={{ transitionDelay: "0.15s" }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+            {/* Card 1 — tall image */}
+            <div className="relative group">
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=800&fit=crop"
+                  alt="Executive boardroom"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <h3 className="font-sans text-xl font-semibold text-white mb-2">
+                    Government & Institutions
+                  </h3>
+                  <p className="font-sans text-[13px] text-white/70 leading-relaxed">
+                    Decades of relationships across governments, multilateral institutions, and sovereign entities.
+                  </p>
+                </div>
               </div>
-              <h3 className="font-sans text-xl font-semibold text-white mb-3">
-                Government & Institutional Access
-              </h3>
-              <p className="font-sans text-[15px] text-white/50 leading-relaxed">
-                Decades of relationships across governments, multilateral institutions,
-                and sovereign entities. We open doors that create lasting partnerships
-                and transformative outcomes.
-              </p>
             </div>
-            <div className="p-8 md:p-10 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="w-12 h-12 rounded-full bg-brand-gold/20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-brand-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                </svg>
+
+            {/* Card 2 — offset down */}
+            <div className="relative group md:mt-16">
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&h=800&fit=crop"
+                  alt="Team collaboration"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <h3 className="font-sans text-xl font-semibold text-white mb-2">
+                    Private Sector Leaders
+                  </h3>
+                  <p className="font-sans text-[13px] text-white/70 leading-relaxed">
+                    Connecting global investors and industry leaders with high-impact opportunities.
+                  </p>
+                </div>
               </div>
-              <h3 className="font-sans text-xl font-semibold text-white mb-3">
-                Private Sector Leadership
-              </h3>
-              <p className="font-sans text-[15px] text-white/50 leading-relaxed">
-                Connecting global investors, industry leaders, and private capital
-                with high-impact opportunities. Precision networking that turns
-                introductions into investments.
-              </p>
+            </div>
+
+            {/* Card 3 — offset more */}
+            <div className="relative group md:mt-32">
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?w=600&h=800&fit=crop"
+                  alt="Strategic handshake"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <h3 className="font-sans text-xl font-semibold text-white mb-2">
+                    Strategic Alliances
+                  </h3>
+                  <p className="font-sans text-[13px] text-white/70 leading-relaxed">
+                    Precision networking that turns introductions into investments and lasting partnerships.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="reveal text-center mt-12" style={{ transitionDelay: "0.25s" }}>
-            <ArrowLink
-              href="/about"
-              className="text-[13px] font-sans font-semibold text-white"
-              dark
-            >
-              About the firm
-            </ArrowLink>
-          </div>
+        <div className="reveal max-w-content mx-auto px-6 md:px-10 mt-12">
+          <ArrowLink
+            href="/about"
+            className="text-[13px] font-sans font-semibold text-brand-dark"
+          >
+            About the firm
+          </ArrowLink>
         </div>
       </section>
 
