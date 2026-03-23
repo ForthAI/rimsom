@@ -4,6 +4,7 @@ import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
 import VideoSection from "@/components/VideoSection";
 import TheCircle from "@/components/TheCircle";
+import FadingImages from "@/components/FadingImages";
 
 export default function Home() {
   return (
@@ -22,18 +23,9 @@ export default function Home() {
 
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-            {/* Large feature image */}
+            {/* Fading feature images */}
             <div className="reveal">
-              <div className="relative aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&h=1000&fit=crop"
-                  alt="Energy infrastructure"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-              </div>
+              <FadingImages />
             </div>
 
             {/* Text content */}
