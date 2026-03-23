@@ -297,14 +297,14 @@ export default function TheCircle() {
       <div className="bg-brand-dark mt-10">
         <div className="max-w-content mx-auto px-6 md:px-10 py-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-16 items-center">
-            <h4 className="font-sans text-[22px] font-bold text-white whitespace-nowrap">
+            <h4 className="font-sans text-[22px] font-bold text-white whitespace-nowrap md:text-right md:pr-10">
               Join the Rimsom Circle to gain access
             </h4>
             <div className="flex items-center gap-3">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2.5 border border-white/20 bg-white/10 text-[14px] text-white font-sans outline-none focus:border-white/50 transition-colors duration-200 rounded placeholder:text-white/40"
+                className="w-48 md:w-56 px-4 py-2.5 border border-white/20 bg-white/10 text-[14px] text-white font-sans outline-none focus:border-white/50 transition-colors duration-200 rounded placeholder:text-white/40"
               />
               <button
                 type="submit"
