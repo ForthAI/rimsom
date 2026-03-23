@@ -163,6 +163,89 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Track Record */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-content mx-auto px-6 md:px-10">
+          <div className="reveal mb-14">
+            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-4">
+              Track Record
+            </p>
+            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark mb-6">
+              Selected Engagements
+            </h2>
+            <p className="font-sans text-[15px] text-brand-gray leading-relaxed max-w-3xl">
+              A selection of projects and partnerships where Rimsom has mobilized
+              capital, shaped policy, and delivered results across emerging markets.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              {
+                region: "Sub-Saharan Africa",
+                title: "EXIM Portfolio Expansion",
+                description:
+                  "Helped drive a record expansion of the Export-Import Bank\u2019s Sub-Saharan Africa portfolio, unlocking financing for energy and infrastructure projects across the continent.",
+                image:
+                  "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=600&h=400&fit=crop",
+              },
+              {
+                region: "Legislative",
+                title: "African Growth and Opportunity Act (AGOA)",
+                description:
+                  "Played an instrumental role in the bipartisan passage of AGOA, landmark legislation that expanded U.S.-Africa trade and opened new markets for economic growth.",
+                image:
+                  "https://images.unsplash.com/photo-1523292562811-8fa7962a78c8?w=600&h=400&fit=crop",
+              },
+              {
+                region: "Caribbean & Latin America",
+                title: "Energy & Infrastructure Advisory",
+                description:
+                  "Structured advisory engagements connecting institutional capital with critical energy and infrastructure projects across the Caribbean and Latin America.",
+                image:
+                  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop",
+              },
+              {
+                region: "Middle East & Asia",
+                title: "Cross-Border Capital Mobilization",
+                description:
+                  "Facilitated cross-border investment partnerships between sovereign wealth funds, development finance institutions, and private sector operators.",
+                image:
+                  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop",
+              },
+            ].map((project, i) => (
+              <div
+                key={project.title}
+                className="reveal group overflow-hidden rounded-lg bg-brand-offwhite"
+                style={{ transitionDelay: `${i * 0.08}s` }}
+              >
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <span className="absolute bottom-4 left-4 text-[10px] font-sans font-semibold tracking-widest uppercase text-white/80 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-sm">
+                    {project.region}
+                  </span>
+                </div>
+                <div className="p-6 md:p-8">
+                  <h3 className="font-sans text-lg font-semibold text-brand-dark leading-snug mb-3">
+                    {project.title}
+                  </h3>
+                  <p className="font-sans text-[14px] text-brand-gray leading-relaxed">
+                    {project.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Principal — with headshot */}
       <section className="py-20 md:py-28 bg-white">
         <div className="max-w-content mx-auto px-6 md:px-10">

@@ -9,7 +9,6 @@ const navLinks = [
   { href: "/about", label: "About" },
   { href: "/advisory", label: "Advisory" },
   { href: "/circle", label: "The Circle" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {
