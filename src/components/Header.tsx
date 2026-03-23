@@ -46,7 +46,7 @@ export default function Header() {
         <div className="max-w-content mx-auto px-6 md:px-10 flex items-center justify-between h-16 md:h-[72px]">
           {/* Hamburger */}
           <button
-            className="flex flex-col justify-center gap-[5px] w-8 h-8 mr-6"
+            className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 mr-6"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle navigation"
           >
