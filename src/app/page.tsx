@@ -15,81 +15,88 @@ export default function Home() {
       {/* 1. GLOBAL REACH — video background, overlaps hero on scroll */}
       <VideoSection />
 
-      {/* 2. POWER & PROGRESS — white section with service cards */}
+      {/* 2. POWER & PROGRESS — white section, image + text list */}
       <section className="relative z-10 py-20 md:py-28 bg-white overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-brand-blue/5 blur-3xl" />
 
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
-          <div className="reveal mb-14">
-            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
-              Power &amp; Progress
-            </p>
-            <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
-              Building what moves{" "}
-              <span className="text-brand-blue">the world forward.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Energy & Infrastructure",
-                description: "Structuring bankable projects across oil & gas, power, and critical infrastructure in emerging markets.",
-                href: "/advisory",
-                img: "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&h=400&fit=crop",
-              },
-              {
-                title: "Industrial Development",
-                description: "Driving growth in manufacturing, technology, and heavy industry — from concept to commissioning.",
-                href: "/advisory",
-                img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
-              },
-              {
-                title: "Sustainable Systems",
-                description: "Integrating renewable energy, resilient design, and responsible governance into every project.",
-                href: "/advisory",
-                img: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&h=400&fit=crop",
-              },
-            ].map((item, i) => (
-              <div
-                key={item.title}
-                className="reveal img-zoom group"
-                style={{ transitionDelay: `${i * 0.1}s` }}
-              >
-                <div className="relative aspect-[3/2] overflow-hidden rounded-lg mb-5">
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                </div>
-                <Link
-                  href={item.href}
-                  className="font-sans text-xl font-medium text-brand-dark mb-2 group-hover:text-brand-blue transition-colors inline-flex items-center gap-2"
-                >
-                  {item.title}
-                  <svg
-                    className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-                <p className="font-sans text-[14px] text-brand-gray leading-relaxed mt-2">
-                  {item.description}
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+            {/* Large feature image */}
+            <div className="reveal">
+              <div className="relative aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-lg">
+                <Image
+                  src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&h=1000&fit=crop"
+                  alt="Energy infrastructure"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               </div>
-            ))}
+            </div>
+
+            {/* Text content */}
+            <div>
+              <div className="reveal mb-10">
+                <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
+                  Power &amp; Progress
+                </p>
+                <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
+                  Building what moves{" "}
+                  <span className="text-brand-blue">the world forward.</span>
+                </h2>
+              </div>
+
+              {[
+                {
+                  title: "Energy & Infrastructure",
+                  description: "Structuring bankable projects across oil & gas, power, and critical infrastructure in emerging markets.",
+                  href: "/advisory",
+                },
+                {
+                  title: "Industrial Development",
+                  description: "Driving growth in manufacturing, technology, and heavy industry — from concept to commissioning.",
+                  href: "/advisory",
+                },
+                {
+                  title: "Sustainable Systems",
+                  description: "Integrating renewable energy, resilient design, and responsible governance into every project.",
+                  href: "/advisory",
+                },
+              ].map((item, i) => (
+                <div
+                  key={item.title}
+                  className="reveal group py-6"
+                  style={{
+                    transitionDelay: `${i * 0.1}s`,
+                    borderTop: "1px solid #e5e5e5",
+                  }}
+                >
+                  <Link
+                    href={item.href}
+                    className="font-sans text-lg font-semibold text-brand-dark group-hover:text-brand-blue transition-colors inline-flex items-center gap-2 mb-2"
+                  >
+                    {item.title}
+                    <svg
+                      className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                  <p className="font-sans text-[14px] text-brand-gray leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
