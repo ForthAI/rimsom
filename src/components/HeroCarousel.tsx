@@ -55,8 +55,7 @@ const slides = [
     cta: { label: "Learn More", href: "/advisory" },
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=1600&q=80",
+    image: "/access-hero.jpg",
     label: "Access = Success",
     headline: (
       <>
