@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,9 +31,24 @@ const slides = [
   },
 ];
 
+const SLIDE_GAP = 24; // px gap between slides
+
 export default function TheCircle() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [slideWidth, setSlideWidth] = useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      if (containerRef.current) {
+        setSlideWidth(containerRef.current.offsetWidth);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const goTo = useCallback(
     (index: number) => {
@@ -53,6 +68,9 @@ export default function TheCircle() {
     setCurrent((c) => (c - 1 + slides.length) % slides.length);
   }, []);
 
+  // Scrollbar width per slide
+  const scrollbarWidth = 100 / slides.length;
+
   return (
     <section className="relative z-10 bg-white py-20 md:py-28">
       <div className="max-w-content mx-auto px-6 md:px-10">
@@ -66,9 +84,9 @@ export default function TheCircle() {
           </h2>
         </div>
 
-        {/* Carousel */}
+        {/* Carousel layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-          {/* Left — text */}
+          {/* Left — text (fade between slides) */}
           <div className="relative min-h-[280px]">
             {slides.map((slide, i) => (
               <div
@@ -83,9 +101,10 @@ export default function TheCircle() {
                     i === current
                       ? "translateY(0)"
                       : direction === "next"
-                        ? "translateY(20px)"
-                        : "translateY(-20px)",
-                  transition: "opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)",
+                        ? "translateY(16px)"
+                        : "translateY(-16px)",
+                  transition:
+                    "opacity 0.8s ease, transform 0.8s ease",
                   pointerEvents: i === current ? "auto" : "none",
                 }}
               >
@@ -121,36 +140,42 @@ export default function TheCircle() {
             ))}
           </div>
 
-          {/* Right — 3D orbital carousel */}
+          {/* Right — horizontal sliding images with peek */}
           <div
-            className="relative aspect-[4/3]"
-            style={{ perspective: "1000px" }}
+            ref={containerRef}
+            className="relative overflow-visible"
+            style={{
+              /* clip-path extends right to show the peeking next slide */
+              clipPath:
+                "polygon(0% 0%, calc(100% + 200px) 0%, calc(100% + 200px) 100%, 0% 100%)",
+            }}
           >
-            {/* The entire ring rotates */}
-            <div
-              className="absolute inset-0"
-              style={{
-                transformStyle: "preserve-3d",
-                transform: `rotateY(${-current * (360 / slides.length)}deg)`,
-                transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1)",
-              }}
-            >
-              {slides.map((slide, i) => {
-                const angle = (360 / slides.length) * i;
-                const radius = 280;
-                // Position each card around the ring
-                return (
+            <div className="relative aspect-[4/3]">
+              {/* Sliding wrapper — shifts via translateX */}
+              <div
+                className="absolute top-0 left-0 flex h-full"
+                style={{
+                  gap: `${SLIDE_GAP}px`,
+                  transform: slideWidth > 0
+                    ? `translate3d(-${current * (slideWidth + SLIDE_GAP)}px, 0, 0)`
+                    : "translate3d(0, 0, 0)",
+                  transition: "transform 1s ease",
+                  willChange: "transform",
+                }}
+              >
+                {slides.map((slide, i) => (
                   <div
                     key={slide.title}
-                    className="absolute rounded-xl overflow-hidden shadow-2xl"
+                    className="relative flex-shrink-0 rounded-lg overflow-hidden"
                     style={{
-                      width: "85%",
-                      height: "85%",
-                      top: "7.5%",
-                      left: "7.5%",
-                      transformStyle: "preserve-3d",
-                      transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                      backfaceVisibility: "hidden",
+                      width: slideWidth > 0
+                        ? `${slideWidth}px`
+                        : "100%",
+                      aspectRatio: "4/3",
+                      transform:
+                        i === current ? "scale(1)" : "scale(0.85)",
+                      opacity: i === current ? 1 : 0.6,
+                      transition: "transform 1s ease, opacity 1s ease",
                       cursor: i !== current ? "pointer" : "default",
                     }}
                     onClick={() => i !== current && goTo(i)}
@@ -164,43 +189,39 @@ export default function TheCircle() {
                       priority={i === 0}
                     />
                   </div>
-                );
-              })}
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation controls */}
         <div className="mt-10 flex items-center gap-6">
-          {/* Dots */}
-          <div className="flex-1 flex gap-3">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className="group flex flex-col items-start gap-2 cursor-pointer"
-                aria-label={`Go to slide ${i + 1}`}
-              >
-                <div
-                  className="h-[3px] rounded-full transition-all duration-500"
-                  style={{
-                    width: i === current ? 64 : 32,
-                    background: i === current ? "#c9a84c" : "#ddd",
-                  }}
-                />
-              </button>
-            ))}
+          {/* Scrollbar track */}
+          <div className="flex-1 h-[4px] rounded-full bg-gray-200 relative overflow-hidden">
+            <div
+              className="absolute top-0 left-0 h-full rounded-full"
+              style={{
+                width: `${scrollbarWidth}%`,
+                background: "#c9a84c",
+                transform: `translateX(${current * 100}%)`,
+                transition: "transform 1s ease",
+              }}
+            />
           </div>
 
-          {/* Arrows */}
-          <div className="flex items-center gap-2">
+          {/* Counter + arrows */}
+          <div className="flex items-center gap-3">
+            <span className="font-sans text-[14px] text-brand-dark tabular-nums font-medium">
+              {current + 1}/{slides.length}
+            </span>
             <button
               onClick={prev}
-              className="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center hover:border-brand-dark hover:bg-gray-50 transition-all duration-200 active:scale-95"
+              className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors active:scale-95"
               aria-label="Previous"
             >
               <svg
-                className="w-4 h-4 text-brand-dark"
+                className="w-5 h-5 text-brand-dark"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -215,11 +236,11 @@ export default function TheCircle() {
             </button>
             <button
               onClick={next}
-              className="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center hover:border-brand-dark hover:bg-gray-50 transition-all duration-200 active:scale-95"
+              className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors active:scale-95"
               aria-label="Next"
             >
               <svg
-                className="w-4 h-4 text-brand-dark"
+                className="w-5 h-5 text-brand-dark"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
