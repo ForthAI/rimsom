@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,52 +31,30 @@ const slides = [
   },
 ];
 
-const DURATION = 7000;
-
 export default function TheCircle() {
   const [current, setCurrent] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const startTimeRef = useRef(Date.now());
+  const [direction, setDirection] = useState<"next" | "prev">("next");
 
-  const goTo = useCallback((index: number) => {
-    setCurrent(index);
-    setProgress(0);
-    startTimeRef.current = Date.now();
-  }, []);
+  const goTo = useCallback(
+    (index: number) => {
+      setDirection(index > current ? "next" : "prev");
+      setCurrent(index);
+    },
+    [current]
+  );
 
   const next = useCallback(() => {
-    goTo((current + 1) % slides.length);
-  }, [current, goTo]);
+    setDirection("next");
+    setCurrent((c) => (c + 1) % slides.length);
+  }, []);
 
   const prev = useCallback(() => {
-    goTo((current - 1 + slides.length) % slides.length);
-  }, [current, goTo]);
-
-  // Auto-advance + progress bar
-  useEffect(() => {
-    if (paused) return;
-
-    const tick = () => {
-      const elapsed = Date.now() - startTimeRef.current;
-      const pct = Math.min((elapsed / DURATION) * 100, 100);
-      setProgress(pct);
-      if (pct >= 100) {
-        setCurrent((c) => (c + 1) % slides.length);
-        setProgress(0);
-        startTimeRef.current = Date.now();
-      }
-    };
-
-    intervalRef.current = setInterval(tick, 50);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [current, paused]);
+    setDirection("prev");
+    setCurrent((c) => (c - 1 + slides.length) % slides.length);
+  }, []);
 
   return (
-    <section className="relative z-10 bg-white py-20 md:py-28 overflow-x-clip">
+    <section className="relative z-10 bg-white py-20 md:py-28">
       <div className="max-w-content mx-auto px-6 md:px-10">
         {/* Header */}
         <div className="reveal mb-14">
@@ -89,24 +67,25 @@ export default function TheCircle() {
         </div>
 
         {/* Carousel */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
           {/* Left — text */}
-          <div className="relative">
+          <div className="relative min-h-[280px]">
             {slides.map((slide, i) => (
               <div
                 key={slide.title}
-                className="transition-all duration-500"
                 style={{
-                  opacity: i === current ? 1 : 0,
-                  transform: i === current ? "translateY(0)" : "translateY(12px)",
                   position: i === current ? "relative" : "absolute",
                   top: 0,
                   left: 0,
                   right: 0,
+                  opacity: i === current ? 1 : 0,
+                  transform:
+                    i === current
+                      ? "translateY(0)"
+                      : direction === "next"
+                        ? "translateY(20px)"
+                        : "translateY(-20px)",
+                  transition: "opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)",
                   pointerEvents: i === current ? "auto" : "none",
                 }}
               >
@@ -142,45 +121,73 @@ export default function TheCircle() {
             ))}
           </div>
 
-          {/* Right — stacked image carousel, shuffles like cards */}
-          <div className="relative aspect-[4/3] overflow-visible">
+          {/* Right — 3D perspective image stack */}
+          <div
+            className="relative aspect-[4/3]"
+            style={{ perspective: "1200px" }}
+          >
             {slides.map((slide, i) => {
-              // Calculate position relative to current
-              const diff = ((i - current) % slides.length + slides.length) % slides.length;
-              // 0 = active (front), 1 = next (peeking right+down), 2 = behind
-              const isActive = diff === 0;
-              const isNext = diff === 1;
-              const isPrev = diff === slides.length - 1;
+              const diff =
+                ((i - current + slides.length) % slides.length);
+              // diff: 0 = active, 1 = next, 2 = prev (for 3 slides)
 
-              let transform = "translate(0, 0) scale(1)";
-              let zIndex = 1;
-              let opacity = 0;
+              // Stack: active on top, others behind with depth + slight offset
+              let z = 0;
+              let translateZ = "-80px";
+              let translateX = "24px";
+              let translateY = "12px";
+              let rotateY = "4deg";
+              let opacity = 0.4;
+              let scale = 0.92;
+              let filter = "brightness(0.6)";
 
-              if (isActive) {
-                transform = "translate(0, 0) scale(1)";
-                zIndex = 3;
+              if (diff === 0) {
+                // Active — front and center
+                z = 10;
+                translateZ = "0px";
+                translateX = "0px";
+                translateY = "0px";
+                rotateY = "0deg";
                 opacity = 1;
-              } else if (isNext) {
-                transform = "translate(32px, 16px) scale(0.95)";
-                zIndex = 2;
-                opacity = 0.6;
-              } else if (isPrev) {
-                transform = "translate(-32px, 16px) scale(0.95)";
-                zIndex = 1;
-                opacity = 0.3;
+                scale = 1;
+                filter = "brightness(1)";
+              } else if (diff === 1) {
+                // Next — behind and to the right
+                z = 5;
+                translateZ = "-60px";
+                translateX = "40px";
+                translateY = "8px";
+                rotateY = "-3deg";
+                opacity = 0.55;
+                scale = 0.93;
+                filter = "brightness(0.65)";
+              } else {
+                // Previous — further back, to the left
+                z = 1;
+                translateZ = "-120px";
+                translateX = "-20px";
+                translateY = "16px";
+                rotateY = "5deg";
+                opacity = 0.25;
+                scale = 0.88;
+                filter = "brightness(0.5)";
               }
 
               return (
                 <div
                   key={slide.title}
-                  className="absolute inset-0 rounded-lg overflow-hidden transition-all duration-700 ease-in-out"
+                  className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl"
                   style={{
-                    transform,
-                    zIndex,
+                    zIndex: z,
                     opacity,
-                    cursor: isActive ? "default" : "pointer",
+                    filter,
+                    transform: `translateX(${translateX}) translateY(${translateY}) translateZ(${translateZ}) rotateY(${rotateY}) scale(${scale})`,
+                    transition:
+                      "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+                    cursor: diff !== 0 ? "pointer" : "default",
+                    transformStyle: "preserve-3d",
                   }}
-                  onClick={() => !isActive && goTo(i)}
+                  onClick={() => diff !== 0 && goTo(i)}
                 >
                   <Image
                     src={slide.img}
@@ -190,65 +197,72 @@ export default function TheCircle() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority={i === 0}
                   />
-                  {/* Darken non-active */}
-                  {!isActive && (
-                    <div className="absolute inset-0 bg-black/30" />
-                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Progress bars + nav */}
+        {/* Navigation */}
         <div className="mt-10 flex items-center gap-6">
-          {/* Progress segments */}
-          <div className="flex-1 flex gap-2">
+          {/* Dots */}
+          <div className="flex-1 flex gap-3">
             {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                className="flex-1 h-[3px] rounded-full overflow-hidden bg-gray-200 cursor-pointer"
+                className="group flex flex-col items-start gap-2 cursor-pointer"
                 aria-label={`Go to slide ${i + 1}`}
               >
                 <div
-                  className="h-full rounded-full"
+                  className="h-[3px] rounded-full transition-all duration-500"
                   style={{
-                    width:
-                      i === current
-                        ? `${progress}%`
-                        : i < current
-                          ? "100%"
-                          : "0%",
-                    background: i <= current ? "#c9a84c" : "transparent",
-                    transition: i === current ? "none" : "width 0.3s",
+                    width: i === current ? 64 : 32,
+                    background: i === current ? "#c9a84c" : "#ddd",
                   }}
                 />
               </button>
             ))}
           </div>
 
-          {/* Counter + arrows */}
-          <div className="flex items-center gap-3">
-            <span className="font-sans text-[13px] text-brand-gray tabular-nums">
-              {current + 1}/{slides.length}
-            </span>
+          {/* Arrows */}
+          <div className="flex items-center gap-2">
             <button
               onClick={prev}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-brand-dark hover:bg-gray-50 transition-colors"
-              aria-label="Previous slide"
+              className="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center hover:border-brand-dark hover:bg-gray-50 transition-all duration-200 active:scale-95"
+              aria-label="Previous"
             >
-              <svg className="w-4 h-4 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-4 h-4 text-brand-dark"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
             <button
               onClick={next}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-brand-dark hover:bg-gray-50 transition-colors"
-              aria-label="Next slide"
+              className="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center hover:border-brand-dark hover:bg-gray-50 transition-all duration-200 active:scale-95"
+              aria-label="Next"
             >
-              <svg className="w-4 h-4 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              <svg
+                className="w-4 h-4 text-brand-dark"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </div>
