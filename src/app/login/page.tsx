@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -12,7 +13,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Circle branding */}
         <div className="flex items-center gap-3 mb-10">
-          <img src="/globe.svg" alt="Rimsom" className="w-10 h-10" />
+          <Image src="/globe.svg" alt="Rimsom" width={40} height={40} className="w-10 h-10" />
           <p className="text-[13px] font-sans font-semibold tracking-widest uppercase text-brand-gold">
             The Rimsom Circle
           </p>
