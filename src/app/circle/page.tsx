@@ -110,9 +110,7 @@ export default function CirclePage() {
         <div className="absolute inset-0 bg-brand-navy/85" />
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <div className="flex items-center gap-3 mb-6 animate-fade-up">
-            <div className="w-10 h-10 rounded-full border-2 border-brand-gold flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-brand-gold" />
-            </div>
+            <img src="/globe.svg" alt="Rimsom" className="w-10 h-10" />
             <p className="text-[13px] font-sans font-semibold tracking-widest uppercase text-brand-gold-light">
               The Rimsom Circle
             </p>

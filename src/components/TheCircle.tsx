@@ -99,9 +99,7 @@ export default function TheCircle() {
           <div className="flex flex-col">
             {/* Circle mark — always visible, anchors the section */}
             <div className="flex items-center gap-2.5 mb-8">
-              <div className="w-8 h-8 rounded-full border-2 border-brand-gold flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-brand-gold" />
-              </div>
+              <img src="/globe.svg" alt="Rimsom" className="w-8 h-8" />
               <span className="text-[11px] font-sans font-bold tracking-[0.2em] uppercase text-brand-dark">
                 The Rimsom Circle
               </span>

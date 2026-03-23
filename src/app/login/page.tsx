@@ -12,9 +12,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Circle branding */}
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 rounded-full border-2 border-brand-gold flex items-center justify-center">
-            <div className="w-3 h-3 rounded-full bg-brand-gold" />
-          </div>
+          <img src="/globe.svg" alt="Rimsom" className="w-10 h-10" />
           <p className="text-[13px] font-sans font-semibold tracking-widest uppercase text-brand-gold">
             The Rimsom Circle
           </p>
