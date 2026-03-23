@@ -100,7 +100,7 @@ export default function TheCircle() {
         {/* Carousel — the main event */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
           {/* Left column — branding flows into content */}
-          <div>
+          <div className="flex flex-col">
             {/* Circle mark — always visible, anchors the section */}
             <div className="flex items-center gap-2.5 mb-8">
               <div className="w-8 h-8 rounded-full border-2 border-brand-gold flex items-center justify-center">
@@ -112,7 +112,7 @@ export default function TheCircle() {
             </div>
 
             {/* Slide content */}
-            <div className="relative min-h-[320px]">
+            <div className="relative min-h-[280px] flex-1">
               {slides.map((slide, i) => (
                 <div
                   key={slide.title}
@@ -177,6 +177,44 @@ export default function TheCircle() {
                   </Link>
                 </div>
               ))}
+            </div>
+
+            {/* Nav controls — flush with bottom of image */}
+            <div className="flex items-center gap-4 mt-auto pt-6">
+              <div className="flex-1 h-[3px] rounded-full bg-black/10 relative overflow-hidden">
+                <div
+                  className="absolute top-0 left-0 h-full rounded-full"
+                  style={{
+                    width: `${scrollbarWidth}%`,
+                    background: "#c9a84c",
+                    transform: `translateX(${current * 100}%)`,
+                    transition: "transform 1s ease",
+                  }}
+                />
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="font-sans text-[13px] text-brand-gray tabular-nums mr-1">
+                  {current + 1}/{slides.length}
+                </span>
+                <button
+                  onClick={prev}
+                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 transition-colors active:scale-95"
+                  aria-label="Previous"
+                >
+                  <svg className="w-4 h-4 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={next}
+                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 transition-colors active:scale-95"
+                  aria-label="Next"
+                >
+                  <svg className="w-4 h-4 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -259,47 +297,6 @@ export default function TheCircle() {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scrollbar + nav — flush with bottom of carousel */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-          <div />
-          <div className="flex items-center gap-4 mt-4">
-            <div className="flex-1 h-[3px] rounded-full bg-black/10 relative overflow-hidden">
-              <div
-                className="absolute top-0 left-0 h-full rounded-full"
-                style={{
-                  width: `${scrollbarWidth}%`,
-                  background: "#c9a84c",
-                  transform: `translateX(${current * 100}%)`,
-                  transition: "transform 1s ease",
-                }}
-              />
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="font-sans text-[13px] text-brand-gray tabular-nums mr-1">
-                {current + 1}/{slides.length}
-              </span>
-              <button
-                onClick={prev}
-                className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 transition-colors active:scale-95"
-                aria-label="Previous"
-              >
-                <svg className="w-4 h-4 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={next}
-                className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 transition-colors active:scale-95"
-                aria-label="Next"
-              >
-                <svg className="w-4 h-4 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
             </div>
           </div>
         </div>
