@@ -309,7 +309,7 @@ export default function TheCircle() {
               type="submit"
               className="px-5 py-2.5 bg-brand-gold text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-gold-light transition-colors duration-200 rounded whitespace-nowrap"
             >
-              Subscribe
+              Join
             </button>
           </div>
         </div>
