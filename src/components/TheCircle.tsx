@@ -263,10 +263,10 @@ export default function TheCircle() {
           </div>
         </div>
 
-        {/* Bottom bar — nav + subscribe all in one line */}
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 items-center">
-          {/* Left — scrollbar + arrows */}
-          <div className="flex items-center gap-4">
+        {/* Scrollbar + nav — flush with bottom of carousel */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+          <div />
+          <div className="flex items-center gap-4 mt-4">
             <div className="flex-1 h-[3px] rounded-full bg-black/10 relative overflow-hidden">
               <div
                 className="absolute top-0 left-0 h-full rounded-full"
@@ -302,29 +302,31 @@ export default function TheCircle() {
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Right — subscribe inline */}
-          <form
-            className="flex items-center gap-0"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="flex items-center gap-2 px-3 text-brand-gold flex-shrink-0">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-              </svg>
-            </div>
-            <input
-              type="email"
-              placeholder="Join the Circle — enter your email"
-              className="flex-1 px-3 py-2.5 border border-gray-300 bg-white text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors duration-200 rounded-l"
-            />
-            <button
-              type="submit"
-              className="px-4 py-2.5 bg-brand-dark text-white text-[11px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-navy transition-colors duration-200 rounded-r whitespace-nowrap"
+        {/* Subscribe bar — full width */}
+        <div className="mt-14 pt-10 border-t border-black/10">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
+            <h4 className="font-sans text-[18px] font-bold text-brand-dark whitespace-nowrap flex-shrink-0">
+              Join the Circle
+            </h4>
+            <form
+              className="flex flex-1 w-full"
+              onSubmit={(e) => e.preventDefault()}
             >
-              Subscribe
-            </button>
-          </form>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 border border-gray-300 bg-white text-[14px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors duration-200 rounded-l"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 bg-brand-dark text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-navy transition-colors duration-200 rounded-r whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
