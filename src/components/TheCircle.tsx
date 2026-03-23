@@ -296,21 +296,23 @@ export default function TheCircle() {
       {/* Join bar — full-bleed black, tight to content */}
       <div className="bg-brand-dark mt-10">
         <div className="max-w-content mx-auto px-6 md:px-10 py-5">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-16 items-center">
             <h4 className="font-sans text-[22px] font-bold text-white whitespace-nowrap">
               Join the Rimsom Circle to gain access
             </h4>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-64 px-4 py-2.5 border border-white/20 bg-white/10 text-[14px] text-white font-sans outline-none focus:border-white/50 transition-colors duration-200 rounded placeholder:text-white/40"
-            />
-            <button
-              type="submit"
-              className="px-5 py-2.5 bg-brand-gold text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-gold-light transition-colors duration-200 rounded whitespace-nowrap"
-            >
-              Join
-            </button>
+            <div className="flex items-center gap-3">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-2.5 border border-white/20 bg-white/10 text-[14px] text-white font-sans outline-none focus:border-white/50 transition-colors duration-200 rounded placeholder:text-white/40"
+              />
+              <button
+                type="submit"
+                className="px-5 py-2.5 bg-brand-gold text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-gold-light transition-colors duration-200 rounded whitespace-nowrap"
+              >
+                Join
+              </button>
+            </div>
           </div>
         </div>
       </div>
