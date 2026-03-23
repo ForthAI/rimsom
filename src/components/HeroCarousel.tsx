@@ -208,7 +208,7 @@ export default function HeroCarousel() {
                 )}
               </span>
               <span
-                className={`block text-[11px] font-sans font-semibold tracking-wider uppercase whitespace-nowrap transition-colors duration-300 ${
+                className={`hidden md:block text-[11px] font-sans font-semibold tracking-wider uppercase whitespace-nowrap transition-colors duration-300 ${
                   i === current ? "text-white" : "text-white/40"
                 }`}
               >
