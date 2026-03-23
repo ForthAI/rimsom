@@ -142,40 +142,61 @@ export default function TheCircle() {
             ))}
           </div>
 
-          {/* Right — image carousel with visible adjacent slides */}
-          <div className="relative aspect-[4/3]">
-            {/* Overflow visible so adjacent images peek through */}
-            <div className="absolute inset-0 overflow-visible">
-              {slides.map((slide, i) => {
-                const offset = i - current;
-                return (
-                  <div
-                    key={slide.title}
-                    className="absolute inset-0 transition-all duration-700 ease-in-out rounded-lg overflow-hidden cursor-pointer"
-                    style={{
-                      transform: `translateX(${offset * 88}%) scale(${offset === 0 ? 1 : 0.88})`,
-                      zIndex: offset === 0 ? 3 : 2,
-                      opacity: Math.abs(offset) > 1 ? 0 : offset === 0 ? 1 : 0.5,
-                    }}
-                    onClick={() => offset !== 0 && goTo(i)}
-                  >
-                    <Image
-                      src={slide.img}
-                      alt={slide.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      priority={i === 0}
-                    />
-                    {/* Darken non-active */}
-                    <div
-                      className="absolute inset-0 bg-black transition-opacity duration-700"
-                      style={{ opacity: offset === 0 ? 0 : 0.35 }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+          {/* Right — stacked image carousel, shuffles like cards */}
+          <div className="relative aspect-[4/3] overflow-visible">
+            {slides.map((slide, i) => {
+              // Calculate position relative to current
+              const diff = ((i - current) % slides.length + slides.length) % slides.length;
+              // 0 = active (front), 1 = next (peeking right+down), 2 = behind
+              const isActive = diff === 0;
+              const isNext = diff === 1;
+              const isPrev = diff === slides.length - 1;
+
+              let transform = "translate(0, 0) scale(1)";
+              let zIndex = 1;
+              let opacity = 0;
+
+              if (isActive) {
+                transform = "translate(0, 0) scale(1)";
+                zIndex = 3;
+                opacity = 1;
+              } else if (isNext) {
+                transform = "translate(32px, 16px) scale(0.95)";
+                zIndex = 2;
+                opacity = 0.6;
+              } else if (isPrev) {
+                transform = "translate(-32px, 16px) scale(0.95)";
+                zIndex = 1;
+                opacity = 0.3;
+              }
+
+              return (
+                <div
+                  key={slide.title}
+                  className="absolute inset-0 rounded-lg overflow-hidden transition-all duration-700 ease-in-out"
+                  style={{
+                    transform,
+                    zIndex,
+                    opacity,
+                    cursor: isActive ? "default" : "pointer",
+                  }}
+                  onClick={() => !isActive && goTo(i)}
+                >
+                  <Image
+                    src={slide.img}
+                    alt={slide.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={i === 0}
+                  />
+                  {/* Darken non-active */}
+                  {!isActive && (
+                    <div className="absolute inset-0 bg-black/30" />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
