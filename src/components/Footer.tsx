@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-offwhite border-t border-brand-light">
       <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1.2fr] gap-12 md:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
           {/* Brand */}
           <div>
             <Image
@@ -66,32 +66,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Subscribe */}
-          <div>
-            <h4 className="text-[15px] font-sans font-semibold text-brand-dark mb-2">
-              Subscribe
-            </h4>
-            <p className="text-[13px] text-brand-gray mb-4">
-              Receive the Rimsom Dispatch — insights on global trade,
-              development finance, and emerging markets.
-            </p>
-            <form
-              className="flex gap-0"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                placeholder="Email address"
-                className="flex-1 px-4 py-3 border border-brand-light bg-white text-sm text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors duration-200"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 bg-brand-navy text-white text-[13px] font-sans font-semibold hover:bg-brand-navy-deep transition-colors duration-200"
-              >
-                Submit
-              </button>
-            </form>
-          </div>
+
         </div>
 
         {/* Bottom divider + copyright */}

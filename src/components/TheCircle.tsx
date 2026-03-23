@@ -256,19 +256,33 @@ export default function TheCircle() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="mt-16 pt-12 border-t border-gray-200 text-center">
-          <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-6 max-w-xl mx-auto">
-            We work with a select network of governments, institutions, and
-            investors. If you are exploring strategic partnerships in emerging
-            markets, we welcome the conversation.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block px-8 py-3.5 bg-brand-dark text-white text-[13px] font-sans font-semibold hover:bg-brand-navy transition-colors duration-200"
-          >
-            Begin a Conversation
-          </Link>
+        {/* Join the Circle CTA */}
+        <div className="mt-16 pt-12 border-t border-gray-200">
+          <div className="max-w-xl mx-auto text-center">
+            <h3 className="font-sans text-2xl md:text-[28px] font-bold text-brand-dark mb-4">
+              Join the Rimsom Circle
+            </h3>
+            <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-8">
+              Receive the Rimsom Dispatch — insights on global trade,
+              development finance, and emerging markets delivered to your inbox.
+            </p>
+            <form
+              className="flex gap-0 max-w-md mx-auto"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <input
+                type="email"
+                placeholder="Email address"
+                className="flex-1 px-4 py-3.5 border border-gray-300 bg-white text-sm text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors duration-200"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3.5 bg-brand-dark text-white text-[13px] font-sans font-semibold hover:bg-brand-navy transition-colors duration-200 whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
