@@ -6,8 +6,9 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-brand-navy text-white">
-      <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+      <div className="max-w-content mx-auto px-6 md:px-10 pt-16 md:pt-20 pb-10">
+        {/* Top row — logo + nav columns */}
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_1fr] gap-10 md:gap-8 pb-14 border-b border-white/10">
           {/* Brand */}
           <div>
             <Image
@@ -15,16 +16,19 @@ export default function Footer() {
               alt="Rimsom Global"
               width={160}
               height={50}
-              className="h-10 w-auto mb-6 brightness-0 invert"
+              className="h-10 w-auto mb-5 brightness-0 invert"
             />
-            <p className="text-[13px] text-white/50 leading-relaxed max-w-xs">
+            <p className="text-[13px] text-white/40 leading-relaxed max-w-xs">
               Trusted relationships that shape global outcomes.
             </p>
           </div>
 
-          {/* Navigation columns */}
-          <div className="grid grid-cols-2 gap-8">
-            <nav className="space-y-3">
+          {/* Firm */}
+          <nav>
+            <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/30 mb-4">
+              Firm
+            </p>
+            <div className="space-y-3">
               {[
                 { href: "/about", label: "About" },
                 { href: "/advisory", label: "Advisory" },
@@ -34,17 +38,24 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block text-[14px] text-white/80 hover:text-brand-gold transition-colors duration-200"
+                  className="block text-[13px] text-white/60 hover:text-white transition-colors duration-200"
                 >
                   {link.label}
                 </Link>
               ))}
-            </nav>
+            </div>
+          </nav>
+
+          {/* Connect */}
+          <div>
+            <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/30 mb-4">
+              Connect
+            </p>
             <div className="space-y-3">
-              <p className="text-[14px] text-white/80">Washington, D.C.</p>
+              <p className="text-[13px] text-white/60">Washington, D.C.</p>
               <a
                 href="mailto:info@rimsomglobal.com"
-                className="block text-[14px] text-white/80 hover:text-brand-gold transition-colors duration-200"
+                className="block text-[13px] text-white/60 hover:text-white transition-colors duration-200"
               >
                 info@rimsomglobal.com
               </a>
@@ -52,7 +63,7 @@ export default function Footer() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[14px] text-white/80 hover:text-brand-gold transition-colors duration-200 mt-1"
+                className="inline-flex items-center gap-2 text-[13px] text-white/60 hover:text-white transition-colors duration-200"
               >
                 <svg
                   className="w-4 h-4"
@@ -66,22 +77,43 @@ export default function Footer() {
             </div>
           </div>
 
-
+          {/* Legal */}
+          <div>
+            <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/30 mb-4">
+              Legal
+            </p>
+            <div className="space-y-3">
+              <Link
+                href="/terms"
+                className="block text-[13px] text-white/60 hover:text-white transition-colors duration-200"
+              >
+                Terms of Use
+              </Link>
+              <Link
+                href="/privacy"
+                className="block text-[13px] text-white/60 hover:text-white transition-colors duration-200"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/legal"
+                className="block text-[13px] text-white/60 hover:text-white transition-colors duration-200"
+              >
+                Legal Disclosures
+              </Link>
+            </div>
+          </div>
         </div>
 
-        {/* Bottom divider + copyright */}
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-6">
-            <span className="text-xs text-white/30">
-              &copy; {new Date().getFullYear()} Rimsom Global. All rights
-              reserved.
-            </span>
-          </div>
-          <div className="flex items-center gap-6">
-            <span className="text-xs text-white/30">
-              Capital &middot; Leadership &middot; Legacy
-            </span>
-          </div>
+        {/* Bottom bar */}
+        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <span className="text-[11px] text-white/25">
+            &copy; {new Date().getFullYear()} Rimsom Global. All rights
+            reserved.
+          </span>
+          <span className="text-[11px] text-white/25 tracking-wider">
+            Capital &middot; Leadership &middot; Legacy
+          </span>
         </div>
       </div>
     </footer>
