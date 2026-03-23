@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   description:
     "Trusted relationships that shape global outcomes. Rimsom Global provides strategic advisory services across emerging markets — bridging capital, leadership, and legacy.",
   icons: {
-    icon: "/globe.svg",
-    apple: "/globe.svg",
+    icon: "/globe-64x64.png",
+    apple: "/globe-64x64.png",
   },
   openGraph: {
     title: "Rimsom Global | Advisory Services",

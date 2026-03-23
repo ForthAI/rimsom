@@ -110,14 +110,7 @@ export default function CirclePage() {
         <div className="absolute inset-0 bg-brand-navy/85" />
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
           <div className="flex items-center gap-3 mb-6 animate-fade-up">
-            <svg className="w-10 h-10" viewBox="0 0 84.2 116.16" xmlns="http://www.w3.org/2000/svg">
-              <g fill="#a8843a">
-                <path d="M25,77.17c-7.52-6.77-10.61-17.67-6.93-27.76,3.67-10.09,13.04-16.46,23.16-16.81l5.91-16.23C28.14,14.06,9.37,25,2.55,43.75c-6.82,18.75.52,39.19,16.55,49.64l5.91-16.23Z"/>
-                <path d="M65.15,22.94l-5.91,16.23c7.49,6.77,10.55,17.65,6.89,27.72-3.67,10.07-13,16.44-23.1,16.81l-5.91,16.23c18.97,2.27,37.71-8.66,44.53-27.4,6.82-18.73-.5-39.15-16.5-49.61Z"/>
-                <path d="M50.85,34.12c2.49.9,4.75,2.15,6.75,3.68l10.06-27.63c1.43-3.93-.6-8.28-4.53-9.71-3.93-1.43-8.28.6-9.71,4.53l-10.05,27.61c2.49.12,5.01.62,7.48,1.52Z"/>
-                <path d="M33.35,82.18c-2.47-.9-4.72-2.14-6.71-3.65l-10,27.46c-1.43,3.93.6,8.28,4.53,9.71,3.93,1.43,8.28-.6,9.71-4.53l10-27.48c-2.51-.12-5.04-.62-7.53-1.52Z"/>
-              </g>
-            </svg>
+            <Image src="/globe-64x64.png" alt="Rimsom" width={40} height={40} />
             <p className="text-[13px] font-sans font-semibold tracking-widest uppercase text-brand-gold-light">
               The Rimsom Circle
             </p>
