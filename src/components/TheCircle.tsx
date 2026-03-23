@@ -76,7 +76,7 @@ export default function TheCircle() {
   }, [current, paused]);
 
   return (
-    <section className="relative z-10 bg-white py-20 md:py-28 overflow-hidden">
+    <section className="relative z-10 bg-white py-20 md:py-28 overflow-x-clip">
       <div className="max-w-content mx-auto px-6 md:px-10">
         {/* Header */}
         <div className="reveal mb-14">
@@ -142,20 +142,40 @@ export default function TheCircle() {
             ))}
           </div>
 
-          {/* Right — image */}
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-            {slides.map((slide, i) => (
-              <Image
-                key={slide.title}
-                src={slide.img}
-                alt={slide.title}
-                fill
-                className="object-cover transition-opacity duration-700"
-                style={{ opacity: i === current ? 1 : 0 }}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority={i === 0}
-              />
-            ))}
+          {/* Right — image carousel with visible adjacent slides */}
+          <div className="relative aspect-[4/3]">
+            {/* Overflow visible so adjacent images peek through */}
+            <div className="absolute inset-0 overflow-visible">
+              {slides.map((slide, i) => {
+                const offset = i - current;
+                return (
+                  <div
+                    key={slide.title}
+                    className="absolute inset-0 transition-all duration-700 ease-in-out rounded-lg overflow-hidden cursor-pointer"
+                    style={{
+                      transform: `translateX(${offset * 88}%) scale(${offset === 0 ? 1 : 0.88})`,
+                      zIndex: offset === 0 ? 3 : 2,
+                      opacity: Math.abs(offset) > 1 ? 0 : offset === 0 ? 1 : 0.5,
+                    }}
+                    onClick={() => offset !== 0 && goTo(i)}
+                  >
+                    <Image
+                      src={slide.img}
+                      alt={slide.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority={i === 0}
+                    />
+                    {/* Darken non-active */}
+                    <div
+                      className="absolute inset-0 bg-black transition-opacity duration-700"
+                      style={{ opacity: offset === 0 ? 0 : 0.35 }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
