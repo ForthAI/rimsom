@@ -294,7 +294,7 @@ export default function TheCircle() {
       </div>
 
       {/* Join bar — full-bleed black, tight to content */}
-      <div className="bg-brand-dark mt-10">
+      <div className="mt-10" style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #162246 50%, #1a1a1a 100%)" }}>
         <div className="max-w-content mx-auto px-6 md:px-10 py-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-16 items-center">
             <h4 className="font-sans text-[22px] font-bold text-white whitespace-nowrap md:text-right md:pr-4">
