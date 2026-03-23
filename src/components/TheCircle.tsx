@@ -174,7 +174,7 @@ export default function TheCircle() {
                   className="absolute top-0 left-0 h-full rounded-full"
                   style={{
                     width: `${scrollbarWidth}%`,
-                    background: "#c9a84c",
+                    background: "#a8843a",
                     transform: `translateX(${current * 100}%)`,
                     transition: "transform 1s ease",
                   }}
