@@ -17,7 +17,7 @@ const regions = [
   {
     region: "Middle East & Asia",
     description: "Strategic alliances, capital mobilization, and critical industries",
-    img: "/middle-eats-reach.jpg",
+    img: "/middle-east-reach.jpg",
   },
 ];
 
