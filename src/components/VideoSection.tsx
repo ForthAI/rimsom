@@ -1,30 +1,23 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 
-const items = [
+const regions = [
   {
-    title: "Capital Mobilization",
-    description:
-      "Structuring bankable projects and mobilizing financing across energy, infrastructure, technology, and critical industries in emerging markets.",
-    href: "/advisory",
-    img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop",
+    region: "Sub-Saharan Africa",
+    description: "Energy, infrastructure, and trade across the continent",
+    img: "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=600&h=400&fit=crop",
   },
   {
-    title: "Strategic Alliances",
-    description:
-      "Facilitating high-impact alliances between governments, private sector entities, and international institutions to drive transformative change.",
-    href: "/advisory",
-    img: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
+    region: "Caribbean & Latin America",
+    description: "Development finance, governance, and digital transformation",
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop",
   },
   {
-    title: "Policy & Development",
-    description:
-      "Advising on trade policy, governance, and sustainable development — informed by decades of public service and private-sector leadership.",
-    href: "/advisory",
-    img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&h=400&fit=crop",
+    region: "Middle East & Asia",
+    description: "Strategic alliances, capital mobilization, and critical industries",
+    img: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600&h=400&fit=crop",
   },
 ];
 
@@ -39,7 +32,6 @@ export default function VideoSection() {
     const handleCanPlay = () => setVideoLoaded(true);
     video.addEventListener("canplay", handleCanPlay);
 
-    // Fallback: if video doesn't load in 4s, just show the fallback image
     const timeout = setTimeout(() => {
       if (!videoLoaded) setVideoLoaded(true);
     }, 4000);
@@ -54,7 +46,6 @@ export default function VideoSection() {
     <section className="relative z-10 overflow-hidden rounded-t-[20px]">
       {/* Video background */}
       <div className="absolute inset-0">
-        {/* Fallback image (shown while video loads or on mobile) */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -62,7 +53,6 @@ export default function VideoSection() {
               "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80')",
           }}
         />
-        {/* Video element */}
         <video
           ref={videoRef}
           autoPlay
@@ -77,50 +67,47 @@ export default function VideoSection() {
             type="video/mp4"
           />
         </video>
-        {/* Dark overlay for text legibility */}
         <div className="absolute inset-0 bg-brand-navy/75" />
-        {/* Subtle gradient at top for smooth section transition */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/30 to-transparent" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 py-20 md:py-28">
         <div className="reveal mb-14">
-          <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-white/50 mb-4">
-            Our Focus
+          <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
+            Global Reach
           </p>
           <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-white">
-            Capital. Leadership. Legacy.
+            Emerging markets.{" "}
+            <span className="text-brand-gold">Enduring impact.</span>
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {items.map((item, i) => (
+          {regions.map((item, i) => (
             <div
-              key={item.title}
+              key={item.region}
               className="reveal img-zoom group"
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
-              <div className="relative aspect-[3/2] overflow-hidden mb-5">
+              <div className="relative aspect-[3/2] overflow-hidden rounded-lg mb-5">
                 <Image
                   src={item.img}
-                  alt={item.title}
+                  alt={item.region}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </div>
-              <Link
-                href={item.href}
-                className="font-sans text-xl font-semibold text-white group-hover:text-brand-gold-light transition-colors inline-flex items-center gap-2 mb-3"
-              >
-                {item.title}
+              <h3 className="font-sans text-xl font-semibold text-white mb-2 group-hover:text-brand-gold-light transition-colors inline-flex items-center gap-2">
+                {item.region}
                 <svg
-                  className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
+                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={2.5}
+                  strokeWidth={2}
                 >
                   <path
                     strokeLinecap="round"
@@ -128,7 +115,7 @@ export default function VideoSection() {
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
-              </Link>
+              </h3>
               <p className="font-sans text-[14px] text-white/60 leading-relaxed">
                 {item.description}
               </p>
