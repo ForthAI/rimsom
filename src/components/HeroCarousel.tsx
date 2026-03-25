@@ -17,7 +17,7 @@ const slides = [
       </>
     ),
     description:
-      "Rimsom Global operates where trust, timing, and access shape outcomes—connecting people, capital, and ideas to deliver results that endure.",
+      "Rimsom Global operates where trust, timing, and access shape outcomes, bridging markets, investors, and partners to create lasting impact across international markets.",
     cta: { label: "Explore Advisory", href: "/advisory" },
   },
   {
