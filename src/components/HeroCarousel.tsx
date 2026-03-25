@@ -184,29 +184,41 @@ export default function HeroCarousel() {
 
       {/* Navigation bars with labels — pinned at bottom */}
       <div className="relative z-20 max-w-content mx-auto px-6 md:px-10 w-full pb-10 md:pb-14">
+        {/* Bars row */}
         <div className="flex gap-3 md:gap-4">
           {slides.map((slide, i) => (
             <button
               key={i}
               onClick={() => handleDotClick(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="cursor-pointer text-left px-3 first:pl-0 last:pr-0"
+              className="cursor-pointer h-[3px] relative overflow-hidden rounded-full"
               style={{ width: "25%" }}
             >
-              <span className="block relative h-[3px] w-full overflow-hidden rounded-full mb-3">
-                <span className="absolute inset-0 bg-white/25 rounded-full" />
-                {i === current && (
-                  <span
-                    key={progressKey}
-                    className="absolute inset-0 bg-brand-gold rounded-full origin-left"
-                    style={{
-                      animation: `progressBar ${INTERVAL}ms linear forwards`,
-                    }}
-                  />
-                )}
-              </span>
+              <span className="absolute inset-0 bg-white/25 rounded-full" />
+              {i === current && (
+                <span
+                  key={progressKey}
+                  className="absolute inset-0 bg-brand-gold rounded-full origin-left"
+                  style={{
+                    animation: `progressBar ${INTERVAL}ms linear forwards`,
+                  }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+        {/* Labels row */}
+        <div className="hidden md:flex gap-3 md:gap-4 mt-3">
+          {slides.map((slide, i) => (
+            <button
+              key={i}
+              onClick={() => handleDotClick(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className="cursor-pointer text-left"
+              style={{ width: "25%" }}
+            >
               <span
-                className={`hidden md:block text-[10px] lg:text-[11px] font-sans font-semibold tracking-wider uppercase transition-colors duration-300 ${
+                className={`text-[10px] lg:text-[11px] font-sans font-semibold tracking-wider uppercase transition-colors duration-300 ${
                   i === current ? "text-white" : "text-white/40"
                 }`}
               >
