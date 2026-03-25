@@ -32,7 +32,7 @@ export default function Home() {
             <div>
               <div className="reveal mb-10">
                 <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
-                  Power &amp; Progress
+                  Transformative Industries
                 </p>
                 <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark">
                   Building what moves{" "}

@@ -22,7 +22,7 @@ const slides = [
   },
   {
     image: "/power-hero.jpg",
-    label: "Power & Progress",
+    label: "Transformative Industries",
     headline: (
       <>
         Building what
