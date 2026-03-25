@@ -58,10 +58,10 @@ const slides = [
     label: "Strategic Access",
     headline: (
       <>
-        Decades of influence.
+        Opening doors that
         <br />
         <span className="ml-12 md:ml-20 text-brand-gold-light">
-          Enduring impact.
+          drive results.
         </span>
       </>
     ),
