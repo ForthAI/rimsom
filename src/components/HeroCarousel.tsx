@@ -50,7 +50,7 @@ const slides = [
       </>
     ),
     description:
-      "We transform projects into bankable opportunities and mobilize capital —connecting vision to financing and execution.",
+      "We transform projects into bankable opportunities and mobilize capital across energy, infrastructure, and critical industries—connecting vision to financing and execution.",
     cta: { label: "Learn More", href: "/advisory" },
   },
   {
