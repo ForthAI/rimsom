@@ -66,7 +66,7 @@ const slides = [
       </>
     ),
     description:
-      "Drawing on 30+ years in trade policy and international diplomacy, we open doors to governments, institutions, and decision-makers across continents.",
+      "Leveraging 30+ years in trade policy and diplomacy, we connect clients to governments, institutions, and decision makers worldwide.",
     cta: { label: "About the Firm", href: "/about" },
   },
 ];
