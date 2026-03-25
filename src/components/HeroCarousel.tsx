@@ -33,7 +33,7 @@ const slides = [
       </>
     ),
     description:
-      "From energy systems to digital networks, we help structure and advance the critical infrastructure projects that drive growth across emerging markets.",
+      "From energy systems to digital networks, we structure and advance the infrastructure that powers growth across emerging markets.",
     cta: { label: "Our Services", href: "/advisory" },
   },
   {
@@ -50,7 +50,7 @@ const slides = [
       </>
     ),
     description:
-      "We mobilize financing for energy, infrastructure, and critical industries — connecting projects with the capital they need to move from ambition to execution.",
+      "We transform projects into bankable opportunities and mobilize capital —connecting vision to financing and execution.",
     cta: { label: "Learn More", href: "/advisory" },
   },
   {
