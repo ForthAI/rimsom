@@ -39,7 +39,7 @@ const slides = [
   {
     image:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80",
-    label: "Capital Formation",
+    label: "Capital Structuring & Mobilization",
     headline: (
       <>
         Structuring opportunity
@@ -55,7 +55,7 @@ const slides = [
   },
   {
     image: "/access-hero.jpg",
-    label: "Access = Success",
+    label: "Strategic Access",
     headline: (
       <>
         Decades of influence.

@@ -111,7 +111,7 @@ export default function Home() {
         <div className="relative z-10 max-w-content mx-auto px-6 md:px-10 py-20 md:py-28">
           <div className="reveal text-center max-w-3xl mx-auto mb-16">
             <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
-              Capital Formation
+              Capital Structuring &amp; Mobilization
             </p>
             <h2 className="font-sans text-3xl md:text-[48px] font-bold leading-[1.1] mb-8">
               When capital needs to move, we know{" "}
@@ -204,7 +204,7 @@ export default function Home() {
           <div className="flex flex-col justify-center px-8 md:px-16 py-16 md:py-20">
             <div className="reveal">
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
-                Access = Success
+                Strategic Access
               </p>
               <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] mb-8">
                 Real influence isn&apos;t about being everywhere. It&apos;s
