@@ -87,7 +87,7 @@ export default function VideoSection() {
           {regions.map((item, i) => (
             <div
               key={item.region}
-              className="reveal img-zoom group"
+              className="reveal"
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <div className="relative aspect-[3/2] overflow-hidden rounded-lg mb-5">
@@ -100,21 +100,8 @@ export default function VideoSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </div>
-              <h3 className="font-sans text-xl font-semibold text-white mb-2 group-hover:text-brand-gold-light transition-colors inline-flex items-center gap-2">
+              <h3 className="font-sans text-xl font-semibold text-white mb-2">
                 {item.region}
-                <svg
-                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
               </h3>
               <p className="font-sans text-[14px] text-white/60 leading-relaxed">
                 {item.description}
