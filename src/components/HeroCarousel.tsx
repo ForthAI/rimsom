@@ -208,7 +208,7 @@ export default function HeroCarousel() {
           ))}
         </div>
         {/* Labels row */}
-        <div className="hidden md:flex gap-3 md:gap-4 mt-3">
+        <div className="hidden md:flex items-start gap-3 md:gap-4 mt-3">
           {slides.map((slide, i) => (
             <button
               key={i}
