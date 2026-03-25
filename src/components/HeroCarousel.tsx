@@ -184,7 +184,7 @@ export default function HeroCarousel() {
 
       {/* Navigation bars with labels — pinned at bottom */}
       <div className="relative z-20 max-w-content mx-auto px-6 md:px-10 w-full pb-10 md:pb-14">
-        <div className="flex gap-0">
+        <div className="flex gap-3 md:gap-4">
           {slides.map((slide, i) => (
             <button
               key={i}
@@ -206,7 +206,7 @@ export default function HeroCarousel() {
                 )}
               </span>
               <span
-                className={`hidden md:block text-[11px] font-sans font-semibold tracking-wider uppercase whitespace-nowrap transition-colors duration-300 ${
+                className={`hidden md:block text-[10px] lg:text-[11px] font-sans font-semibold tracking-wider uppercase transition-colors duration-300 ${
                   i === current ? "text-white" : "text-white/40"
                 }`}
               >
