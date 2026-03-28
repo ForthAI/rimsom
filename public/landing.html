@@ -5,122 +5,175 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rimsom Global</title>
   <link rel="icon" href="/globe-64x64.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
+      background: #162246;
       color: #fff;
     }
 
-    .bg {
+    /* ── Header ── */
+    header {
       position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 1.25rem 3rem;
+      background: rgba(22, 34, 70, 0.2);
+      backdrop-filter: blur(8px);
+    }
+
+    header img {
+      height: 48px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
       inset: 0;
-      z-index: 0;
       background: url('/home-hero.jpg') center/cover no-repeat;
     }
 
-    .bg::after {
+    .hero-bg::after {
       content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(
-        135deg,
-        rgba(22, 34, 70, 0.92) 0%,
-        rgba(22, 34, 70, 0.75) 40%,
-        rgba(22, 34, 70, 0.5) 100%
+        to right,
+        rgba(22, 34, 70, 0.88) 0%,
+        rgba(22, 34, 70, 0.6) 50%,
+        rgba(22, 34, 70, 0.3) 100%
       );
     }
 
-    .content {
+    .hero-content {
       position: relative;
       z-index: 1;
-      text-align: center;
-      max-width: 680px;
-      padding: 2rem;
+      max-width: 720px;
+      padding: 6rem 3rem 4rem;
     }
 
-    .logo {
-      height: 56px;
-      margin-bottom: 3rem;
-    }
-
-    .divider {
-      width: 60px;
-      height: 2px;
-      background: #a8843a;
-      margin: 0 auto 2.5rem;
-    }
-
-    h1 {
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
-      font-weight: 300;
-      line-height: 1.4;
-      letter-spacing: -0.01em;
+    .hero-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #a8843a;
       margin-bottom: 1.5rem;
     }
 
-    p {
-      font-size: clamp(0.9rem, 2vw, 1.05rem);
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    h1 span {
+      color: #a8843a;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
       font-weight: 300;
       line-height: 1.7;
       color: rgba(255, 255, 255, 0.75);
+      max-width: 560px;
       margin-bottom: 2.5rem;
     }
 
-    .contact {
+    .cta {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #a8843a;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
       text-decoration: none;
-      border: 1px solid rgba(168, 132, 58, 0.4);
-      padding: 0.75rem 2rem;
-      transition: all 0.3s ease;
+      transition: gap 0.3s ease;
     }
 
-    .contact:hover {
-      background: rgba(168, 132, 58, 0.1);
-      border-color: #a8843a;
+    .cta:hover {
+      gap: 1rem;
     }
 
+    .cta svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ── Footer ── */
     .footer {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       z-index: 1;
-      text-align: center;
-      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
       font-size: 0.75rem;
       color: rgba(255, 255, 255, 0.35);
-      letter-spacing: 0.03em;
+    }
+
+    .footer a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer a:hover {
+      color: #a8843a;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 1rem 1.5rem; }
+      header img { height: 36px; }
+      .hero-content { padding: 5rem 1.5rem 3rem; }
+      .footer { padding: 1rem 1.5rem; flex-direction: column; gap: 0.5rem; }
     }
   </style>
 </head>
 <body>
-  <div class="bg"></div>
 
-  <div class="content">
-    <img src="/logo-white.png" alt="Rimsom Global" class="logo">
-    <div class="divider"></div>
-    <h1>Trusted relationships that shape global outcomes.</h1>
-    <p>Rimsom Global advises on capital structuring, infrastructure development, and strategic access across emerging markets. We connect governments, institutions, and investors to drive lasting impact.</p>
-    <a href="mailto:info@rimsomglobal.com" class="contact">Get in Touch</a>
+  <header>
+    <img src="/logo-white.svg" alt="Rimsom Global">
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-label">Coming Soon</p>
+      <h1>Trusted relationships that shape <span>global outcomes.</span></h1>
+      <p class="hero-desc">Rimsom Global advises on capital structuring, infrastructure development, and strategic access across emerging markets. We connect governments, institutions, and investors to drive lasting impact.</p>
+      <a href="mailto:info@rimsomglobal.com" class="cta">
+        Get in Touch
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <div class="footer">
+    <span>&copy; 2026 Rimsom Global. All rights reserved.</span>
+    <a href="mailto:info@rimsomglobal.com">info@rimsomglobal.com</a>
   </div>
 
-  <div class="footer">&copy; 2026 Rimsom Global. All rights reserved.</div>
 </body>
 </html>
