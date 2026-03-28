@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rimsom Global</title>
+  <link rel="icon" href="/globe-64x64.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('/home-hero.jpg') center/cover no-repeat;
+    }
+
+    .bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(22, 34, 70, 0.92) 0%,
+        rgba(22, 34, 70, 0.75) 40%,
+        rgba(22, 34, 70, 0.5) 100%
+      );
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 680px;
+      padding: 2rem;
+    }
+
+    .logo {
+      height: 56px;
+      margin-bottom: 3rem;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: #a8843a;
+      margin: 0 auto 2.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 2.5rem;
+    }
+
+    .contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a8843a;
+      text-decoration: none;
+      border: 1px solid rgba(168, 132, 58, 0.4);
+      padding: 0.75rem 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .contact:hover {
+      background: rgba(168, 132, 58, 0.1);
+      border-color: #a8843a;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="content">
+    <img src="/logo-white.png" alt="Rimsom Global" class="logo">
+    <div class="divider"></div>
+    <h1>Trusted relationships that shape global outcomes.</h1>
+    <p>Rimsom Global advises on capital structuring, infrastructure development, and strategic access across emerging markets. We connect governments, institutions, and investors to drive lasting impact.</p>
+    <a href="mailto:info@rimsomglobal.com" class="contact">Get in Touch</a>
+  </div>
+
+  <div class="footer">&copy; 2026 Rimsom Global. All rights reserved.</div>
+</body>
+</html>
