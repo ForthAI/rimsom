@@ -34,19 +34,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <RsvpForm event={event} />
             </div>
 
-            {/* Right — event details */}
+            {/* Right — about the event */}
             <div>
-              <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
-                Event Details
+              <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-6">
+                About Event
               </p>
-              <h2 className="font-sans text-2xl md:text-[30px] font-bold leading-[1.15] text-brand-dark mb-4">
-                {event.name}
-              </h2>
-              <div className="flex items-center gap-4 text-[14px] text-brand-gray mb-6">
-                <span>{event.date}</span>
-                <span className="w-1 h-1 rounded-full bg-brand-muted" />
-                <span>{event.time}</span>
-              </div>
               <p className="font-sans text-[15px] text-brand-gray leading-relaxed">
                 {event.description}
               </p>
