@@ -29,11 +29,11 @@ function NamibiaInviteContent() {
         </p>
         <div className="space-y-2">
           <div>
-            <p className="font-semibold text-brand-dark">Hon. Ericah Shafudah</p>
+            <p className="font-semibold text-brand-navy">Hon. Ericah Shafudah</p>
             <p className="text-[13px] text-brand-muted">Minister of Finance, Republic of Namibia</p>
           </div>
           <div>
-            <p className="font-semibold text-brand-dark">Mr. Ebson Uanguta</p>
+            <p className="font-semibold text-brand-navy">Mr. Ebson Uanguta</p>
             <p className="text-[13px] text-brand-muted">Governor, Bank of Namibia</p>
           </div>
         </div>
@@ -55,9 +55,9 @@ function NamibiaInviteContent() {
       </p>
 
       <p>
-        <strong className="text-brand-dark">Rimsom Global</strong>, a strategic advisory firm connecting capital,
-        governments and private sector to emerging market investment opportunities, is pleased to invite you to a
-        closed-door <strong className="text-brand-dark">Namibia Economic Resilience &amp; Investment Convening</strong> on
+        <strong className="text-brand-navy">Rimsom Global</strong>, a strategic advisory firm connecting capital,
+        governments and private sector to emerging market investment opportunities, is pleased to invite you to this
+        closed-door Namibia Economic Resilience &amp; Investment Convening on
         the margins of the World Bank–IMF Spring Meetings.
       </p>
     </div>
