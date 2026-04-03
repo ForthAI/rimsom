@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getEventBySlug, getAllActiveEvents } from "@/config/events";
 import EventHero from "@/components/events/EventHero";
 import RsvpForm from "@/components/events/RsvpForm";
+import Image from "next/image";
+import Link from "next/link";
 
 export async function generateStaticParams() {
   return getAllActiveEvents().map((e) => ({ slug: e.slug }));
@@ -17,11 +19,116 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+// Namibia invite-style content
+function NamibiaInviteContent() {
+  return (
+    <div className="space-y-6 font-sans text-[15px] text-brand-gray leading-relaxed">
+      <p>
+        <strong className="text-brand-dark">Rimsom Global</strong>, a strategic advisory firm connecting capital,
+        governments and private sector to emerging market investment opportunities, is pleased to invite you to a
+        closed-door <strong className="text-brand-dark">Namibia Economic Resilience &amp; Investment Convening</strong> on
+        the margins of the World Bank–IMF Spring Meetings.
+      </p>
+
+      <div className="space-y-1.5 text-[14px]">
+        <p><strong className="text-brand-dark">Date:</strong> April 14, 2026</p>
+        <p><strong className="text-brand-dark">Time:</strong> 3:00–5:00 PM EST</p>
+        <p><strong className="text-brand-dark">Location:</strong> 1717 K St NW, 9th Floor, Washington, D.C. 20006</p>
+      </div>
+
+      <div>
+        <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-3">
+          Featuring
+        </p>
+        <div className="space-y-2">
+          <div>
+            <p className="font-semibold text-brand-dark">Hon. Ericah Shafudah</p>
+            <p className="text-[13px] text-brand-muted">Minister of Finance, Republic of Namibia</p>
+          </div>
+          <div>
+            <p className="font-semibold text-brand-dark">Mr. Ebson Uanguta</p>
+            <p className="text-[13px] text-brand-muted">Governor, Bank of Namibia</p>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        A limited group (30 attendees) of senior stakeholders across government, international financial
+        institutions, and strategic investors will join this discussion.
+      </p>
+
+      <p>
+        The convening will focus on Namibia&apos;s economic outlook, fiscal priorities, and near-term,
+        bankable investment opportunities under National Development Program 6 (NDP-6).
+      </p>
+
+      <p>
+        We would value your participation and the opportunity for direct engagement with senior
+        decision-makers and investors.
+      </p>
+
+      <p className="font-medium text-brand-dark">
+        Kindly let us know if you are available to attend.
+      </p>
+    </div>
+  );
+}
+
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const event = getEventBySlug(slug);
   if (!event) notFound();
 
+  // Invite-style layout (e.g., Namibia)
+  if (event.inviteLayout) {
+    return (
+      <>
+        {/* Minimal header with logo */}
+        <div className="bg-brand-navy">
+          <div className="max-w-content mx-auto px-6 md:px-10 py-5">
+            <Link href="/">
+              <Image
+                src="/logo-white.svg"
+                alt="Rimsom Global"
+                width={120}
+                height={38}
+                className="h-8 w-auto"
+                priority
+              />
+            </Link>
+          </div>
+        </div>
+
+        {/* Invitation content + RSVP form side by side */}
+        <section className="py-16 md:py-24 bg-white">
+          <div className="max-w-content mx-auto px-6 md:px-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
+              {/* Left — invitation content */}
+              <div>
+                <NamibiaInviteContent />
+              </div>
+
+              {/* Right — RSVP form */}
+              <div>
+                <RsvpForm event={event} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Minimal footer */}
+        <footer className="py-8 border-t border-brand-light">
+          <div className="max-w-content mx-auto px-6 md:px-10">
+            <p className="font-sans text-[11px] text-brand-muted text-center">
+              &copy; {new Date().getFullYear()} Rimsom Global. All rights reserved.
+            </p>
+          </div>
+        </footer>
+      </>
+    );
+  }
+
+  // Default layout (e.g., Finance After Hours)
   return (
     <>
       <EventHero event={event} />

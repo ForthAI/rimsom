@@ -27,6 +27,7 @@ export interface EventConfig {
   rsvpTabName: string;
   emailSubject: string;
   ticketPdf?: string;
+  inviteLayout?: boolean;
   active: boolean;
 }
 

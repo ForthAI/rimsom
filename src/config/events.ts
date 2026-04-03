@@ -28,6 +28,7 @@ export const events: EventConfig[] = [
     sheetTabName: "Invites",
     rsvpTabName: "RSVPs",
     emailSubject: "Your RSVP is Confirmed – Namibia Economic Resilience & Investment Convening",
+    inviteLayout: true,
     active: true,
   },
   {
