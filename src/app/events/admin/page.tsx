@@ -58,10 +58,24 @@ export default function AdminPage() {
     }
   };
 
+  // Check if already authenticated on page load (cookie still valid)
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("/api/events/admin");
+        if (res.ok) {
+          setAuthenticated(true);
+        }
+      } catch {
+        // not authenticated, show login
+      }
+    };
+    checkAuth();
+  }, []);
+
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      // Always fetch all events for the dropdown
       const res = await fetch("/api/events/admin");
       if (res.status === 401) { setAuthenticated(false); return; }
       const data = await res.json();
@@ -103,6 +117,21 @@ export default function AdminPage() {
   useEffect(() => {
     if (authenticated && tab === "invites" && selectedSlug) fetchInvites();
   }, [authenticated, tab, fetchInvites, selectedSlug]);
+
+  // Auto-refresh data every 30 seconds
+  useEffect(() => {
+    if (!authenticated) return;
+    const interval = setInterval(() => {
+      fetchData();
+      if (tab === "invites" && selectedSlug) fetchInvites();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [authenticated, fetchData, fetchInvites, tab, selectedSlug]);
+
+  // Refresh when switching tabs
+  useEffect(() => {
+    if (authenticated && tab === "rsvps") fetchData();
+  }, [authenticated, tab, fetchData]);
 
   const rawEvent = events.find((e) => e.slug === selectedSlug) || events[0];
   const selectedEvent = rawEvent ? {
