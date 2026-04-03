@@ -95,9 +95,16 @@ export default function AdminPage() {
     if (authenticated) fetchData();
   }, [authenticated, fetchData]);
 
+  // Auto-select first event when data loads
   useEffect(() => {
-    if (authenticated && tab === "invites") fetchInvites();
-  }, [authenticated, tab, fetchInvites]);
+    if (events.length > 0 && !selectedSlug) {
+      setSelectedSlug(events[0].slug);
+    }
+  }, [events, selectedSlug]);
+
+  useEffect(() => {
+    if (authenticated && tab === "invites" && selectedSlug) fetchInvites();
+  }, [authenticated, tab, fetchInvites, selectedSlug]);
 
   const rawEvent = events.find((e) => e.slug === selectedSlug) || events[0];
   const selectedEvent = rawEvent ? {
@@ -259,13 +266,23 @@ export default function AdminPage() {
             onChange={(e) => setSelectedSlug(e.target.value)}
             className="px-3 py-2 bg-white/10 border border-white/20 text-[13px] text-white font-sans outline-none rounded"
           >
-            <option value="">All Events</option>
             {events.map((ev) => (
               <option key={ev.slug} value={ev.slug}>{ev.name}</option>
             ))}
           </select>
         </div>
       </header>
+
+      {/* Event banner */}
+      {selectedEvent && (
+        <div className="bg-brand-offwhite border-b border-gray-200 no-print">
+          <div className="max-w-content mx-auto px-6 md:px-10 py-3 flex items-center gap-4">
+            <h2 className="font-sans text-[15px] font-bold text-brand-dark">{selectedEvent.name}</h2>
+            <span className="text-[13px] text-brand-muted">{selectedEvent.date}</span>
+            <span className="text-[13px] text-brand-muted">{selectedEvent.venueName}</span>
+          </div>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="border-b border-gray-200 bg-white no-print">

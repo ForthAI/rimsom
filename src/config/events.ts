@@ -2,13 +2,69 @@ import { EventConfig } from "@/types/events";
 
 export const events: EventConfig[] = [
   {
+    slug: "namibia-convening",
+    name: "Namibia Economic Resilience & Investment Convening",
+    tagline: "Rimsom Global Presents",
+    headline: "You're Invited",
+    subhead: "Namibia Economic Resilience & Investment Convening",
+    description:
+      "Join Rimsom Global for a focused convening on economic resilience and investment opportunities in Namibia. An afternoon of strategic dialogue with leaders in trade, finance, and international development.",
+    date: "Tuesday, April 14, 2026",
+    time: "3:00 PM – 5:00 PM",
+    venueName: "1717 K Street NW, 9th Floor",
+    venueAddress: "1717 K Street NW, 9th Floor, Washington, DC 20006",
+    heroImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80",
+    formFields: [
+      { name: "fullName", label: "Full Name", type: "text", placeholder: "Your full name", required: true },
+      { name: "email", label: "Email", type: "email", placeholder: "you@example.com", required: true },
+      { name: "title", label: "Title", type: "text", placeholder: "Your title", required: false },
+      { name: "organization", label: "Organization", type: "text", placeholder: "Your organization", required: false },
+    ],
+    confirmationHeadline: "You're Confirmed",
+    confirmationText:
+      "We look forward to welcoming you. A confirmation email has been sent with event details.",
+    googleSheetId: "1Nz12XlXnTbS-BZLcB6Il79cCVuzIV0k-wCSr2NjZ-oY",
+    sheetTabName: "Invites",
+    rsvpTabName: "RSVPs",
+    emailSubject: "Your RSVP is Confirmed – Namibia Economic Resilience & Investment Convening",
+    active: true,
+  },
+  {
+    slug: "finance-after-hours",
+    name: "Finance After Hours",
+    tagline: "Rimsom Global Presents",
+    headline: "You're Invited",
+    subhead: "Finance After Hours",
+    description:
+      "An evening reception bringing together leaders in finance, investment, and international development for meaningful conversation and connection.",
+    date: "Wednesday, April 15, 2026",
+    time: "7:30 PM – 10:30 PM",
+    venueName: "1627 K St NW",
+    venueAddress: "1627 K St NW, Washington, DC 20006",
+    heroImage: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80",
+    formFields: [
+      { name: "fullName", label: "Full Name", type: "text", placeholder: "Your full name", required: true },
+      { name: "email", label: "Email", type: "email", placeholder: "you@example.com", required: true },
+      { name: "title", label: "Title", type: "text", placeholder: "Your title", required: false },
+      { name: "organization", label: "Organization", type: "text", placeholder: "Your organization", required: false },
+    ],
+    confirmationHeadline: "You're Confirmed",
+    confirmationText:
+      "We look forward to welcoming you. A confirmation email has been sent with event details.",
+    googleSheetId: "1-1sAMpVvg77pG4-kYbnlLnNXePeSqkl37MUJVjN3LsM",
+    sheetTabName: "Invites",
+    rsvpTabName: "RSVPs",
+    emailSubject: "Your RSVP is Confirmed – Finance After Hours",
+    active: true,
+  },
+  {
     slug: "sample-reception",
     name: "Sample Reception",
     tagline: "Rimsom Global Presents",
     headline: "You're Invited",
     subhead: "An Evening of Strategic Dialogue",
     description:
-      "Join Rimsom Global for an intimate gathering of leaders in trade, finance, and international development. An evening designed for meaningful connection and strategic conversation.",
+      "Join Rimsom Global for an intimate gathering of leaders in trade, finance, and international development.",
     date: "Thursday, May 15, 2026",
     time: "6:30 PM – 9:00 PM",
     venueName: "The Hay-Adams Hotel",
@@ -27,7 +83,7 @@ export const events: EventConfig[] = [
     sheetTabName: "Invites",
     rsvpTabName: "RSVPs",
     emailSubject: "Your RSVP is Confirmed – Rimsom Global",
-    active: true,
+    active: false,
   },
 ];
 
