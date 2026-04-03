@@ -3,7 +3,6 @@ import { getEventBySlug, getAllActiveEvents } from "@/config/events";
 import EventHero from "@/components/events/EventHero";
 import RsvpForm from "@/components/events/RsvpForm";
 import Image from "next/image";
-import Link from "next/link";
 
 export async function generateStaticParams() {
   return getAllActiveEvents().map((e) => ({ slug: e.slug }));
