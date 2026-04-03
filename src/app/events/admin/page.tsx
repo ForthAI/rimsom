@@ -18,6 +18,7 @@ type Tab = "rsvps" | "invites";
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [eventSelected, setEventSelected] = useState(false);
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
@@ -268,6 +269,37 @@ export default function AdminPage() {
     );
   }
 
+  // Event picker
+  if (!eventSelected) {
+    return (
+      <div className="min-h-screen bg-brand-navy flex items-center justify-center px-6">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-10">
+            <Image src="/logo-white.svg" alt="Rimsom Global" width={140} height={44} className="h-10 w-auto mx-auto mb-6" />
+            <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-white/40">
+              Select an Event
+            </p>
+          </div>
+          <div className="space-y-3">
+            {events.map((ev) => (
+              <button
+                key={ev.slug}
+                onClick={() => { setSelectedSlug(ev.slug); setEventSelected(true); }}
+                className="w-full text-left p-5 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 rounded"
+              >
+                <p className="font-sans text-[15px] font-semibold text-white mb-1">{ev.name}</p>
+                <p className="font-sans text-[13px] text-white/50">{ev.date} &middot; {ev.venueName}</p>
+              </button>
+            ))}
+          </div>
+          {events.length === 0 && (
+            <p className="text-center font-sans text-[14px] text-white/40 mt-8">Loading events...</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   // Dashboard
   return (
     <div className="min-h-screen bg-gray-50">
@@ -415,14 +447,21 @@ export default function AdminPage() {
             {/* Door List — print only, hidden on screen */}
             {(() => {
               const attendingIdx = selectedEvent.headers.indexOf("Attending");
-              const nameIdx = selectedEvent.headers.indexOf("Full Name");
+              const firstNameIdx = selectedEvent.headers.indexOf("First Name");
+              const surnameIdx = selectedEvent.headers.indexOf("Surname");
               const titleIdx = selectedEvent.headers.indexOf("Title");
               const orgIdx = selectedEvent.headers.indexOf("Organization");
               const emailIdx = selectedEvent.headers.indexOf("Email");
               const vipEmails = new Set(
                 invites.slice(1).filter((r) => (r[4] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
               );
-              const attending = selectedEvent.rsvps.filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes");
+              const attending = selectedEvent.rsvps
+                .filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes")
+                .sort((a, b) => {
+                  const surnameA = (surnameIdx >= 0 ? a[surnameIdx] : "").toLowerCase();
+                  const surnameB = (surnameIdx >= 0 ? b[surnameIdx] : "").toLowerCase();
+                  return surnameA.localeCompare(surnameB);
+                });
               return (
                 <div className="hidden print:block">
                   <div className="p-6 border-b border-gray-200">
@@ -434,7 +473,8 @@ export default function AdminPage() {
                     <thead>
                       <tr className="border-b border-gray-200">
                         <th className="px-4 py-3 w-8 text-left text-[11px] font-sans font-semibold">#</th>
-                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Name</th>
+                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Surname</th>
+                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">First Name</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Title</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Organization</th>
                         <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold">VIP</th>
@@ -448,7 +488,8 @@ export default function AdminPage() {
                         return (
                           <tr key={i} className="border-b border-gray-100">
                             <td className="px-4 py-2 text-[12px]">{i + 1}</td>
-                            <td className="px-4 py-2 text-[13px] font-medium">{nameIdx >= 0 ? row[nameIdx] : ""}</td>
+                            <td className="px-4 py-2 text-[13px] font-medium">{surnameIdx >= 0 ? row[surnameIdx] : ""}</td>
+                            <td className="px-4 py-2 text-[12px]">{firstNameIdx >= 0 ? row[firstNameIdx] : ""}</td>
                             <td className="px-4 py-2 text-[12px]">{titleIdx >= 0 ? row[titleIdx] : ""}</td>
                             <td className="px-4 py-2 text-[12px]">{orgIdx >= 0 ? row[orgIdx] : ""}</td>
                             <td className="px-4 py-2 text-center">{isVip ? "★" : ""}</td>

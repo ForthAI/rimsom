@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
     if (attending === "Yes") try {
       await sendConfirmationEmail({
         to: emailLower,
-        guestName: fields.fullName || fields.name || "Guest",
+        guestName: fields.firstName || fields.fullName || "Guest",
         eventName: event.name,
         date: event.date,
         time: event.time,

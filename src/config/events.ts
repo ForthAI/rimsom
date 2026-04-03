@@ -15,7 +15,8 @@ export const events: EventConfig[] = [
     venueAddress: "1717 K Street NW, 9th Floor, Washington, DC 20006",
     heroImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80",
     formFields: [
-      { name: "fullName", label: "Full Name", type: "text", placeholder: "Your full name", required: true },
+      { name: "firstName", label: "First Name", type: "text", placeholder: "First name", required: true },
+      { name: "surname", label: "Surname", type: "text", placeholder: "Surname", required: true },
       { name: "email", label: "Email", type: "email", placeholder: "you@example.com", required: true },
       { name: "title", label: "Title", type: "text", placeholder: "Your title", required: false },
       { name: "organization", label: "Organization", type: "text", placeholder: "Your organization", required: false },
@@ -43,7 +44,8 @@ export const events: EventConfig[] = [
     venueAddress: "1627 K St NW, Washington, DC 20006",
     heroImage: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80",
     formFields: [
-      { name: "fullName", label: "Full Name", type: "text", placeholder: "Your full name", required: true },
+      { name: "firstName", label: "First Name", type: "text", placeholder: "First name", required: true },
+      { name: "surname", label: "Surname", type: "text", placeholder: "Surname", required: true },
       { name: "email", label: "Email", type: "email", placeholder: "you@example.com", required: true },
       { name: "title", label: "Title", type: "text", placeholder: "Your title", required: false },
       { name: "organization", label: "Organization", type: "text", placeholder: "Your organization", required: false },
@@ -71,7 +73,8 @@ export const events: EventConfig[] = [
     venueAddress: "800 16th St NW, Washington, DC 20006",
     heroImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80",
     formFields: [
-      { name: "fullName", label: "Full Name", type: "text", placeholder: "Your full name", required: true },
+      { name: "firstName", label: "First Name", type: "text", placeholder: "First name", required: true },
+      { name: "surname", label: "Surname", type: "text", placeholder: "Surname", required: true },
       { name: "email", label: "Email", type: "email", placeholder: "you@example.com", required: true },
       { name: "title", label: "Title", type: "text", placeholder: "Your title", required: false },
       { name: "organization", label: "Organization", type: "text", placeholder: "Your organization", required: false },
