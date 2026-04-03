@@ -1,10 +1,19 @@
 import { google } from "googleapis";
 
+function getPrivateKey(): string {
+  const raw = process.env.GOOGLE_PRIVATE_KEY || "";
+  // Handle both escaped \\n and literal \n
+  if (raw.includes("\\n")) {
+    return raw.replace(/\\n/g, "\n");
+  }
+  return raw;
+}
+
 function getAuth() {
   return new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      private_key: getPrivateKey(),
     },
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
