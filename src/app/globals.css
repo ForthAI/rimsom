@@ -138,3 +138,12 @@ body {
 .img-zoom:hover img {
   transform: scale(1.05);
 }
+
+/* Print styles for admin door list */
+@media print {
+  .no-print { display: none !important; }
+  header, footer, nav, select, button { display: none !important; }
+  .print\:block { display: block !important; }
+  body { background: white !important; color: black !important; }
+  table { font-size: 12px; }
+}
