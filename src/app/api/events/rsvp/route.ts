@@ -48,19 +48,28 @@ export async function POST(req: NextRequest) {
 
     // Build row from form fields in the order they appear in the config
     const now = new Date();
-    const timestamp = now.toISOString();
+    const formattedDate = now.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    const attending = fields.attending || "Yes";
     const row: string[] = [emailLower];
 
     for (const field of event.formFields) {
-      if (field.name === "email") continue; // email is already first
+      if (field.name === "email" || field.name === "attending") continue;
       row.push(fields[field.name] || "");
     }
-    row.push(timestamp);
+    row.push(attending);
+    row.push(formattedDate);
 
     await appendRsvp(event.googleSheetId, event.rsvpTabName, row);
 
-    // Send confirmation email
-    try {
+    // Send confirmation email (only if attending)
+    if (attending === "Yes") try {
       await sendConfirmationEmail({
         to: emailLower,
         guestName: fields.fullName || fields.name || "Guest",

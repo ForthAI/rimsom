@@ -38,7 +38,7 @@ function getSheets() {
   return google.sheets({ version: "v4", auth });
 }
 
-// GET: fetch invite list for an event
+// GET: fetch invite list for an event (now includes Status column D)
 export async function GET(req: NextRequest) {
   if (!(await checkAuth())) {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
@@ -58,10 +58,9 @@ export async function GET(req: NextRequest) {
     const sheets = getSheets();
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: event.googleSheetId,
-      range: `${event.sheetTabName}!A:C`,
+      range: `${event.sheetTabName}!A:D`,
     });
     const rows = res.data.values || [];
-    // Return all rows including header
     return NextResponse.json({ invites: rows });
   } catch (error) {
     console.error("Fetch invites error:", error);
@@ -76,7 +75,6 @@ export async function POST(req: NextRequest) {
   }
 
   const { slug, emails } = await req.json();
-  // emails is an array of { email, name?, organization? }
 
   const event = getEventBySlug(slug);
   if (!event) {
@@ -93,8 +91,8 @@ export async function POST(req: NextRequest) {
       if (existingEmails.includes(emailLower)) {
         duplicates.push(emailLower);
       } else {
-        newRows.push([emailLower, entry.name || "", entry.organization || ""]);
-        existingEmails.push(emailLower); // prevent duplicates within batch
+        newRows.push([emailLower, entry.name || "", entry.organization || "", "Not Sent"]);
+        existingEmails.push(emailLower);
       }
     }
 
@@ -102,7 +100,7 @@ export async function POST(req: NextRequest) {
       const sheets = getSheets();
       await sheets.spreadsheets.values.append({
         spreadsheetId: event.googleSheetId,
-        range: `${event.sheetTabName}!A:C`,
+        range: `${event.sheetTabName}!A:D`,
         valueInputOption: "USER_ENTERED",
         requestBody: { values: newRows },
       });
@@ -116,6 +114,50 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Add invites error:", error);
     return NextResponse.json({ error: "Failed to add invites." }, { status: 500 });
+  }
+}
+
+// PATCH: update invite status
+export async function PATCH(req: NextRequest) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
+  }
+
+  const { slug, email, status } = await req.json();
+
+  const event = getEventBySlug(slug);
+  if (!event) {
+    return NextResponse.json({ error: "Event not found." }, { status: 404 });
+  }
+
+  try {
+    const sheets = getSheets();
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: event.googleSheetId,
+      range: `${event.sheetTabName}!A:D`,
+    });
+    const rows = res.data.values || [];
+    const emailLower = email.toLowerCase().trim();
+    const rowIndex = rows.findIndex(
+      (row, i) => i > 0 && (row[0] || "").toLowerCase().trim() === emailLower
+    );
+
+    if (rowIndex === -1) {
+      return NextResponse.json({ error: "Email not found." }, { status: 404 });
+    }
+
+    // Update column D (status) for the found row
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: event.googleSheetId,
+      range: `${event.sheetTabName}!D${rowIndex + 1}`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: { values: [[status]] },
+    });
+
+    return NextResponse.json({ updated: true });
+  } catch (error) {
+    console.error("Update invite status error:", error);
+    return NextResponse.json({ error: "Failed to update status." }, { status: 500 });
   }
 }
 
@@ -136,7 +178,7 @@ export async function DELETE(req: NextRequest) {
     const sheets = getSheets();
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: event.googleSheetId,
-      range: `${event.sheetTabName}!A:C`,
+      range: `${event.sheetTabName}!A:D`,
     });
     const rows = res.data.values || [];
     const emailLower = email.toLowerCase().trim();
@@ -148,7 +190,6 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Email not found." }, { status: 404 });
     }
 
-    // Get sheet ID for the tab
     const spreadsheet = await sheets.spreadsheets.get({
       spreadsheetId: event.googleSheetId,
     });

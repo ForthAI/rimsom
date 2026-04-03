@@ -437,6 +437,7 @@ export default function AdminPage() {
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
                       <th className="px-4 py-3 w-10"></th>
                     </tr>
                   </thead>
@@ -446,6 +447,35 @@ export default function AdminPage() {
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-dark">{row[0]}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[1] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[2] || "—"}</td>
+                        <td className="px-4 py-3">
+                          <select
+                            value={row[3] || "Not Sent"}
+                            onChange={async (e) => {
+                              const newStatus = e.target.value;
+                              try {
+                                await fetch("/api/events/invites", {
+                                  method: "PATCH",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ slug: activeSlug, email: row[0], status: newStatus }),
+                                });
+                                fetchInvites();
+                              } catch {
+                                console.error("Failed to update status");
+                              }
+                            }}
+                            className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
+                              (row[3] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[3] || "Not Sent") === "Declined" ? "border-red-200 bg-red-50 text-red-700" :
+                              (row[3] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
+                              "border-gray-200 bg-gray-50 text-gray-600"
+                            }`}
+                          >
+                            <option value="Not Sent">Not Sent</option>
+                            <option value="Sent">Sent</option>
+                            <option value="Declined">Declined</option>
+                            <option value="Bounced">Bounced</option>
+                          </select>
+                        </td>
                         <td className="px-4 py-3">
                           <button
                             onClick={() => removeInvite(row[0])}
@@ -459,7 +489,7 @@ export default function AdminPage() {
                     ))}
                     {invites.length <= 1 && (
                       <tr>
-                        <td colSpan={4} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                        <td colSpan={5} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
                           No invites yet. Add emails above.
                         </td>
                       </tr>

@@ -42,6 +42,10 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!fields.attending) {
+      setError("Please indicate whether you will attend.");
+      return;
+    }
     setError("");
     setPhase("submitting");
 
@@ -71,6 +75,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
 
   // Success state
   if (phase === "success") {
+    const declined = fields.attending === "No";
     return (
       <div>
         <div className="flex items-center gap-3 mb-6">
@@ -80,13 +85,15 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
             </svg>
           </div>
           <h3 className="font-sans text-2xl font-bold text-brand-dark">
-            {event.confirmationHeadline}
+            {declined ? "Response Received" : event.confirmationHeadline}
           </h3>
         </div>
         <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-8">
-          {event.confirmationText}
+          {declined
+            ? "Thank you for letting us know. We hope to see you at a future event."
+            : event.confirmationText}
         </p>
-        <div className="p-6 bg-brand-offwhite rounded-lg border border-brand-light">
+        {!declined && <div className="p-6 bg-brand-offwhite rounded-lg border border-brand-light">
           <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
             Event Location
           </p>
@@ -110,7 +117,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </a>
-        </div>
+        </div>}
       </div>
     );
   }
@@ -194,8 +201,31 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
             />
           </div>
 
-          {/* Dynamic fields */}
-          {event.formFields
+          {/* Will you attend? */}
+          <div>
+            <label className="block text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-3">
+              Will you attend? <span className="text-red-400 ml-1">*</span>
+            </label>
+            <div className="flex gap-3">
+              {["Yes", "No"].map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => updateField("attending", opt)}
+                  className={`flex-1 py-3 text-[14px] font-sans font-medium border transition-all duration-200 ${
+                    fields.attending === opt
+                      ? "border-brand-gold bg-brand-gold/10 text-brand-dark"
+                      : "border-brand-light text-brand-gray hover:border-brand-dark"
+                  }`}
+                >
+                  {opt === "Yes" ? "Yes, I'll be there" : "No, I can't make it"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Dynamic fields — only show if attending */}
+          {fields.attending !== "No" && event.formFields
             .filter((f) => f.name !== "email")
             .map((field) => (
               <div key={field.name}>
