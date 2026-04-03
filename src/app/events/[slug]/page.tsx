@@ -23,13 +23,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 function NamibiaInviteContent() {
   return (
     <div className="space-y-6 font-sans text-[15px] text-brand-gray leading-relaxed">
-      <p>
-        <strong className="text-brand-dark">Rimsom Global</strong>, a strategic advisory firm connecting capital,
-        governments and private sector to emerging market investment opportunities, is pleased to invite you to a
-        closed-door <strong className="text-brand-dark">Namibia Economic Resilience &amp; Investment Convening</strong> on
-        the margins of the World Bank–IMF Spring Meetings.
-      </p>
-
       <div>
         <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-3">
           Featuring
@@ -59,6 +52,13 @@ function NamibiaInviteContent() {
       <p>
         We would value your participation and the opportunity for direct engagement with senior
         decision-makers and investors.
+      </p>
+
+      <p>
+        <strong className="text-brand-dark">Rimsom Global</strong>, a strategic advisory firm connecting capital,
+        governments and private sector to emerging market investment opportunities, is pleased to invite you to a
+        closed-door <strong className="text-brand-dark">Namibia Economic Resilience &amp; Investment Convening</strong> on
+        the margins of the World Bank–IMF Spring Meetings.
       </p>
     </div>
   );
@@ -114,20 +114,19 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           </div>
         </div>
 
-        {/* Invitation content then RSVP form below */}
+        {/* Invitation content + RSVP form side by side */}
         <section className="py-10 md:py-14 bg-white">
           <div className="max-w-content mx-auto px-6 md:px-10">
-            {/* Invitation content */}
-            <div className="max-w-3xl mb-16">
-              <NamibiaInviteContent />
-            </div>
-
-            {/* RSVP form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
+              {/* Left — invitation content */}
+              <div>
+                <NamibiaInviteContent />
+              </div>
+
+              {/* Right — RSVP form */}
               <div>
                 <RsvpForm event={event} />
               </div>
-              <div></div>
             </div>
           </div>
         </section>
