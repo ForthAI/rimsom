@@ -118,16 +118,6 @@ export default function AdminPage() {
     if (authenticated && tab === "invites" && selectedSlug) fetchInvites();
   }, [authenticated, tab, fetchInvites, selectedSlug]);
 
-  // Auto-refresh data every 30 seconds
-  useEffect(() => {
-    if (!authenticated) return;
-    const interval = setInterval(() => {
-      fetchData();
-      if (tab === "invites" && selectedSlug) fetchInvites();
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [authenticated, fetchData, fetchInvites, tab, selectedSlug]);
-
   // Refresh when switching tabs
   useEffect(() => {
     if (authenticated && tab === "rsvps") fetchData();
