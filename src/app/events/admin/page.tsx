@@ -99,7 +99,13 @@ export default function AdminPage() {
     if (authenticated && tab === "invites") fetchInvites();
   }, [authenticated, tab, fetchInvites]);
 
-  const selectedEvent = events.find((e) => e.slug === selectedSlug) || events[0];
+  const rawEvent = events.find((e) => e.slug === selectedSlug) || events[0];
+  const selectedEvent = rawEvent ? {
+    ...rawEvent,
+    headers: rawEvent.headers || [],
+    rsvps: rawEvent.rsvps || [],
+    inviteCount: rawEvent.inviteCount || 0,
+  } : null;
   const activeSlug = selectedSlug || events[0]?.slug;
 
   const addSingleInvite = async (e: React.FormEvent) => {
