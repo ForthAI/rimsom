@@ -2,7 +2,9 @@ import { Resend } from "resend";
 import fs from "fs";
 import path from "path";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY || "");
+}
 
 interface ConfirmationEmailParams {
   to: string;
@@ -104,7 +106,7 @@ export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
     }
   }
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: "Rimsom Global Events <events@rimsomglobal.com>",
     to: params.to,
     subject: params.subject,
