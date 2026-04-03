@@ -88,15 +88,13 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           </div>
           <div className="relative z-10">
             <div className="max-w-content mx-auto px-6 md:px-10 py-5">
-              <Link href="/">
-                <Image
-                  src="/logo-white.svg"
-                  alt="Rimsom Global"
-                  width={120}
-                  height={38}
-                  className="h-8 w-auto"
-                />
-              </Link>
+              <Image
+                src="/logo-white.svg"
+                alt="Rimsom Global"
+                width={120}
+                height={38}
+                className="h-8 w-auto"
+              />
             </div>
             <div className="max-w-content mx-auto px-6 md:px-10 pb-16 md:pb-20 pt-8 md:pt-12">
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
