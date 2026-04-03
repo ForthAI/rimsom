@@ -31,7 +31,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
         setFields({ email });
         setPhase("form");
       } else {
-        setError(data.message || "This email is not on the invite list.");
+        setError(data.message || "We weren't able to find that email. Please make sure you're using the email address your invitation was sent to.");
       }
     } catch {
       setError("Something went wrong. Please try again.");

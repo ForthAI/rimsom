@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     if (!inviteList.includes(emailLower)) {
       return NextResponse.json({
         success: false,
-        message: "This email is not on the invite list.",
+        message: "We weren't able to find that email. Please make sure you're using the email address your invitation was sent to.",
       });
     }
 
