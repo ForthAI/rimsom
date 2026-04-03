@@ -33,7 +33,7 @@ function NamibiaInviteContent() {
       <div className="space-y-1.5 text-[14px]">
         <p><strong className="text-brand-dark">Date:</strong> April 14, 2026</p>
         <p><strong className="text-brand-dark">Time:</strong> 3:00–5:00 PM EST</p>
-        <p><strong className="text-brand-dark">Location:</strong> 1717 K St NW, 9th Floor, Washington, D.C. 20006</p>
+        <p><strong className="text-brand-dark">Location:</strong> Washington, D.C.</p>
       </div>
 
       <div>
@@ -83,19 +83,39 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   if (event.inviteLayout) {
     return (
       <>
-        {/* Minimal header with logo */}
-        <div className="bg-brand-navy">
-          <div className="max-w-content mx-auto px-6 md:px-10 py-5">
-            <Link href="/">
-              <Image
-                src="/logo-white.svg"
-                alt="Rimsom Global"
-                width={120}
-                height={38}
-                className="h-8 w-auto"
-                priority
-              />
-            </Link>
+        {/* Hero header with logo and event name */}
+        <div className="relative text-white overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src={event.heroImage}
+              alt={event.name}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+            <div className="absolute inset-0 bg-brand-navy/85" />
+          </div>
+          <div className="relative z-10">
+            <div className="max-w-content mx-auto px-6 md:px-10 py-5">
+              <Link href="/">
+                <Image
+                  src="/logo-white.svg"
+                  alt="Rimsom Global"
+                  width={120}
+                  height={38}
+                  className="h-8 w-auto"
+                />
+              </Link>
+            </div>
+            <div className="max-w-content mx-auto px-6 md:px-10 pb-16 md:pb-20 pt-8 md:pt-12">
+              <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
+                Official Invitation
+              </p>
+              <h1 className="font-sans text-3xl md:text-[48px] font-bold leading-[1.08]">
+                {event.name}
+              </h1>
+            </div>
           </div>
         </div>
 
