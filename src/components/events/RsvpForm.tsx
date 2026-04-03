@@ -148,9 +148,9 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
 
   return (
     <div>
-      <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
-        Enter Your Details
-      </p>
+      <h2 className="font-sans text-2xl md:text-[30px] font-bold leading-[1.15] text-brand-dark mb-6">
+        Please RSVP
+      </h2>
 
       {error && (
         <div className="mb-6 p-4 border-l-2 border-red-500 bg-red-50">

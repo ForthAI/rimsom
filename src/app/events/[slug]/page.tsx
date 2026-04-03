@@ -60,10 +60,6 @@ function NamibiaInviteContent() {
         We would value your participation and the opportunity for direct engagement with senior
         decision-makers and investors.
       </p>
-
-      <p className="font-medium text-brand-dark">
-        Kindly let us know if you are available to attend.
-      </p>
     </div>
   );
 }
@@ -118,19 +114,20 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           </div>
         </div>
 
-        {/* Invitation content + RSVP form side by side */}
+        {/* Invitation content then RSVP form below */}
         <section className="py-10 md:py-14 bg-white">
           <div className="max-w-content mx-auto px-6 md:px-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
-              {/* Left — invitation content */}
-              <div>
-                <NamibiaInviteContent />
-              </div>
+            {/* Invitation content */}
+            <div className="max-w-3xl mb-16">
+              <NamibiaInviteContent />
+            </div>
 
-              {/* Right — RSVP form */}
+            {/* RSVP form */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
               <div>
                 <RsvpForm event={event} />
               </div>
+              <div></div>
             </div>
           </div>
         </section>
