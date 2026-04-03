@@ -91,7 +91,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
         <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-8">
           {declined
             ? "Thank you for letting us know. We hope to see you at a future event."
-            : event.confirmationText}
+            : <>We look forward to welcoming you. A confirmation email has been sent with event details to <strong>{email}</strong>.</>}
         </p>
         {!declined && <div className="p-6 bg-brand-offwhite rounded-lg border border-brand-light">
           <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
