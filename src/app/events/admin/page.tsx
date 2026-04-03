@@ -438,6 +438,7 @@ export default function AdminPage() {
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
+                      <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
                       <th className="px-4 py-3 w-10"></th>
                     </tr>
                   </thead>
@@ -476,6 +477,31 @@ export default function AdminPage() {
                             <option value="Bounced">Bounced</option>
                           </select>
                         </td>
+                        <td className="px-4 py-3 text-center">
+                          <button
+                            onClick={async () => {
+                              const isVip = (row[4] || "").toLowerCase() === "yes";
+                              try {
+                                await fetch("/api/events/invites", {
+                                  method: "PATCH",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ slug: activeSlug, email: row[0], vip: !isVip }),
+                                });
+                                fetchInvites();
+                              } catch {
+                                console.error("Failed to update VIP");
+                              }
+                            }}
+                            className="transition-colors"
+                            title={row[4] === "Yes" ? "Remove VIP" : "Mark as VIP"}
+                          >
+                            {(row[4] || "").toLowerCase() === "yes" ? (
+                              <span className="text-brand-gold text-lg">★</span>
+                            ) : (
+                              <span className="text-gray-300 hover:text-brand-gold text-lg">☆</span>
+                            )}
+                          </button>
+                        </td>
                         <td className="px-4 py-3">
                           <button
                             onClick={() => removeInvite(row[0])}
@@ -489,7 +515,7 @@ export default function AdminPage() {
                     ))}
                     {invites.length <= 1 && (
                       <tr>
-                        <td colSpan={5} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                        <td colSpan={6} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
                           No invites yet. Add emails above.
                         </td>
                       </tr>

@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     const sheets = getSheets();
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: event.googleSheetId,
-      range: `${event.sheetTabName}!A:D`,
+      range: `${event.sheetTabName}!A:E`,
     });
     const rows = res.data.values || [];
     return NextResponse.json({ invites: rows });
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       if (existingEmails.includes(emailLower)) {
         duplicates.push(emailLower);
       } else {
-        newRows.push([emailLower, entry.name || "", entry.organization || "", "Not Sent"]);
+        newRows.push([emailLower, entry.name || "", entry.organization || "", "Not Sent", ""]);
         existingEmails.push(emailLower);
       }
     }
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
       const sheets = getSheets();
       await sheets.spreadsheets.values.append({
         spreadsheetId: event.googleSheetId,
-        range: `${event.sheetTabName}!A:D`,
+        range: `${event.sheetTabName}!A:E`,
         valueInputOption: "USER_ENTERED",
         requestBody: { values: newRows },
       });
@@ -123,7 +123,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  const { slug, email, status } = await req.json();
+  const { slug, email, status, vip } = await req.json();
 
   const event = getEventBySlug(slug);
   if (!event) {
@@ -134,7 +134,7 @@ export async function PATCH(req: NextRequest) {
     const sheets = getSheets();
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: event.googleSheetId,
-      range: `${event.sheetTabName}!A:D`,
+      range: `${event.sheetTabName}!A:E`,
     });
     const rows = res.data.values || [];
     const emailLower = email.toLowerCase().trim();
@@ -146,7 +146,17 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Email not found." }, { status: 404 });
     }
 
-    // Update column D (status) for the found row
+    // Update status (column D) or VIP (column E)
+    if (vip !== undefined) {
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: event.googleSheetId,
+        range: `${event.sheetTabName}!E${rowIndex + 1}`,
+        valueInputOption: "USER_ENTERED",
+        requestBody: { values: [[vip ? "Yes" : ""]] },
+      });
+      return NextResponse.json({ updated: true });
+    }
+
     await sheets.spreadsheets.values.update({
       spreadsheetId: event.googleSheetId,
       range: `${event.sheetTabName}!D${rowIndex + 1}`,
@@ -178,7 +188,7 @@ export async function DELETE(req: NextRequest) {
     const sheets = getSheets();
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: event.googleSheetId,
-      range: `${event.sheetTabName}!A:D`,
+      range: `${event.sheetTabName}!A:E`,
     });
     const rows = res.data.values || [];
     const emailLower = email.toLowerCase().trim();
