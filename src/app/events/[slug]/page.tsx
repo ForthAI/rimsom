@@ -119,7 +119,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         </div>
 
         {/* Invitation content + RSVP form side by side */}
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-10 md:py-14 bg-white">
           <div className="max-w-content mx-auto px-6 md:px-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
               {/* Left — invitation content */}
