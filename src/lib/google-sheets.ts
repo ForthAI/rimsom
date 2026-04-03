@@ -1,20 +1,21 @@
 import { google } from "googleapis";
 
-function getPrivateKey(): string {
-  const raw = process.env.GOOGLE_PRIVATE_KEY || "";
-  // Handle both escaped \\n and literal \n
-  if (raw.includes("\\n")) {
-    return raw.replace(/\\n/g, "\n");
+function getCredentials() {
+  const raw = process.env.GOOGLE_CREDENTIALS;
+  if (raw) {
+    return JSON.parse(raw);
   }
-  return raw;
+  // Fallback to individual env vars
+  const key = process.env.GOOGLE_PRIVATE_KEY || "";
+  return {
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    private_key: key.includes("\\n") ? key.replace(/\\n/g, "\n") : key,
+  };
 }
 
 function getAuth() {
   return new google.auth.GoogleAuth({
-    credentials: {
-      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: getPrivateKey(),
-    },
+    credentials: getCredentials(),
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
 }
