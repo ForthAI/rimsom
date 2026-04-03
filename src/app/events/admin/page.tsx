@@ -481,14 +481,12 @@ export default function AdminPage() {
                             }}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
                               (row[3] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
-                              (row[3] || "Not Sent") === "Declined" ? "border-red-200 bg-red-50 text-red-700" :
                               (row[3] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
                               "border-gray-200 bg-gray-50 text-gray-600"
                             }`}
                           >
                             <option value="Not Sent">Not Sent</option>
                             <option value="Sent">Sent</option>
-                            <option value="Declined">Declined</option>
                             <option value="Bounced">Bounced</option>
                           </select>
                         </td>
