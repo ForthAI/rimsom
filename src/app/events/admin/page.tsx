@@ -336,22 +336,33 @@ export default function AdminPage() {
         ) : tab === "rsvps" && selectedEvent ? (
           <>
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 no-print">
-              <div className="bg-white p-6 rounded-lg border border-gray-200">
-                <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Invited</p>
-                <p className="font-sans text-3xl font-bold text-brand-dark">{selectedEvent.inviteCount}</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border border-gray-200">
-                <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">RSVP&apos;d</p>
-                <p className="font-sans text-3xl font-bold text-brand-gold">{selectedEvent.rsvps.length}</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border border-gray-200">
-                <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Response Rate</p>
-                <p className="font-sans text-3xl font-bold text-brand-dark">
-                  {selectedEvent.inviteCount > 0 ? Math.round((selectedEvent.rsvps.length / selectedEvent.inviteCount) * 100) : 0}%
-                </p>
-              </div>
-            </div>
+            {(() => {
+              const attendingIdx = selectedEvent.headers.indexOf("Attending");
+              const yesCount = selectedEvent.rsvps.filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes").length;
+              const noCount = selectedEvent.rsvps.filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "no").length;
+              return (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 no-print">
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Invited</p>
+                    <p className="font-sans text-3xl font-bold text-brand-dark">{selectedEvent.inviteCount}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Attending</p>
+                    <p className="font-sans text-3xl font-bold text-green-600">{yesCount}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Declined</p>
+                    <p className="font-sans text-3xl font-bold text-red-500">{noCount}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Response Rate</p>
+                    <p className="font-sans text-3xl font-bold text-brand-dark">
+                      {selectedEvent.inviteCount > 0 ? Math.round(((yesCount + noCount) / selectedEvent.inviteCount) * 100) : 0}%
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Actions */}
             <div className="flex items-center gap-3 mb-6 no-print">
