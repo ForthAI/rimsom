@@ -152,7 +152,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
   return (
     <div>
       <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
-        RSVP
+        Enter Your Details
       </p>
 
       {error && (

@@ -5,7 +5,7 @@ export const events: EventConfig[] = [
     slug: "namibia-convening",
     name: "Namibia Economic Resilience & Investment Convening",
     tagline: "Rimsom Global Presents",
-    headline: "You're Invited",
+    headline: "Please RSVP",
     subhead: "Namibia Economic Resilience & Investment Convening",
     description:
       "Join Rimsom Global for a focused convening on economic resilience and investment opportunities in Namibia. An afternoon of strategic dialogue with leaders in trade, finance, and international development.",
@@ -34,7 +34,7 @@ export const events: EventConfig[] = [
     slug: "finance-after-hours",
     name: "Finance After Hours",
     tagline: "Rimsom Global Presents",
-    headline: "You're Invited",
+    headline: "Please RSVP",
     subhead: "Finance After Hours",
     description:
       "An evening reception bringing together leaders in finance, investment, and international development for meaningful conversation and connection.",
@@ -63,7 +63,7 @@ export const events: EventConfig[] = [
     slug: "sample-reception",
     name: "Sample Reception",
     tagline: "Rimsom Global Presents",
-    headline: "You're Invited",
+    headline: "Please RSVP",
     subhead: "An Evening of Strategic Dialogue",
     description:
       "Join Rimsom Global for an intimate gathering of leaders in trade, finance, and international development.",
