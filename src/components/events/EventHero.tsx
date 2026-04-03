@@ -1,5 +1,6 @@
 import { EventConfig } from "@/types/events";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function EventHero({ event }: { event: EventConfig }) {
   return (
@@ -14,6 +15,20 @@ export default function EventHero({ event }: { event: EventConfig }) {
           priority
         />
         <div className="absolute inset-0 bg-brand-navy/85" />
+      </div>
+      {/* Logo */}
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <div className="max-w-content mx-auto px-6 md:px-10 py-5">
+          <Link href="/">
+            <Image
+              src="/logo-white.svg"
+              alt="Rimsom Global"
+              width={120}
+              height={38}
+              className="h-8 w-auto"
+            />
+          </Link>
+        </div>
       </div>
       <div className="relative z-10 max-w-content mx-auto px-6 md:px-10">
         <div className="max-w-3xl">
