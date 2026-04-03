@@ -61,10 +61,8 @@ export default function AdminPage() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const url = selectedSlug
-        ? `/api/events/admin?slug=${selectedSlug}`
-        : "/api/events/admin";
-      const res = await fetch(url);
+      // Always fetch all events for the dropdown
+      const res = await fetch("/api/events/admin");
       if (res.status === 401) { setAuthenticated(false); return; }
       const data = await res.json();
       setEvents(data.events || []);
@@ -73,7 +71,7 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  }, [selectedSlug]);
+  }, []);
 
   const fetchInvites = useCallback(async () => {
     const slug = selectedSlug || events[0]?.slug;
