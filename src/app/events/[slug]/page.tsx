@@ -105,7 +105,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <div className="space-y-1 text-[14px] text-white/70">
                 <p>April 14, 2026 &middot; 3:00–5:00 PM EST</p>
                 <p>Downtown Washington, D.C.</p>
-                <p className="text-[12px] text-white/40 italic mt-2">Exact venue details will be provided upon confirmation.</p>
+                <p className="text-[12px] text-white/40 italic mt-2">Exact venue details will be provided upon RSVP confirmation.</p>
               </div>
             </div>
           </div>
