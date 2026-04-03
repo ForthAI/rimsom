@@ -30,12 +30,6 @@ function NamibiaInviteContent() {
         the margins of the World Bank–IMF Spring Meetings.
       </p>
 
-      <div className="space-y-1.5 text-[14px]">
-        <p><strong className="text-brand-dark">Date:</strong> April 14, 2026</p>
-        <p><strong className="text-brand-dark">Time:</strong> 3:00–5:00 PM EST</p>
-        <p><strong className="text-brand-dark">Location:</strong> Washington, D.C.</p>
-      </div>
-
       <div>
         <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-3">
           Featuring
@@ -112,9 +106,14 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                 Official Invitation
               </p>
-              <h1 className="font-sans text-3xl md:text-[48px] font-bold leading-[1.08]">
+              <h1 className="font-sans text-3xl md:text-[48px] font-bold leading-[1.08] mb-6">
                 {event.name}
               </h1>
+              <div className="space-y-1 text-[14px] text-white/70">
+                <p>April 14, 2026 &middot; 3:00–5:00 PM EST</p>
+                <p>Downtown Washington, D.C.</p>
+                <p className="text-[12px] text-white/40 italic mt-2">Exact venue details will be provided upon confirmation.</p>
+              </div>
             </div>
           </div>
         </div>
