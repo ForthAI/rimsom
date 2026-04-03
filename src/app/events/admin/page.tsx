@@ -27,8 +27,6 @@ export default function AdminPage() {
   const [selectedSlug, setSelectedSlug] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<Tab>("rsvps");
-  const [doorListMode, setDoorListMode] = useState(false);
-
   // Invite management state
   const [invites, setInvites] = useState<string[][]>([]);
   const [inviteLoading, setInviteLoading] = useState(false);
@@ -282,7 +280,7 @@ export default function AdminPage() {
           </div>
           <select
             value={selectedSlug}
-            onChange={(e) => { setSelectedSlug(e.target.value); setDoorListMode(false); }}
+            onChange={(e) => setSelectedSlug(e.target.value)}
             className="px-3 py-2 bg-white/10 border border-white/20 text-[13px] text-white font-sans outline-none rounded"
           >
             {events.map((ev) => (
@@ -358,7 +356,7 @@ export default function AdminPage() {
 
             {/* Actions */}
             <div className="flex items-center gap-3 mb-6 no-print">
-              <button onClick={() => { setDoorListMode(true); setTimeout(() => window.print(), 100); }} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
+              <button onClick={() => window.print()} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
                 Print Door List
               </button>
               <button onClick={exportCsv} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
@@ -369,47 +367,64 @@ export default function AdminPage() {
               </button>
             </div>
 
-            {/* RSVP Table — hidden when printing door list */}
-            <div className={`bg-white rounded-lg border border-gray-200 overflow-x-auto ${doorListMode ? "hidden" : ""}`}>
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    {selectedEvent.headers.map((h) => (
-                      <th key={h} className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedEvent.rsvps.map((row, i) => (
-                    <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-                      {row.map((cell, j) => (
-                        <td key={j} className="px-4 py-3 font-sans text-[13px] text-brand-dark whitespace-nowrap">{cell}</td>
-                      ))}
-                    </tr>
-                  ))}
-                  {selectedEvent.rsvps.length === 0 && (
-                    <tr>
-                      <td colSpan={selectedEvent.headers.length} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">No RSVPs yet.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+            {/* RSVP Table — on screen with VIP column */}
+            {(() => {
+              const attendingIdx = selectedEvent.headers.indexOf("Attending");
+              const emailIdx = selectedEvent.headers.indexOf("Email");
+              const vipEmails = new Set(
+                invites.slice(1).filter((r) => (r[4] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
+              );
+              return (
+                <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto no-print">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        {selectedEvent.headers.map((h) => (
+                          <th key={h} className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">{h}</th>
+                        ))}
+                        <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedEvent.rsvps.map((row, i) => {
+                        const email = emailIdx >= 0 ? (row[emailIdx] || "").toLowerCase() : "";
+                        const isVip = vipEmails.has(email);
+                        const isAttending = attendingIdx >= 0 && (row[attendingIdx] || "").toLowerCase() === "yes";
+                        return (
+                          <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                            {row.map((cell, j) => (
+                              <td key={j} className="px-4 py-3 font-sans text-[13px] text-brand-dark whitespace-nowrap">{cell}</td>
+                            ))}
+                            <td className="px-4 py-3 text-center">
+                              {isAttending && isVip ? <span className="text-brand-gold text-lg">★</span> : ""}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {selectedEvent.rsvps.length === 0 && (
+                        <tr>
+                          <td colSpan={selectedEvent.headers.length + 1} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">No RSVPs yet.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              );
+            })()}
 
-            {/* Door List — print-only view */}
-            {doorListMode && (() => {
+            {/* Door List — print only, hidden on screen */}
+            {(() => {
               const attendingIdx = selectedEvent.headers.indexOf("Attending");
               const nameIdx = selectedEvent.headers.indexOf("Full Name");
               const titleIdx = selectedEvent.headers.indexOf("Title");
               const orgIdx = selectedEvent.headers.indexOf("Organization");
               const emailIdx = selectedEvent.headers.indexOf("Email");
-              // Build VIP lookup from invites
               const vipEmails = new Set(
                 invites.slice(1).filter((r) => (r[4] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
               );
               const attending = selectedEvent.rsvps.filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes");
               return (
-                <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+                <div className="hidden print:block">
                   <div className="p-6 border-b border-gray-200">
                     <h1 className="font-sans text-xl font-bold text-brand-dark">{selectedEvent.name} — Door List</h1>
                     <p className="font-sans text-[13px] text-brand-gray">{selectedEvent.date} &middot; {selectedEvent.venueName}</p>
@@ -418,12 +433,12 @@ export default function AdminPage() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="px-4 py-3 w-8"></th>
-                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
-                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
-                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
-                        <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
-                        <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">✓</th>
+                        <th className="px-4 py-3 w-8 text-left text-[11px] font-sans font-semibold">#</th>
+                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Name</th>
+                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Title</th>
+                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Organization</th>
+                        <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold">VIP</th>
+                        <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold">✓</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -432,22 +447,17 @@ export default function AdminPage() {
                         const isVip = vipEmails.has(email);
                         return (
                           <tr key={i} className="border-b border-gray-100">
-                            <td className="px-4 py-3 font-sans text-[13px] text-brand-muted">{i + 1}</td>
-                            <td className="px-4 py-3 font-sans text-[14px] font-medium text-brand-dark">{nameIdx >= 0 ? row[nameIdx] : ""}</td>
-                            <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{titleIdx >= 0 ? row[titleIdx] : ""}</td>
-                            <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{orgIdx >= 0 ? row[orgIdx] : ""}</td>
-                            <td className="px-4 py-3 text-center">{isVip ? <span className="text-brand-gold text-lg">★</span> : ""}</td>
-                            <td className="px-4 py-3 text-center text-lg text-gray-300">☐</td>
+                            <td className="px-4 py-2 text-[12px]">{i + 1}</td>
+                            <td className="px-4 py-2 text-[13px] font-medium">{nameIdx >= 0 ? row[nameIdx] : ""}</td>
+                            <td className="px-4 py-2 text-[12px]">{titleIdx >= 0 ? row[titleIdx] : ""}</td>
+                            <td className="px-4 py-2 text-[12px]">{orgIdx >= 0 ? row[orgIdx] : ""}</td>
+                            <td className="px-4 py-2 text-center">{isVip ? "★" : ""}</td>
+                            <td className="px-4 py-2 text-center">☐</td>
                           </tr>
                         );
                       })}
                     </tbody>
                   </table>
-                  <div className="p-4 no-print">
-                    <button onClick={() => setDoorListMode(false)} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
-                      Back to RSVPs
-                    </button>
-                  </div>
                 </div>
               );
             })()}
