@@ -98,12 +98,9 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
             Event Location
           </p>
           <p className="font-sans text-[15px] font-semibold text-brand-dark mb-1">
-            {event.venueName}
-          </p>
-          <p className="font-sans text-[14px] text-brand-gray mb-3">
             {event.venueAddress}
           </p>
-          <p className="font-sans text-[14px] text-brand-gray mb-1">
+          <p className="font-sans text-[14px] text-brand-gray mb-3">
             {event.date} &middot; {event.time}
           </p>
           <a
