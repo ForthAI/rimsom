@@ -849,11 +849,10 @@ export default function AdminPage() {
                     className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                   <input
-                    type="text"
+                    type="date"
                     value={newAssetDue}
                     onChange={(e) => setNewAssetDue(e.target.value)}
-                    placeholder="Due date"
-                    className="md:w-32 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                    className="md:w-40 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                 </div>
                 <div className="flex gap-3">
