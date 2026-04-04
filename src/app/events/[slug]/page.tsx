@@ -135,11 +135,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                     </div>
                   </div>
                 )}
-                <div className="space-y-1 text-[14px] text-white/70">
+                <div className="space-y-1 text-[14px] text-white">
                   <p>{event.date} &middot; {event.time}</p>
                   {event.inviteLocationLabel && <p>{event.inviteLocationLabel}</p>}
                   {event.locationNote && (
-                    <p className="text-[12px] text-white/40 italic mt-2">{event.locationNote}</p>
+                    <p className="text-[12px] text-white/60 italic mt-2">{event.locationNote}</p>
                   )}
                 </div>
               </div>

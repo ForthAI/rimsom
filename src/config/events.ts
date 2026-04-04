@@ -31,7 +31,7 @@ export const events: EventConfig[] = [
     inviteLayout: true,
     inviteLabel: "Official Invitation",
     inviteLocationLabel: "Downtown Washington, D.C.",
-    locationNote: "Exact venue details will be provided upon RSVP confirmation.",
+    locationNote: "Venue details to be provided upon RSVP confirmation",
     featuredSpeakers: [
       { name: "Hon. Ericah Shafudah", title: "Minister of Finance, Republic of Namibia" },
       { name: "Mr. Ebson Uanguta", title: "Governor, Bank of Namibia" },
