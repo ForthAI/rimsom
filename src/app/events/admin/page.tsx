@@ -46,6 +46,7 @@ export default function AdminPage() {
   const [newAssetDue, setNewAssetDue] = useState("");
   const [newAssetNotes, setNewAssetNotes] = useState("");
   const [assetMessage, setAssetMessage] = useState("");
+  const [editingNote, setEditingNote] = useState<number | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -852,7 +853,7 @@ export default function AdminPage() {
                     type="date"
                     value={newAssetDue}
                     onChange={(e) => setNewAssetDue(e.target.value)}
-                    className="md:w-40 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                    className="w-[8.5rem] px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                 </div>
                 <div className="flex gap-3">
@@ -904,29 +905,18 @@ export default function AdminPage() {
                           console.error(`Failed to update asset ${field}`);
                         }
                       };
-                      const editableCell = (field: string, colIdx: number, opts?: { type?: string; className?: string; fontWeight?: string; multiline?: boolean }) => (
+                      const editableCell = (field: string, colIdx: number, opts?: { type?: string; className?: string; fontWeight?: string }) => (
                         <td className="px-4 py-1">
-                          {opts?.multiline ? (
-                            <textarea
-                              defaultValue={row[colIdx] || ""}
-                              onBlur={(e) => {
-                                if (e.target.value !== (row[colIdx] || "")) patchField(field, e.target.value);
-                              }}
-                              rows={2}
-                              className={`w-full px-2 py-1.5 text-[13px] font-sans border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors resize-none ${opts?.className || "text-brand-gray"}`}
-                            />
-                          ) : (
-                            <input
-                              type={opts?.type || "text"}
-                              defaultValue={row[colIdx] || ""}
-                              onBlur={(e) => {
-                                if (e.target.value !== (row[colIdx] || "")) patchField(field, e.target.value);
-                              }}
-                              onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-                              className={`w-full px-2 py-1.5 text-[13px] font-sans border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors ${opts?.className || "text-brand-gray"}`}
-                              style={{ fontWeight: opts?.fontWeight || "400" }}
-                            />
-                          )}
+                          <input
+                            type={opts?.type || "text"}
+                            defaultValue={row[colIdx] || ""}
+                            onBlur={(e) => {
+                              if (e.target.value !== (row[colIdx] || "")) patchField(field, e.target.value);
+                            }}
+                            onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                            className={`w-full px-2 py-1.5 text-[13px] font-sans border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors ${opts?.className || "text-brand-gray"}`}
+                            style={{ fontWeight: opts?.fontWeight || "400" }}
+                          />
                         </td>
                       );
                       return (
@@ -969,7 +959,27 @@ export default function AdminPage() {
                         </td>
                         {editableCell("owner", 3)}
                         {editableCell("dueDate", 4, { type: "date" })}
-                        {editableCell("notes", 5, { multiline: true })}
+                                                <td className="px-4 py-2 min-w-[180px]">
+                          {editingNote === i ? (
+                            <textarea
+                              autoFocus
+                              defaultValue={row[5] || ""}
+                              onBlur={(e) => {
+                                if (e.target.value !== (row[5] || "")) patchField("notes", e.target.value);
+                                setEditingNote(null);
+                              }}
+                              rows={3}
+                              className="w-full px-2 py-1.5 text-[13px] font-sans border border-brand-dark rounded outline-none resize-none text-brand-gray"
+                            />
+                          ) : (
+                            <div
+                              onClick={() => setEditingNote(i)}
+                              className="px-2 py-1.5 text-[13px] font-sans text-brand-gray cursor-text rounded hover:bg-gray-50 min-h-[28px] whitespace-pre-wrap"
+                            >
+                              {row[5] || <span className="text-brand-muted">—</span>}
+                            </div>
+                          )}
+                        </td>
                         <td className="px-4 py-3">
                           <button
                             onClick={async () => {
