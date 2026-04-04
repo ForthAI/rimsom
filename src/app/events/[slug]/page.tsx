@@ -57,8 +57,7 @@ function getInviteContent(slug: string) {
         </p>
 
         <p>
-          We would value your participation and the opportunity for direct engagement with senior
-          decision-makers and investors.
+          We would value your participation.
         </p>
       </div>
     ),
