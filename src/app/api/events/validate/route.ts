@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEventBySlug } from "@/config/events";
-import { getInviteList, checkDuplicate } from "@/lib/google-sheets";
+import { getInviteList, checkDuplicate, getAllRsvps } from "@/lib/google-sheets";
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,10 +38,20 @@ export async function POST(req: NextRequest) {
     );
 
     if (alreadyRsvpd) {
+      // Get attending status
+      const rsvps = await getAllRsvps(event.googleSheetId, event.rsvpTabName);
+      const headers = rsvps[0] || [];
+      const attendingIdx = headers.indexOf("Attending");
+      const matchingRow = rsvps.slice(1).find(
+        (row) => (row[0] || "").toLowerCase().trim() === emailLower
+      );
+      const attending = attendingIdx >= 0 && matchingRow ? matchingRow[attendingIdx] : "Yes";
+
       return NextResponse.json({
         valid: false,
         alreadyRegistered: true,
-        message: "You have already RSVP'd for this event.",
+        attending,
+        message: `You have already RSVP'd for this event.`,
       });
     }
 

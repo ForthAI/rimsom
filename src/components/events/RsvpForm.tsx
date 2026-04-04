@@ -11,6 +11,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
   const [fields, setFields] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [priorAttending, setPriorAttending] = useState("");
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +27,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
       const data = await res.json();
 
       if (data.alreadyRegistered) {
+        setPriorAttending(data.attending || "Yes");
         setPhase("already-registered");
       } else if (data.valid) {
         setFields({ email });
@@ -134,7 +136,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
           </h3>
         </div>
         <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-6">
-          You have already RSVP&apos;d for this event. A confirmation was sent to <strong>{email}</strong>.
+          You have already RSVP&apos;d ({priorAttending === "Yes" ? "Yes — Attending" : "No — Declined"}) for this event. A confirmation was sent to <strong>{email}</strong>.
         </p>
         <p className="font-sans text-[14px] text-brand-gray">
           If you need to make changes, please contact{" "}
