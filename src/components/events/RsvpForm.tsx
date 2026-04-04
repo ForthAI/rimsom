@@ -12,6 +12,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [priorAttending, setPriorAttending] = useState("");
+  const [resent, setResent] = useState(false);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,15 +150,15 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
                   body: JSON.stringify({ eventSlug: event.slug, email }),
                 });
                 setError("");
-                setPriorAttending("resent");
+                setResent(true);
               } catch {
                 setError("Failed to resend. Please try again.");
               }
             }}
-            disabled={priorAttending === "resent"}
+            disabled={resent}
             className="font-sans text-[13px] font-semibold text-brand-gold hover:text-brand-gold-light transition-colors disabled:text-brand-muted disabled:cursor-default mb-6 block"
           >
-            {priorAttending === "resent" ? "✓ Confirmation resent" : "Resend confirmation email →"}
+            {resent ? "✓ Confirmation resent" : "Resend confirmation email →"}
           </button>
         )}
         <p className="font-sans text-[14px] text-brand-gray">
