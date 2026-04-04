@@ -891,25 +891,67 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {assets.slice(1).map((row, i) => (
+                    {assets.slice(1).map((row, i) => {
+                      const patchField = async (field: string, value: string) => {
+                        try {
+                          await fetch("/api/events/assets", {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ slug: activeSlug, rowIndex: i, field, value }),
+                          });
+                          fetchAssets();
+                        } catch {
+                          console.error(`Failed to update asset ${field}`);
+                        }
+                      };
+                      const editableCell = (field: string, colIdx: number, opts?: { type?: string; className?: string; fontWeight?: string; multiline?: boolean }) => (
+                        <td className="px-4 py-1">
+                          {opts?.multiline ? (
+                            <textarea
+                              defaultValue={row[colIdx] || ""}
+                              onBlur={(e) => {
+                                if (e.target.value !== (row[colIdx] || "")) patchField(field, e.target.value);
+                              }}
+                              rows={2}
+                              className={`w-full px-2 py-1.5 text-[13px] font-sans border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors resize-none ${opts?.className || "text-brand-gray"}`}
+                            />
+                          ) : (
+                            <input
+                              type={opts?.type || "text"}
+                              defaultValue={row[colIdx] || ""}
+                              onBlur={(e) => {
+                                if (e.target.value !== (row[colIdx] || "")) patchField(field, e.target.value);
+                              }}
+                              onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                              className={`w-full px-2 py-1.5 text-[13px] font-sans border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors ${opts?.className || "text-brand-gray"}`}
+                              style={{ fontWeight: opts?.fontWeight || "400" }}
+                            />
+                          )}
+                        </td>
+                      );
+                      return (
                       <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="px-4 py-3 font-sans text-[13px] text-brand-dark font-medium">{row[0] || ""}</td>
-                        <td className="px-4 py-3 font-sans text-[12px] text-brand-gray">{row[1] || "—"}</td>
-                        <td className="px-4 py-3">
+                        {editableCell("item", 0, { className: "text-brand-dark", fontWeight: "500" })}
+                        <td className="px-4 py-1">
+                          <select
+                            value={row[1] || ""}
+                            onChange={(e) => patchField("type", e.target.value)}
+                            className="px-2 py-1.5 text-[12px] font-sans border border-transparent rounded outline-none cursor-pointer hover:border-gray-200 focus:border-brand-dark transition-colors text-brand-gray bg-transparent"
+                          >
+                            <option value="">—</option>
+                            <option value="Print">Print</option>
+                            <option value="Signage">Signage</option>
+                            <option value="Digital">Digital</option>
+                            <option value="Swag">Swag</option>
+                            <option value="AV">AV</option>
+                            <option value="Catering">Catering</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </td>
+                        <td className="px-4 py-1">
                           <select
                             value={row[2] || "To Do"}
-                            onChange={async (e) => {
-                              try {
-                                await fetch("/api/events/assets", {
-                                  method: "PATCH",
-                                  headers: { "Content-Type": "application/json" },
-                                  body: JSON.stringify({ slug: activeSlug, rowIndex: i, field: "status", value: e.target.value }),
-                                });
-                                fetchAssets();
-                              } catch {
-                                console.error("Failed to update asset status");
-                              }
-                            }}
+                            onChange={(e) => patchField("status", e.target.value)}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
                               (row[2] || "") === "Ready" ? "border-green-200 bg-green-50 text-green-700" :
                               (row[2] || "") === "Delivered" ? "border-green-200 bg-green-50 text-green-700" :
@@ -925,9 +967,9 @@ export default function AdminPage() {
                             <option value="Delivered">Delivered</option>
                           </select>
                         </td>
-                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[3] || "—"}</td>
-                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[4] || "—"}</td>
-                        <td className="px-4 py-3 font-sans text-[12px] text-brand-gray max-w-[200px] truncate" title={row[5] || ""}>{row[5] || "—"}</td>
+                        {editableCell("owner", 3)}
+                        {editableCell("dueDate", 4, { type: "date" })}
+                        {editableCell("notes", 5, { multiline: true })}
                         <td className="px-4 py-3">
                           <button
                             onClick={async () => {
@@ -950,7 +992,8 @@ export default function AdminPage() {
                           </button>
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                     {assets.length <= 1 && (
                       <tr>
                         <td colSpan={7} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
