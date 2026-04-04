@@ -31,6 +31,7 @@ export interface EventConfig {
   inviteLabel?: string;
   inviteLocationLabel?: string;
   locationNote?: string;
+  featuredSpeakers?: { name: string; title: string }[];
   active: boolean;
 }
 
