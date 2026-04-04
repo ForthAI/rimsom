@@ -56,9 +56,9 @@ function getInviteContent(slug: string) {
         </p>
 
         <p>
-          This is not a conference, panel, or workshop &ndash; no presentations, no slides. Just come and unwind
-          with a limited gathering of senior decision-makers across government, finance, and investment
-          curated for conversations, networking and relationship-building.
+          Not a conference, panel, or workshop &ndash; no presentations, no slides. Curated and intimate
+          gathering of senior decision-makers across government, finance, and investment for meaningful
+          conversations and relationship-building.
         </p>
 
         <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
