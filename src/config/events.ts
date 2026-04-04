@@ -68,7 +68,7 @@ export const events: EventConfig[] = [
     inviteLayout: true,
     inviteLabel: "Strictly By Invitation Only",
     inviteLocationLabel: "Washington, D.C.",
-    locationNote: "Exact venue details will be provided upon RSVP confirmation.",
+    locationNote: "Venue details to be provided upon RSVP confirmation",
     active: true,
   },
   {
