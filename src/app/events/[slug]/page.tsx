@@ -135,10 +135,10 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                     </div>
                   </div>
                 )}
-                <div className="relative space-y-1 text-[14px] text-white md:mt-[27px]">
+                <div className="relative space-y-1 text-[13px] text-white md:mt-[27px]">
                   <div className="hidden md:block absolute top-0 bottom-0 -left-10 w-px bg-white/20" />
                   <p>{event.date} &middot; {event.time}</p>
-                  {event.inviteLocationLabel && <p>{event.inviteLocationLabel}</p>}
+                  {event.inviteLocationLabel && <p className="text-white/50">{event.inviteLocationLabel}</p>}
                   {event.locationNote && (
                     <p className="text-[12px] text-white/60 italic mt-2">{event.locationNote}</p>
                   )}
