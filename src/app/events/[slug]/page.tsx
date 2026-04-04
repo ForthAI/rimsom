@@ -48,17 +48,28 @@ function getInviteContent(slug: string) {
     ),
     "finance-after-hours": (
       <div className="space-y-6 font-sans text-[15px] text-brand-gray leading-relaxed">
-        <p className="text-[20px] font-semibold text-brand-navy leading-snug">
-          A Private Evening
-        </p>
-        <p className="text-[13px] text-brand-muted italic">
-          on the margins of the World Bank - IMF Spring Meetings
+        <div>
+          <p className="text-[20px] font-semibold text-brand-navy leading-snug">
+            A Private Evening
+          </p>
+          <p className="text-[13px] text-brand-muted italic">
+            on the margins of the World Bank - IMF Spring Meetings
+          </p>
+        </div>
+
+        <p>
+          Not a conference, panel, or workshop. Just a curated evening of cultural cuisine to be enjoyed
+          amongst senior decision-makers across government, finance, and investment.
         </p>
 
         <p>
-          Not a conference, panel, or workshop &ndash; no presentations, no slides. Just a curated evening
-          of cultural cuisine to be enjoyed amongst senior decision-makers across government, finance, and
-          investment. This gathering is designed for meaningful conversations and relationship-building.
+          This gathering will focus on Africa, Caribbean and the Middle East stakeholders and is designed
+          for meaningful conversations and relationship-building.
+        </p>
+
+        <p>
+          Expected guests include Ministers of Finance, Central Bank Governors, Members of the Diplomatic
+          Corps, US Government Officials and C-Suite Executives.
         </p>
 
         <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
