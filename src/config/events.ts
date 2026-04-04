@@ -13,7 +13,7 @@ export const events: EventConfig[] = [
     time: "3:00 PM – 5:00 PM",
     venueName: "1717 K Street NW, 9th Floor",
     venueAddress: "1717 K Street NW, 9th Floor, Washington, DC 20006",
-    heroImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80",
+    heroImage: "/world-map.jpg",
     formFields: [
       { name: "firstName", label: "First Name", type: "text", placeholder: "First name", required: true },
       { name: "surname", label: "Surname", type: "text", placeholder: "Surname", required: true },
