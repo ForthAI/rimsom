@@ -136,8 +136,30 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
           </h3>
         </div>
         <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-6">
-          You have already RSVP&apos;d ({priorAttending === "Yes" ? "Yes — Attending" : "No — Declined"}) for this event. A confirmation was sent to <strong>{email}</strong>.
+          You have already RSVP&apos;d ({priorAttending === "Yes" ? "Yes — Attending" : "No — Declined"}) for this event.
+          {priorAttending === "Yes" && <> A confirmation was sent to <strong>{email}</strong>.</>}
         </p>
+        {priorAttending === "Yes" && (
+          <button
+            onClick={async () => {
+              try {
+                await fetch("/api/events/rsvp/resend", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ eventSlug: event.slug, email }),
+                });
+                setError("");
+                setPriorAttending("resent");
+              } catch {
+                setError("Failed to resend. Please try again.");
+              }
+            }}
+            disabled={priorAttending === "resent"}
+            className="font-sans text-[13px] font-semibold text-brand-gold hover:text-brand-gold-light transition-colors disabled:text-brand-muted disabled:cursor-default mb-6 block"
+          >
+            {priorAttending === "resent" ? "✓ Confirmation resent" : "Resend confirmation email →"}
+          </button>
+        )}
         <p className="font-sans text-[14px] text-brand-gray">
           If you need to make changes, please contact{" "}
           <a href="mailto:events@rimsomglobal.com" className="text-brand-gold hover:text-brand-gold-light transition-colors">
