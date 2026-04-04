@@ -29,6 +29,9 @@ export const events: EventConfig[] = [
     rsvpTabName: "RSVPs",
     emailSubject: "Your RSVP is Confirmed – Namibia Economic Resilience & Investment Convening",
     inviteLayout: true,
+    inviteLabel: "Official Invitation",
+    inviteLocationLabel: "Downtown Washington, D.C.",
+    locationNote: "Exact venue details will be provided upon RSVP confirmation.",
     active: true,
   },
   {
@@ -41,9 +44,9 @@ export const events: EventConfig[] = [
       "An evening reception bringing together leaders in finance, investment, and international development for meaningful conversation and connection.",
     date: "Wednesday, April 15, 2026",
     time: "7:30 PM – 10:30 PM",
-    venueName: "1627 K St NW",
-    venueAddress: "1627 K St NW, Washington, DC 20006",
-    heroImage: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80",
+    venueName: "Lagos District Restaurant",
+    venueAddress: "1629 K Street NW, Washington, D.C. 20006",
+    heroImage: "/after-hours.jpg",
     formFields: [
       { name: "firstName", label: "First Name", type: "text", placeholder: "First name", required: true },
       { name: "surname", label: "Surname", type: "text", placeholder: "Surname", required: true },
@@ -58,6 +61,10 @@ export const events: EventConfig[] = [
     sheetTabName: "Invites",
     rsvpTabName: "RSVPs",
     emailSubject: "Your RSVP is Confirmed – Finance After Hours",
+    inviteLayout: true,
+    inviteLabel: "Strictly By Invitation Only",
+    inviteLocationLabel: "Washington, D.C.",
+    locationNote: "Exact venue details will be provided upon RSVP confirmation.",
     active: true,
   },
   {

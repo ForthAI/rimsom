@@ -18,49 +18,83 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-// Namibia invite-style content
-function NamibiaInviteContent() {
-  return (
-    <div className="space-y-6 font-sans text-[15px] text-brand-gray leading-relaxed">
-      <div>
-        <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-3">
-          Featuring
-        </p>
-        <div className="space-y-2">
-          <div>
-            <p className="font-semibold text-brand-navy">Hon. Ericah Shafudah</p>
-            <p className="text-[13px] text-brand-muted">Minister of Finance, Republic of Namibia</p>
-          </div>
-          <div>
-            <p className="font-semibold text-brand-navy">Mr. Ebson Uanguta</p>
-            <p className="text-[13px] text-brand-muted">Governor, Bank of Namibia</p>
+// Per-event invite content registry
+function getInviteContent(slug: string) {
+  const content: Record<string, React.ReactNode> = {
+    "namibia-convening": (
+      <div className="space-y-6 font-sans text-[15px] text-brand-gray leading-relaxed">
+        <div>
+          <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-3">
+            Featuring
+          </p>
+          <div className="space-y-2">
+            <div>
+              <p className="font-semibold text-brand-navy">Hon. Ericah Shafudah</p>
+              <p className="text-[13px] text-brand-muted">Minister of Finance, Republic of Namibia</p>
+            </div>
+            <div>
+              <p className="font-semibold text-brand-navy">Mr. Ebson Uanguta</p>
+              <p className="text-[13px] text-brand-muted">Governor, Bank of Namibia</p>
+            </div>
           </div>
         </div>
+
+        <p>
+          A limited group (30 attendees) of senior stakeholders across government, international financial
+          institutions, and strategic investors will join this discussion.
+        </p>
+
+        <p>
+          The convening will focus on Namibia&apos;s economic outlook, fiscal priorities, and near-term,
+          bankable investment opportunities under National Development Program 6 (NDP-6).
+        </p>
+
+        <p>
+          We would value your participation and the opportunity for direct engagement with senior
+          decision-makers and investors.
+        </p>
+
+        <p>
+          <strong className="text-brand-navy">Rimsom Global</strong>, a strategic advisory firm connecting capital,
+          governments and private sector to emerging market investment opportunities, is pleased to invite you to this
+          closed-door Namibia Economic Resilience &amp; Investment Convening on
+          the margins of the World Bank–IMF Spring Meetings.
+        </p>
       </div>
+    ),
+    "finance-after-hours": (
+      <div className="space-y-6 font-sans text-[15px] text-brand-gray leading-relaxed">
+        <p className="text-[20px] font-semibold text-brand-navy leading-snug">
+          A Private Evening
+        </p>
+        <p className="text-[13px] text-brand-muted italic">
+          on the margins of the World Bank Group Spring Meetings
+        </p>
 
-      <p>
-        A limited group (30 attendees) of senior stakeholders across government, international financial
-        institutions, and strategic investors will join this discussion.
-      </p>
+        <p>
+          A limited gathering of senior decision-makers across government, finance, and investment
+          curated for conversations, networking and relationship-building.
+        </p>
 
-      <p>
-        The convening will focus on Namibia&apos;s economic outlook, fiscal priorities, and near-term,
-        bankable investment opportunities under National Development Program 6 (NDP-6).
-      </p>
+        <p>
+          This is not a conference, panel, or workshop &ndash; no panels, no slides, just come and retreat.
+        </p>
 
-      <p>
-        We would value your participation and the opportunity for direct engagement with senior
-        decision-makers and investors.
-      </p>
+        <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
+          Off-record. By invitation only.
+        </p>
 
-      <p>
-        <strong className="text-brand-navy">Rimsom Global</strong>, a strategic advisory firm connecting capital,
-        governments and private sector to emerging market investment opportunities, is pleased to invite you to this
-        closed-door Namibia Economic Resilience &amp; Investment Convening on
-        the margins of the World Bank–IMF Spring Meetings.
-      </p>
-    </div>
-  );
+        <div className="pt-4 border-t border-brand-light">
+          <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-2">
+            Convened by
+          </p>
+          <p className="font-semibold text-brand-navy">Rimsom Global</p>
+          <p className="text-[13px] text-brand-muted">Access. Alignment. Execution.</p>
+        </div>
+      </div>
+    ),
+  };
+  return content[slug] || null;
 }
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -97,15 +131,17 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             </div>
             <div className="max-w-content mx-auto px-6 md:px-10 pb-16 md:pb-20 pt-8 md:pt-12">
               <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
-                Official Invitation
+                {event.inviteLabel}
               </p>
               <h1 className="font-sans text-3xl md:text-[48px] font-bold leading-[1.08] mb-6">
                 {event.name}
               </h1>
               <div className="space-y-1 text-[14px] text-white/70">
-                <p>April 14, 2026 &middot; 3:00–5:00 PM EST</p>
-                <p>Downtown Washington, D.C.</p>
-                <p className="text-[12px] text-white/40 italic mt-2">Exact venue details will be provided upon RSVP confirmation.</p>
+                <p>{event.date} &middot; {event.time}</p>
+                {event.inviteLocationLabel && <p>{event.inviteLocationLabel}</p>}
+                {event.locationNote && (
+                  <p className="text-[12px] text-white/40 italic mt-2">{event.locationNote}</p>
+                )}
               </div>
             </div>
           </div>
@@ -117,7 +153,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
               {/* Left — invitation content */}
               <div>
-                <NamibiaInviteContent />
+                {getInviteContent(event.slug)}
               </div>
 
               {/* Right — RSVP form */}

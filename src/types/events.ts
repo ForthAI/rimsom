@@ -28,6 +28,9 @@ export interface EventConfig {
   emailSubject: string;
   ticketPdf?: string;
   inviteLayout?: boolean;
+  inviteLabel?: string;
+  inviteLocationLabel?: string;
+  locationNote?: string;
   active: boolean;
 }
 
