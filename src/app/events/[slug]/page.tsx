@@ -119,9 +119,9 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <h1 className="font-sans text-2xl md:text-[36px] font-bold leading-[1.12] mb-8">
                 {event.name}
               </h1>
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] md:gap-10 gap-8 items-start">
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1px_1fr] md:gap-10 gap-8 items-start">
                 {event.featuredSpeakers && event.featuredSpeakers.length > 0 && (
-                  <div className="md:text-right">
+                  <div>
                     <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
                       Featuring
                     </p>
