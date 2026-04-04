@@ -965,7 +965,7 @@ export default function AdminPage() {
                             value={row[2] || "To Do"}
                             onChange={(e) => patchField("status", e.target.value)}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
-                              (row[2] || "") === "Ready" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[2] || "") === "Approved" ? "border-green-200 bg-green-50 text-green-700" :
                               (row[2] || "") === "Delivered" ? "border-green-200 bg-green-50 text-green-700" :
                               (row[2] || "") === "In Progress" ? "border-blue-200 bg-blue-50 text-blue-700" :
                               (row[2] || "") === "Shipped" ? "border-purple-200 bg-purple-50 text-purple-700" :
@@ -974,7 +974,7 @@ export default function AdminPage() {
                           >
                             <option value="To Do">To Do</option>
                             <option value="In Progress">In Progress</option>
-                            <option value="Ready">Ready</option>
+                            <option value="Approved">Approved</option>
                             <option value="Shipped">Shipped</option>
                             <option value="Delivered">Delivered</option>
                           </select>
