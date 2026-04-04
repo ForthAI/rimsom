@@ -98,7 +98,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               sizes="100vw"
               priority
             />
-            <div className="absolute inset-0 bg-brand-navy/85" />
+            <div className="absolute inset-0 bg-brand-navy" style={{ opacity: event.heroOverlay ?? 0.85 }} />
           </div>
           <div className="relative z-10">
             <div className="max-w-content mx-auto px-6 md:px-10 py-5">

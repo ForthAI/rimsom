@@ -69,6 +69,7 @@ export const events: EventConfig[] = [
     inviteLabel: "Strictly By Invitation Only",
     inviteLocationLabel: "Washington, D.C.",
     locationNote: "Venue details to be provided upon RSVP confirmation",
+    heroOverlay: 0.7,
     active: true,
   },
   {

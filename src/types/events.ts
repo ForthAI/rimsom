@@ -32,6 +32,7 @@ export interface EventConfig {
   inviteLocationLabel?: string;
   locationNote?: string;
   featuredSpeakers?: { name: string; title: string }[];
+  heroOverlay?: number;
   active: boolean;
 }
 
