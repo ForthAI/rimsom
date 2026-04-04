@@ -113,7 +113,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               />
             </div>
             <div className="max-w-content mx-auto px-6 md:px-10 pb-16 md:pb-20 pt-8 md:pt-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-end">
                 <div>
                   <p className="text-[13px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-6">
                     {event.inviteLabel}
@@ -130,7 +130,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   </div>
                 </div>
                 {event.featuredSpeakers && event.featuredSpeakers.length > 0 && (
-                  <div className="md:text-right">
+                  <div>
                     <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
                       Featuring
                     </p>
