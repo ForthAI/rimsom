@@ -31,7 +31,7 @@ function getInviteContent(slug: string) {
         </p>
 
         <p>
-          A limited group (30 attendees) of senior stakeholders across government, international financial
+          A limited group of 30 senior stakeholders across government, international financial
           institutions, and strategic investors will join this discussion.
         </p>
 
@@ -41,7 +41,8 @@ function getInviteContent(slug: string) {
         </p>
 
         <p>
-          We would value your participation.
+          We would value your participation as we work together to originate and advance bankable,
+          investment-ready transactions.
         </p>
       </div>
     ),
