@@ -357,90 +357,161 @@ export default function AdminPage() {
           <p className="text-brand-gray font-sans text-[14px]">Loading...</p>
         ) : tab === "rsvps" && selectedEvent ? (
           <>
-            {/* Stats */}
-            {(() => {
-              const attendingIdx = selectedEvent.headers.indexOf("Attending");
-              const yesCount = selectedEvent.rsvps.filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes").length;
-              const noCount = selectedEvent.rsvps.filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "no").length;
-              return (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 no-print">
-                  <div className="bg-white p-6 rounded-lg border border-gray-200">
-                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Invited</p>
-                    <p className="font-sans text-3xl font-bold text-brand-dark">{selectedEvent.inviteCount}</p>
-                  </div>
-                  <div className="bg-white p-6 rounded-lg border border-gray-200">
-                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Attending</p>
-                    <p className="font-sans text-3xl font-bold text-green-600">{yesCount}</p>
-                  </div>
-                  <div className="bg-white p-6 rounded-lg border border-gray-200">
-                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Declined</p>
-                    <p className="font-sans text-3xl font-bold text-red-500">{noCount}</p>
-                  </div>
-                  <div className="bg-white p-6 rounded-lg border border-gray-200">
-                    <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Response Rate</p>
-                    <p className="font-sans text-3xl font-bold text-brand-dark">
-                      {selectedEvent.inviteCount > 0 ? Math.round(((yesCount + noCount) / selectedEvent.inviteCount) * 100) : 0}%
-                    </p>
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Actions */}
-            <div className="flex items-center gap-3 mb-6 no-print">
-              <button onClick={() => window.print()} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
-                Print Door List
-              </button>
-              <button onClick={exportCsv} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
-                Export CSV
-              </button>
-              <button onClick={fetchData} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
-                Refresh
-              </button>
-            </div>
-
-            {/* RSVP Table — on screen with VIP column */}
+            {/* Stats + Table */}
             {(() => {
               const attendingIdx = selectedEvent.headers.indexOf("Attending");
               const emailIdx = selectedEvent.headers.indexOf("Email");
+              const firstNameIdx = selectedEvent.headers.indexOf("First Name");
+              const surnameIdx = selectedEvent.headers.indexOf("Surname");
+              const titleIdx = selectedEvent.headers.indexOf("Title");
+              const orgIdx = selectedEvent.headers.indexOf("Organization");
+              const timestampIdx = selectedEvent.headers.indexOf("Timestamp") >= 0
+                ? selectedEvent.headers.indexOf("Timestamp")
+                : selectedEvent.headers.length - 1;
+
               const vipEmails = new Set(
-                invites.slice(1).filter((r) => (r[4] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
+                invites.slice(1).filter((r) => (r[5] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
               );
+
+              // Build RSVP email set for cross-reference
+              const rsvpEmails = new Set(
+                selectedEvent.rsvps.map((r) => emailIdx >= 0 ? (r[emailIdx] || "").toLowerCase() : "")
+              );
+
+              // Pending = invited with status "Sent" but no RSVP
+              const pendingRows = invites.slice(1)
+                .filter((inv) => {
+                  const email = (inv[0] || "").toLowerCase();
+                  const status = (inv[3] || "").toLowerCase();
+                  return status === "sent" && !rsvpEmails.has(email);
+                })
+                .map((inv) => ({
+                  email: inv[0] || "",
+                  firstName: "",
+                  surname: "",
+                  title: "",
+                  organization: inv[2] || "",
+                  name: inv[1] || "",
+                  status: "Pending" as const,
+                  date: inv[4] || "",
+                  isVip: (inv[5] || "").toLowerCase() === "yes",
+                }));
+
+              // Yes/No rows from actual RSVPs
+              const respondedRows = selectedEvent.rsvps.map((r) => {
+                const email = emailIdx >= 0 ? (r[emailIdx] || "").toLowerCase() : "";
+                const attending = attendingIdx >= 0 ? (r[attendingIdx] || "").toLowerCase() : "";
+                return {
+                  email,
+                  firstName: firstNameIdx >= 0 ? r[firstNameIdx] || "" : "",
+                  surname: surnameIdx >= 0 ? r[surnameIdx] || "" : "",
+                  title: titleIdx >= 0 ? r[titleIdx] || "" : "",
+                  organization: orgIdx >= 0 ? r[orgIdx] || "" : "",
+                  name: "",
+                  status: (attending === "yes" ? "Yes" : "No") as "Yes" | "No",
+                  date: r[timestampIdx] || "",
+                  isVip: vipEmails.has(email),
+                };
+              });
+
+              const allRows = [...respondedRows, ...pendingRows];
+              const yesCount = respondedRows.filter((r) => r.status === "Yes").length;
+              const noCount = respondedRows.filter((r) => r.status === "No").length;
+              const pendingCount = pendingRows.length;
+              // Total outreach = everyone who responded + those still pending
+              const totalOutreach = yesCount + noCount + pendingCount;
+
               return (
-                <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto no-print">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        {selectedEvent.headers.map((h) => (
-                          <th key={h} className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">{h}</th>
-                        ))}
-                        <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedEvent.rsvps.map((row, i) => {
-                        const email = emailIdx >= 0 ? (row[emailIdx] || "").toLowerCase() : "";
-                        const isVip = vipEmails.has(email);
-                        const isAttending = attendingIdx >= 0 && (row[attendingIdx] || "").toLowerCase() === "yes";
-                        return (
+                <>
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 no-print">
+                    <div className="bg-white p-6 rounded-lg border border-gray-200">
+                      <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Invited</p>
+                      <p className="font-sans text-3xl font-bold text-brand-dark">{selectedEvent.inviteCount}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg border border-gray-200">
+                      <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Pending</p>
+                      <p className="font-sans text-3xl font-bold text-amber-500">{pendingCount}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg border border-gray-200">
+                      <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Attending</p>
+                      <p className="font-sans text-3xl font-bold text-green-600">{yesCount}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg border border-gray-200">
+                      <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Declined</p>
+                      <p className="font-sans text-3xl font-bold text-red-500">{noCount}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-lg border border-gray-200">
+                      <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Response Rate</p>
+                      <p className="font-sans text-3xl font-bold text-brand-dark">
+                        {totalOutreach > 0 ? Math.round(((yesCount + noCount) / totalOutreach) * 100) : 0}%
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-3 mb-6 no-print">
+                    <button onClick={() => window.print()} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
+                      Print Door List
+                    </button>
+                    <button onClick={exportCsv} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
+                      Export CSV
+                    </button>
+                    <button onClick={() => { fetchData(); fetchInvites(); }} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
+                      Refresh
+                    </button>
+                  </div>
+
+                  {/* RSVP Table with Pending rows */}
+                  <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto no-print">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-gray-200">
+                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
+                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
+                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
+                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
+                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
+                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Date</th>
+                          <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allRows.map((row, i) => (
                           <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-                            {row.map((cell, j) => (
-                              <td key={j} className="px-4 py-3 font-sans text-[13px] text-brand-dark whitespace-nowrap">{cell}</td>
-                            ))}
+                            <td className="px-4 py-3 font-sans text-[13px] text-brand-dark whitespace-nowrap">{row.email}</td>
+                            <td className="px-4 py-3 font-sans text-[13px] text-brand-dark whitespace-nowrap">
+                              {row.status === "Pending"
+                                ? row.name || "—"
+                                : [row.firstName, row.surname].filter(Boolean).join(" ") || "—"
+                              }
+                            </td>
+                            <td className="px-4 py-3 font-sans text-[13px] text-brand-gray whitespace-nowrap">{row.title || "—"}</td>
+                            <td className="px-4 py-3 font-sans text-[13px] text-brand-gray whitespace-nowrap">{row.organization || "—"}</td>
+                            <td className="px-4 py-3">
+                              <span className={`inline-block px-2 py-0.5 text-[11px] font-sans font-semibold rounded ${
+                                row.status === "Yes" ? "bg-green-50 text-green-700" :
+                                row.status === "No" ? "bg-red-50 text-red-600" :
+                                "bg-amber-50 text-amber-600"
+                              }`}>
+                                {row.status}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row.date || "—"}</td>
                             <td className="px-4 py-3 text-center">
-                              {isAttending && isVip ? <span className="text-brand-gold text-lg">★</span> : ""}
+                              {row.isVip && row.status === "Yes" ? <span className="text-brand-gold text-lg">★</span> : ""}
                             </td>
                           </tr>
-                        );
-                      })}
-                      {selectedEvent.rsvps.length === 0 && (
-                        <tr>
-                          <td colSpan={selectedEvent.headers.length + 1} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">No RSVPs yet.</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                        ))}
+                        {allRows.length === 0 && (
+                          <tr>
+                            <td colSpan={7} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">No RSVPs yet.</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               );
             })()}
 
@@ -453,7 +524,7 @@ export default function AdminPage() {
               const orgIdx = selectedEvent.headers.indexOf("Organization");
               const emailIdx = selectedEvent.headers.indexOf("Email");
               const vipEmails = new Set(
-                invites.slice(1).filter((r) => (r[4] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
+                invites.slice(1).filter((r) => (r[5] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
               );
               const attending = selectedEvent.rsvps
                 .filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes")
@@ -588,6 +659,7 @@ export default function AdminPage() {
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Date Sent</th>
                       <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
                       <th className="px-4 py-3 w-10"></th>
                     </tr>
@@ -625,10 +697,11 @@ export default function AdminPage() {
                             <option value="Bounced">Bounced</option>
                           </select>
                         </td>
+                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[4] || "—"}</td>
                         <td className="px-4 py-3 text-center">
                           <button
                             onClick={async () => {
-                              const isVip = (row[4] || "").toLowerCase() === "yes";
+                              const isVip = (row[5] || "").toLowerCase() === "yes";
                               try {
                                 await fetch("/api/events/invites", {
                                   method: "PATCH",
@@ -641,9 +714,9 @@ export default function AdminPage() {
                               }
                             }}
                             className="transition-colors"
-                            title={row[4] === "Yes" ? "Remove VIP" : "Mark as VIP"}
+                            title={row[5] === "Yes" ? "Remove VIP" : "Mark as VIP"}
                           >
-                            {(row[4] || "").toLowerCase() === "yes" ? (
+                            {(row[5] || "").toLowerCase() === "yes" ? (
                               <span className="text-brand-gold text-lg">★</span>
                             ) : (
                               <span className="text-gray-300 hover:text-brand-gold text-lg">☆</span>
@@ -663,7 +736,7 @@ export default function AdminPage() {
                     ))}
                     {invites.length <= 1 && (
                       <tr>
-                        <td colSpan={6} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                        <td colSpan={7} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
                           No invites yet. Add emails above.
                         </td>
                       </tr>
