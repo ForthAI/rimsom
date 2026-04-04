@@ -40,6 +40,13 @@ function getInviteContent(slug: string) {
         </div>
 
         <p>
+          <strong className="text-brand-navy">Rimsom Global</strong>, a strategic advisory firm connecting capital,
+          governments and private sector to emerging market investment opportunities, is pleased to invite you to this
+          closed-door Namibia Economic Resilience &amp; Investment Convening on
+          the margins of the World Bank–IMF Spring Meetings.
+        </p>
+
+        <p>
           A limited group (30 attendees) of senior stakeholders across government, international financial
           institutions, and strategic investors will join this discussion.
         </p>
@@ -52,13 +59,6 @@ function getInviteContent(slug: string) {
         <p>
           We would value your participation and the opportunity for direct engagement with senior
           decision-makers and investors.
-        </p>
-
-        <p>
-          <strong className="text-brand-navy">Rimsom Global</strong>, a strategic advisory firm connecting capital,
-          governments and private sector to emerging market investment opportunities, is pleased to invite you to this
-          closed-door Namibia Economic Resilience &amp; Investment Convening on
-          the margins of the World Bank–IMF Spring Meetings.
         </p>
       </div>
     ),
