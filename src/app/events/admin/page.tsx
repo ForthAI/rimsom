@@ -47,6 +47,7 @@ export default function AdminPage() {
   const [newAssetNotes, setNewAssetNotes] = useState("");
   const [assetMessage, setAssetMessage] = useState("");
   const [editingNote, setEditingNote] = useState<number | null>(null);
+  const [editingItem, setEditingItem] = useState<number | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -921,7 +922,28 @@ export default function AdminPage() {
                       );
                       return (
                       <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-                        {editableCell("item", 0, { className: "text-brand-dark", fontWeight: "500" })}
+                        <td className="px-4 py-2 min-w-[160px]">
+                          {editingItem === i ? (
+                            <input
+                              autoFocus
+                              type="text"
+                              defaultValue={row[0] || ""}
+                              onBlur={(e) => {
+                                if (e.target.value !== (row[0] || "")) patchField("item", e.target.value);
+                                setEditingItem(null);
+                              }}
+                              onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                              className="w-full px-2 py-1.5 text-[13px] font-sans font-medium border border-brand-dark rounded outline-none text-brand-dark"
+                            />
+                          ) : (
+                            <div
+                              onClick={() => setEditingItem(i)}
+                              className="px-2 py-1.5 text-[13px] font-sans font-medium text-brand-dark cursor-text rounded hover:bg-gray-50 min-h-[28px] whitespace-pre-wrap"
+                            >
+                              {row[0] || <span className="text-brand-muted">—</span>}
+                            </div>
+                          )}
+                        </td>
                         <td className="px-4 py-1">
                           <select
                             value={row[1] || ""}
