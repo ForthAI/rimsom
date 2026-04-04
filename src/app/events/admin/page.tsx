@@ -14,7 +14,7 @@ interface EventData {
   error?: string;
 }
 
-type Tab = "rsvps" | "invites";
+type Tab = "rsvps" | "invites" | "assets";
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -37,6 +37,15 @@ export default function AdminPage() {
   const [bulkEmails, setBulkEmails] = useState("");
   const [showBulk, setShowBulk] = useState(false);
   const [inviteMessage, setInviteMessage] = useState("");
+  // Asset management state
+  const [assets, setAssets] = useState<string[][]>([]);
+  const [assetLoading, setAssetLoading] = useState(false);
+  const [newAssetItem, setNewAssetItem] = useState("");
+  const [newAssetType, setNewAssetType] = useState("");
+  const [newAssetOwner, setNewAssetOwner] = useState("");
+  const [newAssetDue, setNewAssetDue] = useState("");
+  const [newAssetNotes, setNewAssetNotes] = useState("");
+  const [assetMessage, setAssetMessage] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,10 +123,31 @@ export default function AdminPage() {
     }
   }, [events, selectedSlug]);
 
+  const fetchAssets = useCallback(async () => {
+    const slug = selectedSlug || events[0]?.slug;
+    if (!slug) return;
+    setAssetLoading(true);
+    try {
+      const res = await fetch(`/api/events/assets?slug=${slug}`);
+      if (res.status === 401) { setAuthenticated(false); return; }
+      const data = await res.json();
+      setAssets(data.assets || []);
+    } catch {
+      console.error("Failed to fetch assets");
+    } finally {
+      setAssetLoading(false);
+    }
+  }, [selectedSlug, events]);
+
   // Fetch invites for both tabs (needed for VIP data on door list)
   useEffect(() => {
     if (authenticated && selectedSlug) fetchInvites();
   }, [authenticated, fetchInvites, selectedSlug]);
+
+  // Fetch assets when on assets tab
+  useEffect(() => {
+    if (authenticated && selectedSlug && tab === "assets") fetchAssets();
+  }, [authenticated, selectedSlug, tab, fetchAssets]);
 
   // Refresh when switching tabs
   useEffect(() => {
@@ -336,7 +366,7 @@ export default function AdminPage() {
       {/* Tabs */}
       <div className="border-b border-gray-200 bg-white no-print">
         <div className="max-w-content mx-auto px-6 md:px-10 flex gap-6">
-          {(["rsvps", "invites"] as Tab[]).map((t) => (
+          {(["rsvps", "invites", "assets"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -346,7 +376,7 @@ export default function AdminPage() {
                   : "border-transparent text-brand-muted hover:text-brand-dark"
               }`}
             >
-              {t === "rsvps" ? "RSVPs" : "Invite List"}
+              {t === "rsvps" ? "RSVPs" : t === "invites" ? "Invite List" : "Assets"}
             </button>
           ))}
         </div>
@@ -747,6 +777,194 @@ export default function AdminPage() {
             </div>
             <p className="mt-3 font-sans text-[12px] text-brand-muted">
               {invites.length > 1 ? invites.length - 1 : 0} invites total
+            </p>
+          </>
+        ) : tab === "assets" ? (
+          <>
+            {/* Add asset form */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+              <h3 className="font-sans text-[14px] font-semibold text-brand-dark mb-4">Add Asset</h3>
+
+              {assetMessage && (
+                <div className="mb-4 p-3 bg-brand-offwhite rounded text-[13px] font-sans text-brand-dark">
+                  {assetMessage}
+                </div>
+              )}
+
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!newAssetItem.trim() || !activeSlug) return;
+                  setAssetMessage("");
+                  try {
+                    await fetch("/api/events/assets", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        slug: activeSlug,
+                        item: newAssetItem.trim(),
+                        type: newAssetType,
+                        owner: newAssetOwner.trim(),
+                        dueDate: newAssetDue,
+                        notes: newAssetNotes.trim(),
+                      }),
+                    });
+                    setAssetMessage(`Added "${newAssetItem.trim()}".`);
+                    setNewAssetItem(""); setNewAssetType(""); setNewAssetOwner(""); setNewAssetDue(""); setNewAssetNotes("");
+                    fetchAssets();
+                  } catch {
+                    setAssetMessage("Failed to add asset.");
+                  }
+                }}
+                className="space-y-3"
+              >
+                <div className="flex flex-col md:flex-row gap-3">
+                  <input
+                    type="text"
+                    value={newAssetItem}
+                    onChange={(e) => setNewAssetItem(e.target.value)}
+                    placeholder="Item name *"
+                    required
+                    className="flex-1 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <select
+                    value={newAssetType}
+                    onChange={(e) => setNewAssetType(e.target.value)}
+                    className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  >
+                    <option value="">Type</option>
+                    <option value="Print">Print</option>
+                    <option value="Signage">Signage</option>
+                    <option value="Digital">Digital</option>
+                    <option value="Swag">Swag</option>
+                    <option value="AV">AV</option>
+                    <option value="Catering">Catering</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <input
+                    type="text"
+                    value={newAssetOwner}
+                    onChange={(e) => setNewAssetOwner(e.target.value)}
+                    placeholder="Owner"
+                    className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <input
+                    type="text"
+                    value={newAssetDue}
+                    onChange={(e) => setNewAssetDue(e.target.value)}
+                    placeholder="Due date"
+                    className="md:w-32 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    value={newAssetNotes}
+                    onChange={(e) => setNewAssetNotes(e.target.value)}
+                    placeholder="Notes (optional)"
+                    className="flex-1 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <button
+                    type="submit"
+                    className="px-5 py-2.5 bg-brand-gold text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-gold-light transition-colors rounded whitespace-nowrap"
+                  >
+                    Add
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Assets table */}
+            <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+              {assetLoading ? (
+                <p className="p-6 font-sans text-[14px] text-brand-muted">Loading assets...</p>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Item</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Type</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Owner</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Due Date</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Notes</th>
+                      <th className="px-4 py-3 w-10"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {assets.slice(1).map((row, i) => (
+                      <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                        <td className="px-4 py-3 font-sans text-[13px] text-brand-dark font-medium">{row[0] || ""}</td>
+                        <td className="px-4 py-3 font-sans text-[12px] text-brand-gray">{row[1] || "—"}</td>
+                        <td className="px-4 py-3">
+                          <select
+                            value={row[2] || "To Do"}
+                            onChange={async (e) => {
+                              try {
+                                await fetch("/api/events/assets", {
+                                  method: "PATCH",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ slug: activeSlug, rowIndex: i, field: "status", value: e.target.value }),
+                                });
+                                fetchAssets();
+                              } catch {
+                                console.error("Failed to update asset status");
+                              }
+                            }}
+                            className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
+                              (row[2] || "") === "Ready" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[2] || "") === "Delivered" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[2] || "") === "In Progress" ? "border-blue-200 bg-blue-50 text-blue-700" :
+                              (row[2] || "") === "Shipped" ? "border-purple-200 bg-purple-50 text-purple-700" :
+                              "border-gray-200 bg-gray-50 text-gray-600"
+                            }`}
+                          >
+                            <option value="To Do">To Do</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Ready">Ready</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                          </select>
+                        </td>
+                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[3] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[4] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[12px] text-brand-gray max-w-[200px] truncate" title={row[5] || ""}>{row[5] || "—"}</td>
+                        <td className="px-4 py-3">
+                          <button
+                            onClick={async () => {
+                              if (!activeSlug || !confirm(`Remove "${row[0]}"?`)) return;
+                              try {
+                                await fetch("/api/events/assets", {
+                                  method: "DELETE",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ slug: activeSlug, rowIndex: i }),
+                                });
+                                fetchAssets();
+                              } catch {
+                                console.error("Failed to remove asset");
+                              }
+                            }}
+                            className="text-[11px] font-sans text-red-400 hover:text-red-600 transition-colors"
+                            title="Remove"
+                          >
+                            &#10005;
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                    {assets.length <= 1 && (
+                      <tr>
+                        <td colSpan={7} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                          No assets yet. Add items above.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
+            <p className="mt-3 font-sans text-[12px] text-brand-muted">
+              {assets.length > 1 ? assets.length - 1 : 0} assets total
             </p>
           </>
         ) : (
