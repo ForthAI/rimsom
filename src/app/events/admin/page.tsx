@@ -894,16 +894,26 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {assets.slice(1).map((row, i) => {
+                      const fieldToCol: Record<string, number> = { item: 0, type: 1, status: 2, owner: 3, dueDate: 4, notes: 5 };
                       const patchField = async (field: string, value: string) => {
+                        // Optimistic update — modify local state immediately
+                        const colIdx = fieldToCol[field];
+                        if (colIdx !== undefined) {
+                          setAssets(prev => {
+                            const updated = prev.map(r => [...r]);
+                            updated[i + 1][colIdx] = value; // +1 to skip header row
+                            return updated;
+                          });
+                        }
                         try {
                           await fetch("/api/events/assets", {
                             method: "PATCH",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ slug: activeSlug, rowIndex: i, field, value }),
                           });
-                          fetchAssets();
                         } catch {
                           console.error(`Failed to update asset ${field}`);
+                          fetchAssets(); // Re-fetch only on failure to restore correct state
                         }
                       };
                       const editableCell = (field: string, colIdx: number, opts?: { type?: string; className?: string; fontWeight?: string }) => (
