@@ -119,7 +119,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <h1 className="font-sans text-2xl md:text-[36px] font-bold leading-[1.12] mb-8">
                 {event.name}
               </h1>
-              <div className="grid grid-cols-1 md:grid-cols-[auto_1px_1fr] md:gap-10 gap-8 items-start">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
                 {event.featuredSpeakers && event.featuredSpeakers.length > 0 && (
                   <div>
                     <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
@@ -135,8 +135,8 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                     </div>
                   </div>
                 )}
-                <div className="hidden md:block self-stretch bg-white/20" />
-                <div className="space-y-1 text-[14px] text-white md:mt-[27px]">
+                <div className="relative space-y-1 text-[14px] text-white md:mt-[27px]">
+                  <div className="hidden md:block absolute top-0 bottom-0 -left-10 w-px bg-white/20" />
                   <p>{event.date} &middot; {event.time}</p>
                   {event.inviteLocationLabel && <p>{event.inviteLocationLabel}</p>}
                   {event.locationNote && (
