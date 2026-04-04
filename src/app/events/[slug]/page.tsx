@@ -52,16 +52,13 @@ function getInviteContent(slug: string) {
           A Private Evening
         </p>
         <p className="text-[13px] text-brand-muted italic">
-          on the margins of the World Bank Group Spring Meetings
+          on the margins of the World Bank - IMF Spring Meetings
         </p>
 
         <p>
-          A limited gathering of senior decision-makers across government, finance, and investment
+          This is not a conference, panel, or workshop &ndash; no presentations, no slides. Just come and unwind
+          with a limited gathering of senior decision-makers across government, finance, and investment
           curated for conversations, networking and relationship-building.
-        </p>
-
-        <p>
-          This is not a conference, panel, or workshop &ndash; no panels, no slides, just come and retreat.
         </p>
 
         <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
