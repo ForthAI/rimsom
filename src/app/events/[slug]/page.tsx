@@ -166,10 +166,13 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
         {/* Minimal footer */}
         <footer className="py-8 border-t border-brand-light">
-          <div className="max-w-content mx-auto px-6 md:px-10">
-            <p className="font-sans text-[11px] text-brand-muted text-center">
+          <div className="max-w-content mx-auto px-6 md:px-10 flex justify-between items-center">
+            <p className="font-sans text-[11px] text-brand-muted">
               &copy; {new Date().getFullYear()} Rimsom Global. All rights reserved.
             </p>
+            <span className="font-sans text-[11px] text-brand-muted">
+              Build In Tandem
+            </span>
           </div>
         </footer>
       </>
