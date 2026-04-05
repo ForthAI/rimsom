@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
       range: `${ASSETS_TAB}!A:G`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [[item, type || "", status || "To Do", owner || "", dueDate || "", notes || "", quantity || ""]],
+        values: [[item, type || "", quantity || "", status || "To Do", owner || "", dueDate || "", notes || ""]],
       },
     });
     return NextResponse.json({ added: true });
@@ -115,11 +115,11 @@ export async function PATCH(req: NextRequest) {
   const fieldMap: Record<string, string> = {
     item: "A",
     type: "B",
-    status: "C",
-    owner: "D",
-    dueDate: "E",
-    notes: "F",
-    quantity: "G",
+    quantity: "C",
+    status: "D",
+    owner: "E",
+    dueDate: "F",
+    notes: "G",
   };
 
   const col = fieldMap[field];

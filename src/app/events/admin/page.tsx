@@ -908,8 +908,8 @@ export default function AdminPage() {
                   <thead>
                     <tr className="border-b border-gray-200">
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Item</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Qty</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Type</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Qty</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Owner</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Due Date</th>
@@ -919,7 +919,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {assets.slice(1).map((row, i) => {
-                      const fieldToCol: Record<string, number> = { item: 0, type: 1, status: 2, owner: 3, dueDate: 4, notes: 5, quantity: 6 };
+                      const fieldToCol: Record<string, number> = { item: 0, type: 1, quantity: 2, status: 3, owner: 4, dueDate: 5, notes: 6 };
                       const patchField = async (field: string, value: string) => {
                         // Optimistic update — modify local state immediately
                         const colIdx = fieldToCol[field];
@@ -979,18 +979,6 @@ export default function AdminPage() {
                             </div>
                           )}
                         </td>
-                        <td className="px-4 py-1 w-20">
-                          <input
-                            type="number"
-                            min="0"
-                            defaultValue={row[6] || ""}
-                            onBlur={(e) => {
-                              if (e.target.value !== (row[6] || "")) patchField("quantity", e.target.value);
-                            }}
-                            onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-                            className="w-full px-2 py-1.5 text-[13px] font-sans text-brand-gray border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors"
-                          />
-                        </td>
                         <td className="px-4 py-1">
                           <select
                             value={row[1] || ""}
@@ -1007,15 +995,27 @@ export default function AdminPage() {
                             <option value="Other">Other</option>
                           </select>
                         </td>
+                        <td className="px-4 py-1 w-20">
+                          <input
+                            type="number"
+                            min="0"
+                            defaultValue={row[2] || ""}
+                            onBlur={(e) => {
+                              if (e.target.value !== (row[2] || "")) patchField("quantity", e.target.value);
+                            }}
+                            onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                            className="w-full px-2 py-1.5 text-[13px] font-sans text-brand-gray border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors"
+                          />
+                        </td>
                         <td className="px-4 py-1">
                           <select
-                            value={row[2] || "To Do"}
+                            value={row[3] || "To Do"}
                             onChange={(e) => patchField("status", e.target.value)}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
-                              (row[2] || "") === "Approved" ? "border-amber-200 bg-amber-50 text-amber-700" :
-                              (row[2] || "") === "In Production" ? "border-purple-200 bg-purple-50 text-purple-700" :
-                              (row[2] || "") === "Delivered" ? "border-green-200 bg-green-50 text-green-700" :
-                              (row[2] || "") === "In Progress" ? "border-blue-200 bg-blue-50 text-blue-700" :
+                              (row[3] || "") === "Approved" ? "border-amber-200 bg-amber-50 text-amber-700" :
+                              (row[3] || "") === "In Production" ? "border-purple-200 bg-purple-50 text-purple-700" :
+                              (row[3] || "") === "Delivered" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[3] || "") === "In Progress" ? "border-blue-200 bg-blue-50 text-blue-700" :
                               "border-gray-200 bg-gray-50 text-gray-600"
                             }`}
                           >
@@ -1026,15 +1026,15 @@ export default function AdminPage() {
                             <option value="Delivered">Delivered</option>
                           </select>
                         </td>
-                        {editableCell("owner", 3)}
-                        {editableCell("dueDate", 4, { type: "date" })}
+                        {editableCell("owner", 4)}
+                        {editableCell("dueDate", 5, { type: "date" })}
                                                 <td className="px-4 py-2 min-w-[180px]">
                           {editingNote === i ? (
                             <textarea
                               autoFocus
-                              defaultValue={row[5] || ""}
+                              defaultValue={row[6] || ""}
                               onBlur={(e) => {
-                                if (e.target.value !== (row[5] || "")) patchField("notes", e.target.value);
+                                if (e.target.value !== (row[6] || "")) patchField("notes", e.target.value);
                                 setEditingNote(null);
                               }}
                               rows={3}
@@ -1045,7 +1045,7 @@ export default function AdminPage() {
                               onClick={() => setEditingNote(i)}
                               className="px-2 py-1.5 text-[13px] font-sans text-brand-gray cursor-text rounded hover:bg-gray-50 min-h-[28px] whitespace-pre-wrap"
                             >
-                              {row[5] || <span className="text-brand-muted">—</span>}
+                              {row[6] || <span className="text-brand-muted">—</span>}
                             </div>
                           )}
                         </td>
@@ -1075,7 +1075,7 @@ export default function AdminPage() {
                     })}
                     {assets.length <= 1 && (
                       <tr>
-                        <td colSpan={7} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                        <td colSpan={8} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
                           No assets yet. Add items above.
                         </td>
                       </tr>
