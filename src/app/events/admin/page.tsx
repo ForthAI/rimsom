@@ -707,15 +707,24 @@ export default function AdminPage() {
                             value={row[3] || "Not Sent"}
                             onChange={async (e) => {
                               const newStatus = e.target.value;
+                              const dateSent = newStatus === "Sent"
+                                ? new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })
+                                : "";
+                              setInvites(prev => {
+                                const updated = prev.map(r => [...r]);
+                                updated[i + 1][3] = newStatus;
+                                updated[i + 1][4] = dateSent;
+                                return updated;
+                              });
                               try {
                                 await fetch("/api/events/invites", {
                                   method: "PATCH",
                                   headers: { "Content-Type": "application/json" },
                                   body: JSON.stringify({ slug: activeSlug, email: row[0], status: newStatus }),
                                 });
-                                fetchInvites();
                               } catch {
                                 console.error("Failed to update status");
+                                fetchInvites();
                               }
                             }}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
@@ -734,15 +743,20 @@ export default function AdminPage() {
                           <button
                             onClick={async () => {
                               const isVip = (row[5] || "").toLowerCase() === "yes";
+                              setInvites(prev => {
+                                const updated = prev.map(r => [...r]);
+                                updated[i + 1][5] = !isVip ? "Yes" : "";
+                                return updated;
+                              });
                               try {
                                 await fetch("/api/events/invites", {
                                   method: "PATCH",
                                   headers: { "Content-Type": "application/json" },
                                   body: JSON.stringify({ slug: activeSlug, email: row[0], vip: !isVip }),
                                 });
-                                fetchInvites();
                               } catch {
                                 console.error("Failed to update VIP");
+                                fetchInvites();
                               }
                             }}
                             className="transition-colors"
