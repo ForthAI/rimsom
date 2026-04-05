@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     const sheets = getSheets();
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: event.googleSheetId,
-      range: `${ASSETS_TAB}!A:F`,
+      range: `${ASSETS_TAB}!A:G`,
     });
     const rows = res.data.values || [];
     return NextResponse.json({ assets: rows });
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  const { slug, item, type, status, owner, dueDate, notes } = await req.json();
+  const { slug, item, type, status, owner, dueDate, notes, quantity } = await req.json();
 
   const event = getEventBySlug(slug);
   if (!event) {
@@ -85,10 +85,10 @@ export async function POST(req: NextRequest) {
     const sheets = getSheets();
     await sheets.spreadsheets.values.append({
       spreadsheetId: event.googleSheetId,
-      range: `${ASSETS_TAB}!A:F`,
+      range: `${ASSETS_TAB}!A:G`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [[item, type || "", status || "To Do", owner || "", dueDate || "", notes || ""]],
+        values: [[item, type || "", status || "To Do", owner || "", dueDate || "", notes || "", quantity || ""]],
       },
     });
     return NextResponse.json({ added: true });
@@ -119,6 +119,7 @@ export async function PATCH(req: NextRequest) {
     owner: "D",
     dueDate: "E",
     notes: "F",
+    quantity: "G",
   };
 
   const col = fieldMap[field];

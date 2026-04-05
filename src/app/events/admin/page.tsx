@@ -45,6 +45,7 @@ export default function AdminPage() {
   const [newAssetOwner, setNewAssetOwner] = useState("");
   const [newAssetDue, setNewAssetDue] = useState("");
   const [newAssetNotes, setNewAssetNotes] = useState("");
+  const [newAssetQty, setNewAssetQty] = useState("");
   const [assetMessage, setAssetMessage] = useState("");
   const [editingNote, setEditingNote] = useState<number | null>(null);
   const [editingItem, setEditingItem] = useState<number | null>(null);
@@ -823,10 +824,11 @@ export default function AdminPage() {
                         owner: newAssetOwner.trim(),
                         dueDate: newAssetDue,
                         notes: newAssetNotes.trim(),
+                        quantity: newAssetQty.trim(),
                       }),
                     });
                     setAssetMessage(`Added "${newAssetItem.trim()}".`);
-                    setNewAssetItem(""); setNewAssetType(""); setNewAssetOwner(""); setNewAssetDue(""); setNewAssetNotes("");
+                    setNewAssetItem(""); setNewAssetType(""); setNewAssetOwner(""); setNewAssetDue(""); setNewAssetNotes(""); setNewAssetQty("");
                     fetchAssets();
                   } catch {
                     setAssetMessage("Failed to add asset.");
@@ -842,6 +844,14 @@ export default function AdminPage() {
                     placeholder="Item name *"
                     required
                     className="flex-1 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    value={newAssetQty}
+                    onChange={(e) => setNewAssetQty(e.target.value)}
+                    placeholder="Qty"
+                    className="md:w-20 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                   <select
                     value={newAssetType}
@@ -898,6 +908,7 @@ export default function AdminPage() {
                   <thead>
                     <tr className="border-b border-gray-200">
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Item</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Qty</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Type</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Owner</th>
@@ -908,7 +919,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {assets.slice(1).map((row, i) => {
-                      const fieldToCol: Record<string, number> = { item: 0, type: 1, status: 2, owner: 3, dueDate: 4, notes: 5 };
+                      const fieldToCol: Record<string, number> = { item: 0, type: 1, status: 2, owner: 3, dueDate: 4, notes: 5, quantity: 6 };
                       const patchField = async (field: string, value: string) => {
                         // Optimistic update — modify local state immediately
                         const colIdx = fieldToCol[field];
@@ -967,6 +978,18 @@ export default function AdminPage() {
                               {row[0] || <span className="text-brand-muted">—</span>}
                             </div>
                           )}
+                        </td>
+                        <td className="px-4 py-1 w-20">
+                          <input
+                            type="number"
+                            min="0"
+                            defaultValue={row[6] || ""}
+                            onBlur={(e) => {
+                              if (e.target.value !== (row[6] || "")) patchField("quantity", e.target.value);
+                            }}
+                            onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                            className="w-full px-2 py-1.5 text-[13px] font-sans text-brand-gray border border-transparent rounded outline-none hover:border-gray-200 focus:border-brand-dark transition-colors"
+                          />
                         </td>
                         <td className="px-4 py-1">
                           <select
