@@ -486,7 +486,7 @@ export default function AdminPage() {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 no-print">
                     <div className="bg-white p-6 rounded-lg border border-gray-200">
                       <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Invited</p>
-                      <p className="font-sans text-3xl font-bold text-brand-dark">{selectedEvent.inviteCount}</p>
+                      <p className="font-sans text-3xl font-bold text-brand-dark">{invites.length > 1 ? invites.length - 1 : 0}</p>
                     </div>
                     <div className="bg-white p-6 rounded-lg border border-gray-200">
                       <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Pending</p>
@@ -638,7 +638,6 @@ export default function AdminPage() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="px-4 py-3 w-8 text-left text-[11px] font-sans font-semibold">#</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Surname</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">First Name</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Title</th>
@@ -650,7 +649,6 @@ export default function AdminPage() {
                     <tbody>
                       {doorEntries.map((entry, i) => (
                         <tr key={i} className={`border-b border-gray-100 ${entry.isGuest ? "bg-gray-50" : ""}`}>
-                          <td className="px-4 py-2 text-[12px]">{i + 1}</td>
                           <td className={`px-4 py-2 text-[13px] ${entry.isGuest ? "pl-8 italic text-brand-gray" : "font-medium"}`}>{entry.surname}</td>
                           <td className={`px-4 py-2 text-[12px] ${entry.isGuest ? "italic text-brand-gray" : ""}`}>{entry.firstName}</td>
                           <td className="px-4 py-2 text-[12px]">{entry.isGuest ? `Guest of ${entry.guestOf}` : entry.title}</td>
