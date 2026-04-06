@@ -81,9 +81,9 @@ function getInviteContent(slug: string) {
         </p>
 
         <div className="pt-4 border-t border-brand-light">
-          <p className="text-[13px] text-brand-muted">
-            <strong className="text-brand-muted font-semibold">Rimsom Global</strong> - a strategic advisory firm connecting capital,
-            governments and private sector to emerging market investment opportunities.
+          <p className="text-[15px] font-bold text-brand-navy">Rimsom Global</p>
+          <p className="text-[12px] text-brand-muted mt-1">
+            A strategic advisory firm connecting capital, governments and private sector to emerging market investment opportunities.
           </p>
           <p className="text-[13px] text-brand-muted mt-2">Access. Alignment. Execution.</p>
         </div>
