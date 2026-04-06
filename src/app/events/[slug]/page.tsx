@@ -84,9 +84,9 @@ function getInviteContent(slug: string) {
           <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-2">
             Convened by
           </p>
-          <p>
+          <p style={{ lineHeight: '1.2' }}>
             <span className="text-[15px] font-bold text-brand-navy">Rimsom Global</span>
-            <span className="text-[10px] text-gray-400 italic" style={{ lineHeight: '1' }}> a strategic advisory firm connecting capital, governments and private sector to emerging market investment opportunities.</span>
+            <span className="text-[10px] text-gray-400 italic"> a strategic advisory firm connecting capital, governments and private sector to emerging market investment opportunities.</span>
           </p>
           <p className="text-[13px] text-brand-muted mt-2">Access. Alignment. Execution.</p>
         </div>
