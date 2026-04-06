@@ -751,7 +751,7 @@ export default function AdminPage() {
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[2] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[3] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[4] || "—"}</td>
-                        <td className="px-4 py-3 max-w-[200px]">
+                        <td className="px-4 py-3 min-w-[180px]">
                           {editingCC === i ? (
                             <input
                               autoFocus
@@ -776,7 +776,7 @@ export default function AdminPage() {
                                 } catch { fetchInvites(); }
                               }}
                               onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingCC(null); }}
-                              className="w-full px-2 py-1 text-[11px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark"
+                              className="w-full min-w-[160px] px-2 py-1 text-[13px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark"
                             />
                           ) : (
                             <span
