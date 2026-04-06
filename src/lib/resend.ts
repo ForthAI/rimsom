@@ -29,7 +29,7 @@ function parseEventDateTime(dateStr: string, timeStr: string): { dtStart: string
     const timeParts = timeStr.split(/\s*[–—-]\s*/);
     if (timeParts.length < 2) return null;
 
-    function parseTime(t: string): { hours: number; minutes: number } | null {
+    const parseTime = (t: string): { hours: number; minutes: number } | null => {
       const match = t.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
       if (!match) return null;
       let hours = parseInt(match[1], 10);
@@ -38,7 +38,7 @@ function parseEventDateTime(dateStr: string, timeStr: string): { dtStart: string
       if (period === "PM" && hours !== 12) hours += 12;
       if (period === "AM" && hours === 12) hours = 0;
       return { hours, minutes };
-    }
+    };
 
     const start = parseTime(timeParts[0]);
     const end = parseTime(timeParts[1]);
