@@ -81,11 +81,11 @@ function getInviteContent(slug: string) {
         </p>
 
         <div className="pt-4 border-t border-brand-light">
-          <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-2">
-            Convened by
+          <p className="text-[14px] text-brand-gray">
+            <strong className="text-brand-navy">Rimsom Global</strong> - a strategic advisory firm connecting capital,
+            governments and private sector to emerging market investment opportunities
           </p>
-          <p className="font-semibold text-brand-navy">Rimsom Global</p>
-          <p className="text-[13px] text-brand-muted">Access. Alignment. Execution.</p>
+          <p className="text-[13px] text-brand-muted mt-2">Access. Alignment. Execution.</p>
         </div>
       </div>
     ),
