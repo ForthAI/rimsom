@@ -49,6 +49,8 @@ export default function AdminPage() {
   const [assetMessage, setAssetMessage] = useState("");
   const [editingNote, setEditingNote] = useState<number | null>(null);
   const [editingItem, setEditingItem] = useState<number | null>(null);
+  const [editingCC, setEditingCC] = useState<number | null>(null);
+  const [editingGuests, setEditingGuests] = useState<number | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -705,8 +707,81 @@ export default function AdminPage() {
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-dark">{row[0]}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[1] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[2] || "—"}</td>
-                        <td className="px-4 py-3 font-sans text-[11px] text-brand-muted max-w-[200px] truncate" title={row[3] || ""}>{row[3] || "—"}</td>
-                        <td className="px-4 py-3 text-center font-sans text-[13px] text-brand-gray">{row[4] || "0"}</td>
+                        <td className="px-4 py-3 max-w-[200px]">
+                          {editingCC === i ? (
+                            <input
+                              autoFocus
+                              type="text"
+                              defaultValue={row[3] || ""}
+                              onBlur={async (e) => {
+                                const val = e.target.value;
+                                setEditingCC(null);
+                                if (val === (row[3] || "")) return;
+                                setInvites(prev => {
+                                  const updated = prev.map(r => [...r]);
+                                  while (updated[i + 1].length < 8) updated[i + 1].push("");
+                                  updated[i + 1][3] = val;
+                                  return updated;
+                                });
+                                try {
+                                  await fetch("/api/events/invites", {
+                                    method: "PATCH",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ slug: activeSlug, email: row[0], field: "cc", value: val }),
+                                  });
+                                } catch { fetchInvites(); }
+                              }}
+                              onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingCC(null); }}
+                              className="w-full px-2 py-1 text-[11px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark"
+                            />
+                          ) : (
+                            <span
+                              onClick={() => setEditingCC(i)}
+                              className="font-sans text-[11px] text-brand-muted truncate block cursor-pointer hover:text-brand-dark"
+                              title={row[3] || "Click to add CC"}
+                            >
+                              {row[3] || "—"}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {editingGuests === i ? (
+                            <input
+                              autoFocus
+                              type="number"
+                              min="0"
+                              max="10"
+                              defaultValue={row[4] || "0"}
+                              onBlur={async (e) => {
+                                const val = e.target.value;
+                                setEditingGuests(null);
+                                if (val === (row[4] || "0")) return;
+                                setInvites(prev => {
+                                  const updated = prev.map(r => [...r]);
+                                  while (updated[i + 1].length < 8) updated[i + 1].push("");
+                                  updated[i + 1][4] = val;
+                                  return updated;
+                                });
+                                try {
+                                  await fetch("/api/events/invites", {
+                                    method: "PATCH",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ slug: activeSlug, email: row[0], field: "guests", value: val }),
+                                  });
+                                } catch { fetchInvites(); }
+                              }}
+                              onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingGuests(null); }}
+                              className="w-16 px-2 py-1 text-[13px] font-sans text-brand-dark text-center border border-brand-light rounded outline-none focus:border-brand-dark"
+                            />
+                          ) : (
+                            <span
+                              onClick={() => setEditingGuests(i)}
+                              className="font-sans text-[13px] text-brand-gray cursor-pointer hover:text-brand-dark"
+                            >
+                              {row[4] || "0"}
+                            </span>
+                          )}
+                        </td>
                         <td className="px-4 py-3">
                           <select
                             value={row[5] || "Not Sent"}

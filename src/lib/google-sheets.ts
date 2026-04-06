@@ -81,6 +81,22 @@ export async function getAllRsvps(
   return res.data.values || [];
 }
 
+export async function getInviteRow(
+  sheetId: string,
+  tabName: string,
+  email: string
+): Promise<string[] | null> {
+  const sheets = getSheets();
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: `${tabName}!A:H`,
+  });
+  const rows = res.data.values || [];
+  const emailLower = email.toLowerCase().trim();
+  const match = rows.slice(1).find((row) => (row[0] || "").toLowerCase().trim() === emailLower);
+  return match || null;
+}
+
 export async function getInviteCount(
   sheetId: string,
   tabName: string

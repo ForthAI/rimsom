@@ -13,6 +13,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
   const [loading, setLoading] = useState(false);
   const [priorAttending, setPriorAttending] = useState("");
   const [resent, setResent] = useState(false);
+  const [guestAllowance, setGuestAllowance] = useState(0);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
         setPhase("already-registered");
       } else if (data.valid) {
         setFields({ email });
+        setGuestAllowance(data.guestAllowance || 0);
         setPhase("form");
       } else {
         setError(data.message || "We weren't able to find that email. Please make sure you're using the email address your invitation was sent to.");
@@ -288,6 +290,28 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
                 )}
               </div>
             ))}
+
+          {/* Guest fields — only show if attending and allowance > 0 */}
+          {fields.attending === "Yes" && guestAllowance > 0 && (
+            <div>
+              <label className="block text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-muted mb-3">
+                Guests ({guestAllowance} allowed)
+              </label>
+              <div className="space-y-3">
+                {Array.from({ length: guestAllowance }).map((_, idx) => (
+                  <input
+                    key={idx}
+                    type="text"
+                    value={fields[`guest${idx + 1}`] || ""}
+                    onChange={(e) => updateField(`guest${idx + 1}`, e.target.value)}
+                    placeholder={`Guest ${idx + 1} full name`}
+                    className="w-full px-4 py-3.5 border border-brand-light bg-white text-[14px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors duration-200"
+                  />
+                ))}
+              </div>
+              <p className="text-[11px] font-sans text-brand-muted mt-2">Leave blank if not bringing a guest.</p>
+            </div>
+          )}
 
           <button
             type="submit"

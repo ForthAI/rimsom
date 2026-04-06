@@ -123,7 +123,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  const { slug, email, status, vip } = await req.json();
+  const { slug, email, status, vip, field, value } = await req.json();
 
   const event = getEventBySlug(slug);
   if (!event) {
@@ -146,7 +146,23 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Email not found." }, { status: 404 });
     }
 
-    // Update VIP (column F), or status (column D) + date sent (column E)
+    // Update individual field (cc=D, guests=E)
+    if (field) {
+      const colMap: Record<string, string> = { cc: "D", guests: "E" };
+      const col = colMap[field];
+      if (!col) {
+        return NextResponse.json({ error: "Invalid field." }, { status: 400 });
+      }
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: event.googleSheetId,
+        range: `${event.sheetTabName}!${col}${rowIndex + 1}`,
+        valueInputOption: "USER_ENTERED",
+        requestBody: { values: [[value || ""]] },
+      });
+      return NextResponse.json({ updated: true });
+    }
+
+    // Update VIP (column H)
     if (vip !== undefined) {
       await sheets.spreadsheets.values.update({
         spreadsheetId: event.googleSheetId,

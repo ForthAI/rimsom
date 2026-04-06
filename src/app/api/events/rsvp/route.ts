@@ -66,6 +66,17 @@ export async function POST(req: NextRequest) {
     row.push(attending);
     row.push(formattedDate);
 
+    // Collect guest names (guest1, guest2, etc.)
+    const guestNames: string[] = [];
+    for (let i = 1; i <= 10; i++) {
+      const name = (fields[`guest${i}`] || "").trim();
+      if (name) guestNames.push(name);
+    }
+
+    // Append guest count (column H) and guest names
+    row.push(guestNames.length > 0 ? String(guestNames.length) : "0");
+    row.push(...guestNames);
+
     await appendRsvp(event.googleSheetId, event.rsvpTabName, row);
 
     // Send confirmation email (only if attending)

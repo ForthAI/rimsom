@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEventBySlug } from "@/config/events";
-import { getInviteList, checkDuplicate, getAllRsvps } from "@/lib/google-sheets";
+import { getInviteList, getInviteRow, checkDuplicate, getAllRsvps } from "@/lib/google-sheets";
 
 export async function POST(req: NextRequest) {
   try {
@@ -55,7 +55,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ valid: true });
+    // Look up guest allowance from invite row (column E, index 4)
+    const inviteRow = await getInviteRow(event.googleSheetId, event.sheetTabName, emailLower);
+    const guestAllowance = inviteRow ? parseInt(inviteRow[4] || "0", 10) || 0 : 0;
+
+    return NextResponse.json({ valid: true, guestAllowance });
   } catch (error) {
     console.error("Validate error:", error);
     return NextResponse.json(
