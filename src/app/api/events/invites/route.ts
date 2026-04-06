@@ -148,7 +148,7 @@ export async function PATCH(req: NextRequest) {
 
     // Update individual field (cc=D, guests=E)
     if (field) {
-      const colMap: Record<string, string> = { cc: "F", guests: "G" };
+      const colMap: Record<string, string> = { first: "B", surname: "C", title: "D", organization: "E", cc: "F", guests: "G" };
       const col = colMap[field];
       if (!col) {
         return NextResponse.json({ error: "Invalid field." }, { status: 400 });

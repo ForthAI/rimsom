@@ -53,7 +53,7 @@ export default function AdminPage() {
   const [assetMessage, setAssetMessage] = useState("");
   const [editingNote, setEditingNote] = useState<number | null>(null);
   const [editingItem, setEditingItem] = useState<number | null>(null);
-  const [editingCC, setEditingCC] = useState<number | null>(null);
+  const [editingCell, setEditingCell] = useState<{ row: number; field: string } | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -747,47 +747,51 @@ export default function AdminPage() {
                     {invites.slice(1).map((row, i) => (
                       <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-dark">{row[0]}</td>
-                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[1] || "—"}</td>
-                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[2] || "—"}</td>
-                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[3] || "—"}</td>
-                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[4] || "—"}</td>
-                        <td className="px-4 py-3 min-w-[180px]">
-                          {editingCC === i ? (
-                            <input
-                              autoFocus
-                              type="text"
-                              defaultValue={row[5] || ""}
-                              onBlur={async (e) => {
-                                const val = e.target.value;
-                                setEditingCC(null);
-                                if (val === (row[5] || "")) return;
-                                setInvites(prev => {
-                                  const updated = prev.map(r => [...r]);
-                                  while (updated[i + 1].length < 10) updated[i + 1].push("");
-                                  updated[i + 1][5] = val;
-                                  return updated;
-                                });
-                                try {
-                                  await fetch("/api/events/invites", {
-                                    method: "PATCH",
-                                    headers: { "Content-Type": "application/json" },
-                                    body: JSON.stringify({ slug: activeSlug, email: row[0], field: "cc", value: val }),
+                        {[
+                          { field: "first", idx: 1 },
+                          { field: "surname", idx: 2 },
+                          { field: "title", idx: 3 },
+                          { field: "organization", idx: 4 },
+                          { field: "cc", idx: 5 },
+                        ].map(({ field, idx }) => (
+                          <td key={field} className={`px-4 py-3 ${field === "cc" ? "min-w-[180px]" : ""}`}>
+                            {editingCell?.row === i && editingCell?.field === field ? (
+                              <input
+                                autoFocus
+                                type="text"
+                                defaultValue={row[idx] || ""}
+                                onBlur={async (e) => {
+                                  const val = e.target.value;
+                                  setEditingCell(null);
+                                  if (val === (row[idx] || "")) return;
+                                  setInvites(prev => {
+                                    const updated = prev.map(r => [...r]);
+                                    while (updated[i + 1].length < 10) updated[i + 1].push("");
+                                    updated[i + 1][idx] = val;
+                                    return updated;
                                   });
-                                } catch { fetchInvites(); }
-                              }}
-                              onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingCC(null); }}
-                              className="w-full min-w-[160px] px-2 py-1 text-[13px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark"
-                            />
-                          ) : (
-                            <span
-                              onClick={() => setEditingCC(i)}
-                              className="font-sans text-[11px] text-brand-muted break-all block cursor-pointer hover:text-brand-dark"
-                              title={row[5] || "Click to add CC"}
-                            >
-                              {row[5] || "—"}
-                            </span>
-                          )}
-                        </td>
+                                  try {
+                                    await fetch("/api/events/invites", {
+                                      method: "PATCH",
+                                      headers: { "Content-Type": "application/json" },
+                                      body: JSON.stringify({ slug: activeSlug, email: row[0], field, value: val }),
+                                    });
+                                  } catch { fetchInvites(); }
+                                }}
+                                onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingCell(null); }}
+                                className={`w-full px-2 py-1 text-[13px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark ${field === "cc" ? "min-w-[160px]" : ""}`}
+                              />
+                            ) : (
+                              <span
+                                onClick={() => setEditingCell({ row: i, field })}
+                                className={`font-sans text-[${field === "cc" ? "11" : "13"}px] ${field === "cc" ? "text-brand-muted break-all" : "text-brand-gray"} block cursor-pointer hover:text-brand-dark`}
+                                title={row[idx] || `Click to edit`}
+                              >
+                                {row[idx] || "—"}
+                              </span>
+                            )}
+                          </td>
+                        ))}
                         <td className="px-4 py-3 text-center">
                           <select
                             value={row[6] || "0"}
