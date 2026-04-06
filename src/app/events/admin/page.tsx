@@ -196,8 +196,9 @@ export default function AdminPage() {
           return [header, newRow, ...prev.slice(1)];
         });
         setNewEmail(""); setNewFirst(""); setNewSurname(""); setNewTitle(""); setNewOrg(""); setNewCC(""); setNewGuests("");
+        // Optimistically update invite count
+        setEvents(prev => prev.map(ev => ev.slug === activeSlug ? { ...ev, inviteCount: ev.inviteCount + 1 } : ev));
       }
-      fetchData();
     } catch {
       setInviteMessage("Failed to add invite.");
     }
