@@ -403,7 +403,7 @@ export default function AdminPage() {
                 : selectedEvent.headers.length - 1;
 
               const vipEmails = new Set(
-                invites.slice(1).filter((r) => (r[5] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
+                invites.slice(1).filter((r) => (r[7] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
               );
 
               // Build RSVP email set for cross-reference
@@ -415,7 +415,7 @@ export default function AdminPage() {
               const pendingRows = invites.slice(1)
                 .filter((inv) => {
                   const email = (inv[0] || "").toLowerCase();
-                  const status = (inv[3] || "").toLowerCase();
+                  const status = (inv[5] || "").toLowerCase();
                   return status === "sent" && !rsvpEmails.has(email);
                 })
                 .map((inv) => ({
@@ -426,8 +426,8 @@ export default function AdminPage() {
                   organization: inv[2] || "",
                   name: inv[1] || "",
                   status: "Pending" as const,
-                  date: inv[4] || "",
-                  isVip: (inv[5] || "").toLowerCase() === "yes",
+                  date: inv[6] || "",
+                  isVip: (inv[7] || "").toLowerCase() === "yes",
                 }));
 
               // Yes/No rows from actual RSVPs
@@ -557,7 +557,7 @@ export default function AdminPage() {
               const orgIdx = selectedEvent.headers.indexOf("Organization");
               const emailIdx = selectedEvent.headers.indexOf("Email");
               const vipEmails = new Set(
-                invites.slice(1).filter((r) => (r[5] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
+                invites.slice(1).filter((r) => (r[7] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
               );
               const attending = selectedEvent.rsvps
                 .filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes")
@@ -691,6 +691,8 @@ export default function AdminPage() {
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">CC</th>
+                      <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Guests</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Date Sent</th>
                       <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
@@ -703,9 +705,11 @@ export default function AdminPage() {
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-dark">{row[0]}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[1] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[2] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[11px] text-brand-muted max-w-[200px] truncate" title={row[3] || ""}>{row[3] || "—"}</td>
+                        <td className="px-4 py-3 text-center font-sans text-[13px] text-brand-gray">{row[4] || "0"}</td>
                         <td className="px-4 py-3">
                           <select
-                            value={row[3] || "Not Sent"}
+                            value={row[5] || "Not Sent"}
                             onChange={async (e) => {
                               const newStatus = e.target.value;
                               const dateSent = newStatus === "Sent"
@@ -713,8 +717,8 @@ export default function AdminPage() {
                                 : "";
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
-                                updated[i + 1][3] = newStatus;
-                                updated[i + 1][4] = dateSent;
+                                updated[i + 1][5] = newStatus;
+                                updated[i + 1][6] = dateSent;
                                 return updated;
                               });
                               try {
@@ -729,8 +733,8 @@ export default function AdminPage() {
                               }
                             }}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
-                              (row[3] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
-                              (row[3] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
+                              (row[5] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[5] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
                               "border-gray-200 bg-gray-50 text-gray-600"
                             }`}
                           >
@@ -739,14 +743,14 @@ export default function AdminPage() {
                             <option value="Bounced">Bounced</option>
                           </select>
                         </td>
-                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[4] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[6] || "—"}</td>
                         <td className="px-4 py-3 text-center">
                           <button
                             onClick={async () => {
-                              const isVip = (row[5] || "").toLowerCase() === "yes";
+                              const isVip = (row[7] || "").toLowerCase() === "yes";
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
-                                updated[i + 1][5] = !isVip ? "Yes" : "";
+                                updated[i + 1][7] = !isVip ? "Yes" : "";
                                 return updated;
                               });
                               try {
@@ -761,9 +765,9 @@ export default function AdminPage() {
                               }
                             }}
                             className="transition-colors"
-                            title={row[5] === "Yes" ? "Remove VIP" : "Mark as VIP"}
+                            title={row[7] === "Yes" ? "Remove VIP" : "Mark as VIP"}
                           >
-                            {(row[5] || "").toLowerCase() === "yes" ? (
+                            {(row[7] || "").toLowerCase() === "yes" ? (
                               <span className="text-brand-gold text-lg">★</span>
                             ) : (
                               <span className="text-gray-300 hover:text-brand-gold text-lg">☆</span>
@@ -783,7 +787,7 @@ export default function AdminPage() {
                     ))}
                     {invites.length <= 1 && (
                       <tr>
-                        <td colSpan={7} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                        <td colSpan={9} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
                           No invites yet. Add emails above.
                         </td>
                       </tr>
