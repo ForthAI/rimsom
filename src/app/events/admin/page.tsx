@@ -33,6 +33,7 @@ export default function AdminPage() {
   const [inviteLoading, setInviteLoading] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [newName, setNewName] = useState("");
+  const [newTitle, setNewTitle] = useState("");
   const [newOrg, setNewOrg] = useState("");
   const [newCC, setNewCC] = useState("");
   const [newGuests, setNewGuests] = useState("");
@@ -52,7 +53,6 @@ export default function AdminPage() {
   const [editingNote, setEditingNote] = useState<number | null>(null);
   const [editingItem, setEditingItem] = useState<number | null>(null);
   const [editingCC, setEditingCC] = useState<number | null>(null);
-  const [editingGuests, setEditingGuests] = useState<number | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -180,7 +180,7 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slug: activeSlug,
-          emails: [{ email: newEmail.trim(), name: newName.trim(), organization: newOrg.trim(), cc: newCC.trim(), guests: newGuests.trim() }],
+          emails: [{ email: newEmail.trim(), name: newName.trim(), title: newTitle.trim(), organization: newOrg.trim(), cc: newCC.trim(), guests: newGuests.trim() }],
         }),
       });
       const data = await res.json();
@@ -188,7 +188,7 @@ export default function AdminPage() {
         setInviteMessage(`Already on list: ${data.duplicateEmails.join(", ")}`);
       } else {
         setInviteMessage(`Added ${data.added} invite.`);
-        setNewEmail(""); setNewName(""); setNewOrg(""); setNewCC(""); setNewGuests("");
+        setNewEmail(""); setNewName(""); setNewTitle(""); setNewOrg(""); setNewCC(""); setNewGuests("");
       }
       fetchInvites();
       fetchData();
@@ -665,31 +665,40 @@ export default function AdminPage() {
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
                     placeholder="Name"
-                    className="md:w-40 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                    className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <input
+                    type="text"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    placeholder="Title"
+                    className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                   <input
                     type="text"
                     value={newOrg}
                     onChange={(e) => setNewOrg(e.target.value)}
                     placeholder="Organization"
-                    className="md:w-40 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                    className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                   <input
                     type="text"
                     value={newCC}
                     onChange={(e) => setNewCC(e.target.value)}
                     placeholder="CC emails"
-                    className="md:w-40 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                    className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
-                  <input
-                    type="number"
-                    min="0"
-                    max="10"
+                  <select
                     value={newGuests}
                     onChange={(e) => setNewGuests(e.target.value)}
-                    placeholder="Guests"
-                    className="md:w-20 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
-                  />
+                    className="md:w-20 px-2 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded bg-white"
+                  >
+                    <option value="">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
                   <button
                     type="submit"
                     className="px-5 py-2.5 bg-brand-gold text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-gold-light transition-colors rounded whitespace-nowrap"
@@ -710,6 +719,7 @@ export default function AdminPage() {
                     <tr className="border-b border-gray-200">
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">CC</th>
                       <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Guests</th>
@@ -725,20 +735,21 @@ export default function AdminPage() {
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-dark">{row[0]}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[1] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[2] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[3] || "—"}</td>
                         <td className="px-4 py-3 max-w-[200px]">
                           {editingCC === i ? (
                             <input
                               autoFocus
                               type="text"
-                              defaultValue={row[3] || ""}
+                              defaultValue={row[4] || ""}
                               onBlur={async (e) => {
                                 const val = e.target.value;
                                 setEditingCC(null);
-                                if (val === (row[3] || "")) return;
+                                if (val === (row[4] || "")) return;
                                 setInvites(prev => {
                                   const updated = prev.map(r => [...r]);
-                                  while (updated[i + 1].length < 8) updated[i + 1].push("");
-                                  updated[i + 1][3] = val;
+                                  while (updated[i + 1].length < 9) updated[i + 1].push("");
+                                  updated[i + 1][4] = val;
                                   return updated;
                                 });
                                 try {
@@ -756,53 +767,43 @@ export default function AdminPage() {
                             <span
                               onClick={() => setEditingCC(i)}
                               className="font-sans text-[11px] text-brand-muted truncate block cursor-pointer hover:text-brand-dark"
-                              title={row[3] || "Click to add CC"}
+                              title={row[4] || "Click to add CC"}
                             >
-                              {row[3] || "—"}
+                              {row[4] || "—"}
                             </span>
                           )}
                         </td>
                         <td className="px-4 py-3 text-center">
-                          {editingGuests === i ? (
-                            <input
-                              autoFocus
-                              type="number"
-                              min="0"
-                              max="10"
-                              defaultValue={row[4] || "0"}
-                              onBlur={async (e) => {
-                                const val = e.target.value;
-                                setEditingGuests(null);
-                                if (val === (row[4] || "0")) return;
-                                setInvites(prev => {
-                                  const updated = prev.map(r => [...r]);
-                                  while (updated[i + 1].length < 8) updated[i + 1].push("");
-                                  updated[i + 1][4] = val;
-                                  return updated;
+                          <select
+                            value={row[5] || "0"}
+                            onChange={async (e) => {
+                              const val = e.target.value;
+                              setInvites(prev => {
+                                const updated = prev.map(r => [...r]);
+                                while (updated[i + 1].length < 9) updated[i + 1].push("");
+                                updated[i + 1][5] = val;
+                                return updated;
+                              });
+                              try {
+                                await fetch("/api/events/invites", {
+                                  method: "PATCH",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ slug: activeSlug, email: row[0], field: "guests", value: val }),
                                 });
-                                try {
-                                  await fetch("/api/events/invites", {
-                                    method: "PATCH",
-                                    headers: { "Content-Type": "application/json" },
-                                    body: JSON.stringify({ slug: activeSlug, email: row[0], field: "guests", value: val }),
-                                  });
-                                } catch { fetchInvites(); }
-                              }}
-                              onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingGuests(null); }}
-                              className="w-16 px-2 py-1 text-[13px] font-sans text-brand-dark text-center border border-brand-light rounded outline-none focus:border-brand-dark"
-                            />
-                          ) : (
-                            <span
-                              onClick={() => setEditingGuests(i)}
-                              className="font-sans text-[13px] text-brand-gray cursor-pointer hover:text-brand-dark"
-                            >
-                              {row[4] || "0"}
-                            </span>
-                          )}
+                              } catch { fetchInvites(); }
+                            }}
+                            className="px-1 py-1 text-[13px] font-sans text-brand-gray border border-transparent rounded outline-none cursor-pointer hover:border-brand-light focus:border-brand-dark bg-transparent"
+                          >
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                          </select>
                         </td>
                         <td className="px-4 py-3">
                           <select
-                            value={row[5] || "Not Sent"}
+                            value={row[6] || "Not Sent"}
                             onChange={async (e) => {
                               const newStatus = e.target.value;
                               const dateSent = newStatus === "Sent"
@@ -810,8 +811,8 @@ export default function AdminPage() {
                                 : "";
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
-                                updated[i + 1][5] = newStatus;
-                                updated[i + 1][6] = dateSent;
+                                updated[i + 1][6] = newStatus;
+                                updated[i + 1][7] = dateSent;
                                 return updated;
                               });
                               try {
@@ -826,8 +827,8 @@ export default function AdminPage() {
                               }
                             }}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
-                              (row[5] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
-                              (row[5] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
+                              (row[6] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[6] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
                               "border-gray-200 bg-gray-50 text-gray-600"
                             }`}
                           >
@@ -836,14 +837,15 @@ export default function AdminPage() {
                             <option value="Bounced">Bounced</option>
                           </select>
                         </td>
-                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[6] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[7] || "—"}</td>
                         <td className="px-4 py-3 text-center">
                           <button
                             onClick={async () => {
-                              const isVip = (row[7] || "").toLowerCase() === "yes";
+                              const isVip = (row[8] || "").toLowerCase() === "yes";
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
-                                updated[i + 1][7] = !isVip ? "Yes" : "";
+                                while (updated[i + 1].length < 9) updated[i + 1].push("");
+                                updated[i + 1][8] = !isVip ? "Yes" : "";
                                 return updated;
                               });
                               try {
@@ -858,9 +860,9 @@ export default function AdminPage() {
                               }
                             }}
                             className="transition-colors"
-                            title={row[7] === "Yes" ? "Remove VIP" : "Mark as VIP"}
+                            title={row[8] === "Yes" ? "Remove VIP" : "Mark as VIP"}
                           >
-                            {(row[7] || "").toLowerCase() === "yes" ? (
+                            {(row[8] || "").toLowerCase() === "yes" ? (
                               <span className="text-brand-gold text-lg">★</span>
                             ) : (
                               <span className="text-gray-300 hover:text-brand-gold text-lg">☆</span>
@@ -880,7 +882,7 @@ export default function AdminPage() {
                     ))}
                     {invites.length <= 1 && (
                       <tr>
-                        <td colSpan={9} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                        <td colSpan={10} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
                           No invites yet. Add emails above.
                         </td>
                       </tr>

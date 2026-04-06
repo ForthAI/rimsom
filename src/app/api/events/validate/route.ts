@@ -55,9 +55,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Look up guest allowance from invite row (column E, index 4)
+    // Look up guest allowance from invite row (column F, index 5)
     const inviteRow = await getInviteRow(event.googleSheetId, event.sheetTabName, emailLower);
-    const guestAllowance = inviteRow ? parseInt(inviteRow[4] || "0", 10) || 0 : 0;
+    const guestAllowance = inviteRow ? parseInt(inviteRow[5] || "0", 10) || 0 : 0;
 
     return NextResponse.json({ valid: true, guestAllowance });
   } catch (error) {
