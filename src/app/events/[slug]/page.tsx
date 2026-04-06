@@ -64,7 +64,7 @@ function getInviteContent(slug: string) {
 
         <p>
           This gathering will bring together Africa, Caribbean and Middle East stakeholders and is designed
-          for meaningful conversations and relationship-building.
+          for conversations and relationship-building.
         </p>
 
         <p>
