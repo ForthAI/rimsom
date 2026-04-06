@@ -781,7 +781,7 @@ export default function AdminPage() {
                           ) : (
                             <span
                               onClick={() => setEditingCC(i)}
-                              className="font-sans text-[11px] text-brand-muted truncate block cursor-pointer hover:text-brand-dark"
+                              className="font-sans text-[11px] text-brand-muted break-all block cursor-pointer hover:text-brand-dark"
                               title={row[5] || "Click to add CC"}
                             >
                               {row[5] || "—"}
