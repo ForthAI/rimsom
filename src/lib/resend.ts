@@ -150,12 +150,7 @@ export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
                 <a href="${mapsUrl}" style="font-size:12px;color:#a8843a;text-decoration:none;font-weight:600;">
                   View on Google Maps →
                 </a>
-              </p>${googleCalUrl ? `
-              <p style="margin:16px 0 0;">
-                <a href="${googleCalUrl}" target="_blank" style="display:inline-block;padding:10px 20px;background:#162246;color:#ffffff;font-size:12px;font-weight:600;text-decoration:none;border-radius:4px;letter-spacing:0.05em;">
-                  Add to Calendar
-                </a>
-              </p>` : ""}
+              </p>
             </td>
           </tr>
         </table>
