@@ -89,7 +89,7 @@ export async function getInviteRow(
   const sheets = getSheets();
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: `${tabName}!A:I`,
+    range: `${tabName}!A:J`,
   });
   const rows = res.data.values || [];
   const emailLower = email.toLowerCase().trim();

@@ -32,7 +32,8 @@ export default function AdminPage() {
   const [invites, setInvites] = useState<string[][]>([]);
   const [inviteLoading, setInviteLoading] = useState(false);
   const [newEmail, setNewEmail] = useState("");
-  const [newName, setNewName] = useState("");
+  const [newFirst, setNewFirst] = useState("");
+  const [newSurname, setNewSurname] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newOrg, setNewOrg] = useState("");
   const [newCC, setNewCC] = useState("");
@@ -180,7 +181,7 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slug: activeSlug,
-          emails: [{ email: newEmail.trim(), name: newName.trim(), title: newTitle.trim(), organization: newOrg.trim(), cc: newCC.trim(), guests: newGuests.trim() }],
+          emails: [{ email: newEmail.trim(), first: newFirst.trim(), surname: newSurname.trim(), title: newTitle.trim(), organization: newOrg.trim(), cc: newCC.trim(), guests: newGuests.trim() }],
         }),
       });
       const data = await res.json();
@@ -188,7 +189,7 @@ export default function AdminPage() {
         setInviteMessage(`Already on list: ${data.duplicateEmails.join(", ")}`);
       } else {
         setInviteMessage(`Added ${data.added} invite.`);
-        setNewEmail(""); setNewName(""); setNewTitle(""); setNewOrg(""); setNewCC(""); setNewGuests("");
+        setNewEmail(""); setNewFirst(""); setNewSurname(""); setNewTitle(""); setNewOrg(""); setNewCC(""); setNewGuests("");
       }
       fetchInvites();
       fetchData();
@@ -662,10 +663,17 @@ export default function AdminPage() {
                   />
                   <input
                     type="text"
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                    placeholder="Name"
-                    className="md:w-36 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                    value={newFirst}
+                    onChange={(e) => setNewFirst(e.target.value)}
+                    placeholder="First name"
+                    className="md:w-28 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <input
+                    type="text"
+                    value={newSurname}
+                    onChange={(e) => setNewSurname(e.target.value)}
+                    placeholder="Surname"
+                    className="md:w-28 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                   <input
                     type="text"
@@ -718,7 +726,8 @@ export default function AdminPage() {
                   <thead>
                     <tr className="border-b border-gray-200">
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">First</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Surname</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
                       <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">CC</th>
@@ -736,20 +745,21 @@ export default function AdminPage() {
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[1] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[2] || "—"}</td>
                         <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[3] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[13px] text-brand-gray">{row[4] || "—"}</td>
                         <td className="px-4 py-3 max-w-[200px]">
                           {editingCC === i ? (
                             <input
                               autoFocus
                               type="text"
-                              defaultValue={row[4] || ""}
+                              defaultValue={row[5] || ""}
                               onBlur={async (e) => {
                                 const val = e.target.value;
                                 setEditingCC(null);
-                                if (val === (row[4] || "")) return;
+                                if (val === (row[5] || "")) return;
                                 setInvites(prev => {
                                   const updated = prev.map(r => [...r]);
-                                  while (updated[i + 1].length < 9) updated[i + 1].push("");
-                                  updated[i + 1][4] = val;
+                                  while (updated[i + 1].length < 10) updated[i + 1].push("");
+                                  updated[i + 1][5] = val;
                                   return updated;
                                 });
                                 try {
@@ -767,21 +777,21 @@ export default function AdminPage() {
                             <span
                               onClick={() => setEditingCC(i)}
                               className="font-sans text-[11px] text-brand-muted truncate block cursor-pointer hover:text-brand-dark"
-                              title={row[4] || "Click to add CC"}
+                              title={row[5] || "Click to add CC"}
                             >
-                              {row[4] || "—"}
+                              {row[5] || "—"}
                             </span>
                           )}
                         </td>
                         <td className="px-4 py-3 text-center">
                           <select
-                            value={row[5] || "0"}
+                            value={row[6] || "0"}
                             onChange={async (e) => {
                               const val = e.target.value;
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
-                                while (updated[i + 1].length < 9) updated[i + 1].push("");
-                                updated[i + 1][5] = val;
+                                while (updated[i + 1].length < 10) updated[i + 1].push("");
+                                updated[i + 1][6] = val;
                                 return updated;
                               });
                               try {
@@ -803,7 +813,7 @@ export default function AdminPage() {
                         </td>
                         <td className="px-4 py-3">
                           <select
-                            value={row[6] || "Not Sent"}
+                            value={row[7] || "Not Sent"}
                             onChange={async (e) => {
                               const newStatus = e.target.value;
                               const dateSent = newStatus === "Sent"
@@ -811,8 +821,8 @@ export default function AdminPage() {
                                 : "";
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
-                                updated[i + 1][6] = newStatus;
-                                updated[i + 1][7] = dateSent;
+                                updated[i + 1][7] = newStatus;
+                                updated[i + 1][8] = dateSent;
                                 return updated;
                               });
                               try {
@@ -827,8 +837,8 @@ export default function AdminPage() {
                               }
                             }}
                             className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
-                              (row[6] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
-                              (row[6] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
+                              (row[7] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
+                              (row[7] || "Not Sent") === "Bounced" ? "border-orange-200 bg-orange-50 text-orange-700" :
                               "border-gray-200 bg-gray-50 text-gray-600"
                             }`}
                           >
@@ -837,15 +847,15 @@ export default function AdminPage() {
                             <option value="Bounced">Bounced</option>
                           </select>
                         </td>
-                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[7] || "—"}</td>
+                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[8] || "—"}</td>
                         <td className="px-4 py-3 text-center">
                           <button
                             onClick={async () => {
-                              const isVip = (row[8] || "").toLowerCase() === "yes";
+                              const isVip = (row[9] || "").toLowerCase() === "yes";
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
-                                while (updated[i + 1].length < 9) updated[i + 1].push("");
-                                updated[i + 1][8] = !isVip ? "Yes" : "";
+                                while (updated[i + 1].length < 10) updated[i + 1].push("");
+                                updated[i + 1][9] = !isVip ? "Yes" : "";
                                 return updated;
                               });
                               try {
@@ -860,9 +870,9 @@ export default function AdminPage() {
                               }
                             }}
                             className="transition-colors"
-                            title={row[8] === "Yes" ? "Remove VIP" : "Mark as VIP"}
+                            title={row[9] === "Yes" ? "Remove VIP" : "Mark as VIP"}
                           >
-                            {(row[8] || "").toLowerCase() === "yes" ? (
+                            {(row[9] || "").toLowerCase() === "yes" ? (
                               <span className="text-brand-gold text-lg">★</span>
                             ) : (
                               <span className="text-gray-300 hover:text-brand-gold text-lg">☆</span>
@@ -882,7 +892,7 @@ export default function AdminPage() {
                     ))}
                     {invites.length <= 1 && (
                       <tr>
-                        <td colSpan={10} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
+                        <td colSpan={11} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">
                           No invites yet. Add emails above.
                         </td>
                       </tr>
