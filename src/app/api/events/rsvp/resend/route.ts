@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEventBySlug } from "@/config/events";
-import { getAllRsvps } from "@/lib/google-sheets";
+import { getAllRsvps, getInviteRow } from "@/lib/google-sheets";
 import { sendConfirmationEmail } from "@/lib/resend";
 
 export async function POST(req: NextRequest) {
@@ -33,11 +33,33 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No confirmation to resend." }, { status: 400 });
     }
 
-    const guestName = firstNameIdx >= 0 ? matchingRow[firstNameIdx] : "Guest";
+    let greeting = firstNameIdx >= 0 ? matchingRow[firstNameIdx] || "Guest" : "Guest";
+    try {
+      const inviteRow = await getInviteRow(event.googleSheetId, event.sheetTabName, emailLower);
+      if (inviteRow) {
+        const title = (inviteRow[3] || "").trim().toLowerCase();
+        const surname = (inviteRow[2] || "").trim();
+        if (title.startsWith("ambassador")) {
+          greeting = "Your Excellency";
+        } else if (title.startsWith("congressman") && surname) {
+          greeting = `Congressman ${surname}`;
+        } else if (title.startsWith("congresswoman") && surname) {
+          greeting = `Congresswoman ${surname}`;
+        } else if (title.startsWith("senator") && surname) {
+          greeting = `Senator ${surname}`;
+        } else if (title.startsWith("minister") || title.startsWith("hon")) {
+          greeting = "Honorable Minister";
+        } else if (title.startsWith("secretary")) {
+          greeting = "Honorable Secretary";
+        }
+      }
+    } catch {
+      // Fall back to first name
+    }
 
     await sendConfirmationEmail({
       to: emailLower,
-      guestName,
+      guestName: greeting,
       eventName: event.name,
       date: event.date,
       time: event.time,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEventBySlug } from "@/config/events";
-import { getInviteList, checkDuplicate, appendRsvp } from "@/lib/google-sheets";
+import { getInviteList, checkDuplicate, appendRsvp, getInviteRow } from "@/lib/google-sheets";
 import { sendConfirmationEmail } from "@/lib/resend";
 
 export async function POST(req: NextRequest) {
@@ -79,11 +79,36 @@ export async function POST(req: NextRequest) {
 
     await appendRsvp(event.googleSheetId, event.rsvpTabName, row);
 
+    // Build greeting from invite title + surname
+    let greeting = fields.firstName || fields.fullName || "Guest";
+    try {
+      const inviteRow = await getInviteRow(event.googleSheetId, event.sheetTabName, emailLower);
+      if (inviteRow) {
+        const title = (inviteRow[3] || "").trim().toLowerCase();
+        const surname = (inviteRow[2] || "").trim();
+        if (title.startsWith("ambassador")) {
+          greeting = "Your Excellency";
+        } else if (title.startsWith("congressman") && surname) {
+          greeting = `Congressman ${surname}`;
+        } else if (title.startsWith("congresswoman") && surname) {
+          greeting = `Congresswoman ${surname}`;
+        } else if (title.startsWith("senator") && surname) {
+          greeting = `Senator ${surname}`;
+        } else if (title.startsWith("minister") || title.startsWith("hon")) {
+          greeting = "Honorable Minister";
+        } else if (title.startsWith("secretary")) {
+          greeting = "Honorable Secretary";
+        }
+      }
+    } catch {
+      // Fall back to first name if invite lookup fails
+    }
+
     // Send confirmation email (only if attending)
     if (attending === "Yes") try {
       await sendConfirmationEmail({
         to: emailLower,
-        guestName: fields.firstName || fields.fullName || "Guest",
+        guestName: greeting,
         eventName: event.name,
         date: event.date,
         time: event.time,
