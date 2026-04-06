@@ -76,11 +76,11 @@ function getInviteContent(slug: string) {
           We would be delighted to have you join us.
         </p>
 
-        <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy mb-6">
+        <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
           Off-record. By invitation only.
         </p>
 
-        <div className="pt-4 border-t border-brand-light">
+        <div className="pt-4 mt-6 border-t border-brand-light">
           <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-2">
             Convened by
           </p>
