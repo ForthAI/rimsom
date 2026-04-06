@@ -105,7 +105,7 @@ export default function AdminPage() {
   }, []);
 
   const fetchInvites = useCallback(async () => {
-    const slug = selectedSlug || events[0]?.slug;
+    const slug = selectedSlug;
     if (!slug) return;
     setInviteLoading(true);
     try {
@@ -118,7 +118,7 @@ export default function AdminPage() {
     } finally {
       setInviteLoading(false);
     }
-  }, [selectedSlug, events]);
+  }, [selectedSlug]);
 
   useEffect(() => {
     if (authenticated) fetchData();
@@ -132,7 +132,7 @@ export default function AdminPage() {
   }, [events, selectedSlug]);
 
   const fetchAssets = useCallback(async () => {
-    const slug = selectedSlug || events[0]?.slug;
+    const slug = selectedSlug;
     if (!slug) return;
     setAssetLoading(true);
     try {
@@ -145,7 +145,7 @@ export default function AdminPage() {
     } finally {
       setAssetLoading(false);
     }
-  }, [selectedSlug, events]);
+  }, [selectedSlug]);
 
   // Fetch invites for both tabs (needed for VIP data on door list)
   useEffect(() => {
