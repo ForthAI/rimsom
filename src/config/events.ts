@@ -49,7 +49,7 @@ export const events: EventConfig[] = [
     date: "Wednesday, April 15, 2026",
     time: "7:30 PM – 10:30 PM",
     venueName: "Lagos District Restaurant",
-    venueAddress: "1629 K Street NW, Washington, D.C. 20006",
+    venueAddress: "1627 K St NW, Ste. 100, Washington, DC 20006",
     heroImage: "/after-hours.jpg",
     formFields: [
       { name: "firstName", label: "First Name", type: "text", placeholder: "First name", required: true },
