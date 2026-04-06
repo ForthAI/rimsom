@@ -189,9 +189,14 @@ export default function AdminPage() {
         setInviteMessage(`Already on list: ${data.duplicateEmails.join(", ")}`);
       } else {
         setInviteMessage(`Added ${data.added} invite.`);
+        // Optimistically insert new row at top of list
+        const newRow = [newEmail.trim().toLowerCase(), newFirst.trim(), newSurname.trim(), newTitle.trim(), newOrg.trim(), newCC.trim(), newGuests.trim() || "0", "Not Sent", "", ""];
+        setInvites(prev => {
+          const header = prev[0] || [];
+          return [header, newRow, ...prev.slice(1)];
+        });
         setNewEmail(""); setNewFirst(""); setNewSurname(""); setNewTitle(""); setNewOrg(""); setNewCC(""); setNewGuests("");
       }
-      fetchInvites();
       fetchData();
     } catch {
       setInviteMessage("Failed to add invite.");
