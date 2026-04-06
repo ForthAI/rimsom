@@ -34,6 +34,8 @@ export default function AdminPage() {
   const [newEmail, setNewEmail] = useState("");
   const [newName, setNewName] = useState("");
   const [newOrg, setNewOrg] = useState("");
+  const [newCC, setNewCC] = useState("");
+  const [newGuests, setNewGuests] = useState("");
   const [bulkEmails, setBulkEmails] = useState("");
   const [showBulk, setShowBulk] = useState(false);
   const [inviteMessage, setInviteMessage] = useState("");
@@ -178,7 +180,7 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slug: activeSlug,
-          emails: [{ email: newEmail.trim(), name: newName.trim(), organization: newOrg.trim() }],
+          emails: [{ email: newEmail.trim(), name: newName.trim(), organization: newOrg.trim(), cc: newCC.trim(), guests: newGuests.trim() }],
         }),
       });
       const data = await res.json();
@@ -186,7 +188,7 @@ export default function AdminPage() {
         setInviteMessage(`Already on list: ${data.duplicateEmails.join(", ")}`);
       } else {
         setInviteMessage(`Added ${data.added} invite.`);
-        setNewEmail(""); setNewName(""); setNewOrg("");
+        setNewEmail(""); setNewName(""); setNewOrg(""); setNewCC(""); setNewGuests("");
       }
       fetchInvites();
       fetchData();
@@ -671,6 +673,22 @@ export default function AdminPage() {
                     onChange={(e) => setNewOrg(e.target.value)}
                     placeholder="Organization"
                     className="md:w-40 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <input
+                    type="text"
+                    value={newCC}
+                    onChange={(e) => setNewCC(e.target.value)}
+                    placeholder="CC emails"
+                    className="md:w-40 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    value={newGuests}
+                    onChange={(e) => setNewGuests(e.target.value)}
+                    placeholder="Guests"
+                    className="md:w-20 px-3 py-2.5 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors rounded"
                   />
                   <button
                     type="submit"

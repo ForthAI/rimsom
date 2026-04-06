@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       if (existingEmails.includes(emailLower)) {
         duplicates.push(emailLower);
       } else {
-        newRows.push([emailLower, entry.name || "", entry.organization || "", "", "", "Not Sent", "", ""]);
+        newRows.push([emailLower, entry.name || "", entry.organization || "", entry.cc || "", entry.guests || "", "Not Sent", "", ""]);
         existingEmails.push(emailLower);
       }
     }
