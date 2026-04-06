@@ -86,8 +86,18 @@ function generateICS(params: ConfirmationEmailParams): string | null {
   ].join("\r\n");
 }
 
+function generateGoogleCalendarUrl(params: ConfirmationEmailParams): string | null {
+  const dt = parseEventDateTime(params.date, params.time);
+  if (!dt) return null;
+  const details = encodeURIComponent(`RSVP confirmed. We look forward to welcoming you.`);
+  const location = encodeURIComponent(`${params.venueName}, ${params.venueAddress}`);
+  const title = encodeURIComponent(params.eventName);
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dt.dtStart}/${dt.dtEnd}&ctz=America/New_York&details=${details}&location=${location}`;
+}
+
 export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(params.venueAddress)}`;
+  const googleCalUrl = generateGoogleCalendarUrl(params);
 
   const html = `
 <!DOCTYPE html>
@@ -140,7 +150,12 @@ export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
                 <a href="${mapsUrl}" style="font-size:12px;color:#a8843a;text-decoration:none;font-weight:600;">
                   View on Google Maps →
                 </a>
-              </p>
+              </p>${googleCalUrl ? `
+              <p style="margin:16px 0 0;">
+                <a href="${googleCalUrl}" target="_blank" style="display:inline-block;padding:10px 20px;background:#162246;color:#ffffff;font-size:12px;font-weight:600;text-decoration:none;border-radius:4px;letter-spacing:0.05em;">
+                  Add to Calendar
+                </a>
+              </p>` : ""}
             </td>
           </tr>
         </table>
@@ -150,9 +165,6 @@ export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
     <tr>
       <td style="padding:24px 32px;border-top:1px solid #e8e8e8;">
         <p style="font-size:11px;color:#999999;margin:0;line-height:1.5;">
-          A calendar invite is attached — open it to add this event to your calendar.
-        </p>
-        <p style="font-size:11px;color:#999999;margin:8px 0 0;line-height:1.5;">
           Questions? Contact us at
           <a href="mailto:events@rimsomglobal.com" style="color:#a8843a;text-decoration:none;">events@rimsomglobal.com</a>
         </p>
