@@ -86,18 +86,9 @@ function generateICS(params: ConfirmationEmailParams): string | null {
   ].join("\r\n");
 }
 
-function generateGoogleCalendarUrl(params: ConfirmationEmailParams): string | null {
-  const dt = parseEventDateTime(params.date, params.time);
-  if (!dt) return null;
-  const details = encodeURIComponent(`RSVP confirmed. We look forward to welcoming you.`);
-  const location = encodeURIComponent(`${params.venueName}, ${params.venueAddress}`);
-  const title = encodeURIComponent(params.eventName);
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dt.dtStart}/${dt.dtEnd}&ctz=America/New_York&details=${details}&location=${location}`;
-}
 
 export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(params.venueAddress)}`;
-  const googleCalUrl = generateGoogleCalendarUrl(params);
 
   const html = `
 <!DOCTYPE html>
