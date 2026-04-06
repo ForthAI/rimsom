@@ -72,12 +72,12 @@ function getInviteContent(slug: string) {
           Corps, US Congressional Leaders &amp; Senior Government Officials and Corporate Executives.
         </p>
 
-        <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
-          Off-record. By invitation only.
-        </p>
-
         <p>
           We would be delighted to have you join us.
+        </p>
+
+        <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
+          Off-record. By invitation only.
         </p>
 
         <div className="pt-4 border-t border-brand-light">
