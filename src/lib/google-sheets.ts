@@ -34,8 +34,8 @@ export async function getInviteList(
     range: `${tabName}!A:A`,
   });
   const rows = res.data.values || [];
-  // Skip header row, lowercase all emails
-  return rows.slice(1).map((row) => (row[0] || "").toLowerCase().trim());
+  // Skip header row, lowercase all emails, filter empty
+  return rows.slice(1).map((row) => (row[0] || "").toLowerCase().trim()).filter(Boolean);
 }
 
 export async function checkDuplicate(

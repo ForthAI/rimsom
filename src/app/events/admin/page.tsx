@@ -409,9 +409,9 @@ export default function AdminPage() {
               const surnameIdx = selectedEvent.headers.indexOf("Surname");
               const titleIdx = selectedEvent.headers.indexOf("Title");
               const orgIdx = selectedEvent.headers.indexOf("Organization");
-              const timestampIdx = selectedEvent.headers.indexOf("Timestamp") >= 0
-                ? selectedEvent.headers.indexOf("Timestamp")
-                : selectedEvent.headers.length - 1;
+              const timestampIdx = ["Timestamp", "Date", "Submitted", "Date Submitted"].reduce(
+                (found, name) => found >= 0 ? found : selectedEvent.headers.indexOf(name), -1
+              );
 
               const vipEmails = new Set(
                 invites.slice(1).filter((r) => (r[9] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
@@ -465,7 +465,7 @@ export default function AdminPage() {
                   organization: orgIdx >= 0 ? r[orgIdx] || "" : "",
                   name: "",
                   status: (attending === "yes" ? "Yes" : "No") as "Yes" | "No",
-                  date: r[timestampIdx] || "",
+                  date: timestampIdx >= 0 ? r[timestampIdx] || "" : "",
                   isVip: vipEmails.has(email),
                   guests: guestCount,
                   guestNames: guestNamesList,
@@ -552,7 +552,7 @@ export default function AdminPage() {
                             <td className="px-4 py-3 font-sans text-[12px] text-brand-gray">
                               {row.guests > 0 ? (
                                 <span title={row.guestNames.join(", ")}>
-                                  {row.guests} <span className="text-brand-muted">({row.guestNames.join(", ")})</span>
+                                  {row.guestNames.join(", ")}
                                 </span>
                               ) : "—"}
                             </td>
