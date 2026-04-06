@@ -18,6 +18,74 @@ interface ConfirmationEmailParams {
   ticketPdf?: string;
 }
 
+function parseEventDateTime(dateStr: string, timeStr: string): { dtStart: string; dtEnd: string } | null {
+  try {
+    // Parse date like "Tuesday, April 14, 2026"
+    const cleaned = dateStr.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s*/i, "");
+    const dateParsed = new Date(cleaned);
+    if (isNaN(dateParsed.getTime())) return null;
+
+    // Parse time like "3:00 PM – 5:00 PM" or "7:30 PM – 10:30 PM"
+    const timeParts = timeStr.split(/\s*[–—-]\s*/);
+    if (timeParts.length < 2) return null;
+
+    function parseTime(t: string): { hours: number; minutes: number } | null {
+      const match = t.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if (!match) return null;
+      let hours = parseInt(match[1], 10);
+      const minutes = parseInt(match[2], 10);
+      const period = match[3].toUpperCase();
+      if (period === "PM" && hours !== 12) hours += 12;
+      if (period === "AM" && hours === 12) hours = 0;
+      return { hours, minutes };
+    }
+
+    const start = parseTime(timeParts[0]);
+    const end = parseTime(timeParts[1]);
+    if (!start || !end) return null;
+
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    const y = dateParsed.getFullYear();
+    const m = pad(dateParsed.getMonth() + 1);
+    const d = pad(dateParsed.getDate());
+
+    // Use Eastern Time (America/New_York) — events are in Washington DC
+    return {
+      dtStart: `${y}${m}${d}T${pad(start.hours)}${pad(start.minutes)}00`,
+      dtEnd: `${y}${m}${d}T${pad(end.hours)}${pad(end.minutes)}00`,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function generateICS(params: ConfirmationEmailParams): string | null {
+  const dt = parseEventDateTime(params.date, params.time);
+  if (!dt) return null;
+
+  const now = new Date();
+  const stamp = now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Rimsom Global//Events//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    `DTSTART;TZID=America/New_York:${dt.dtStart}`,
+    `DTEND;TZID=America/New_York:${dt.dtEnd}`,
+    `DTSTAMP:${stamp}`,
+    `UID:${Date.now()}@rimsomglobal.com`,
+    `SUMMARY:${params.eventName}`,
+    `LOCATION:${params.venueName}\\, ${params.venueAddress}`,
+    `DESCRIPTION:RSVP confirmed. We look forward to welcoming you.`,
+    "STATUS:CONFIRMED",
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+}
+
 export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(params.venueAddress)}`;
 
@@ -78,6 +146,17 @@ export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
         </table>
       </td>
     </tr>
+    <!-- Add to Calendar -->
+    <tr>
+      <td style="padding:0 32px 32px;text-align:center;">
+        <p style="font-size:13px;color:#5a5a5a;margin:0 0 8px;">
+          An .ics calendar file is attached to this email.
+        </p>
+        <p style="font-size:12px;color:#999999;margin:0;">
+          Open it to add this event to Outlook, Google Calendar, or Apple Calendar.
+        </p>
+      </td>
+    </tr>
     <!-- Footer -->
     <tr>
       <td style="padding:24px 32px;border-top:1px solid #e8e8e8;">
@@ -95,6 +174,15 @@ export async function sendConfirmationEmail(params: ConfirmationEmailParams) {
 </html>`;
 
   const attachments: { filename: string; content: Buffer }[] = [];
+
+  // Generate and attach calendar invite
+  const icsContent = generateICS(params);
+  if (icsContent) {
+    attachments.push({
+      filename: `${params.eventName.replace(/[^a-zA-Z0-9]/g, "-")}.ics`,
+      content: Buffer.from(icsContent, "utf-8"),
+    });
+  }
 
   if (params.ticketPdf) {
     const pdfPath = path.join(process.cwd(), "public", params.ticketPdf);
