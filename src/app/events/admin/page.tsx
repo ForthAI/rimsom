@@ -746,8 +746,8 @@ export default function AdminPage() {
                   <tbody>
                     {invites.slice(1).map((row, i) => (
                       <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="px-4 py-3 font-sans text-[13px] text-brand-dark">{row[0]}</td>
                         {[
+                          { field: "email", idx: 0 },
                           { field: "first", idx: 1 },
                           { field: "surname", idx: 2 },
                           { field: "title", idx: 3 },
@@ -784,7 +784,7 @@ export default function AdminPage() {
                             ) : (
                               <span
                                 onClick={() => setEditingCell({ row: i, field })}
-                                className={`font-sans text-[${field === "cc" ? "11" : "13"}px] ${field === "cc" ? "text-brand-muted break-all" : "text-brand-gray"} block cursor-pointer hover:text-brand-dark`}
+                                className={`font-sans text-[${field === "cc" ? "11" : "13"}px] ${field === "email" ? "text-brand-dark" : field === "cc" ? "text-brand-muted break-all" : "text-brand-gray"} block cursor-pointer hover:text-brand-dark`}
                                 title={row[idx] || `Click to edit`}
                               >
                                 {row[idx] || "—"}
