@@ -76,6 +76,10 @@ function getInviteContent(slug: string) {
           Off-record. By invitation only.
         </p>
 
+        <p>
+          We would be delighted to have you join us.
+        </p>
+
         <div className="pt-4 border-t border-brand-light">
           <p className="text-[11px] font-semibold tracking-widest-plus uppercase text-brand-gold mb-2">
             Convened by
