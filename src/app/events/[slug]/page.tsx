@@ -77,7 +77,7 @@ function getInviteContent(slug: string) {
         </p>
 
         <p className="text-[13px] font-semibold tracking-wide uppercase text-brand-navy">
-          Off-record. By invitation only.
+          By invitation only.
         </p>
 
         <div className="pt-4 !mt-12 border-t border-brand-light">
