@@ -78,7 +78,7 @@ function generateICS(params: ConfirmationEmailParams): string | null {
     `DTSTAMP:${stamp}`,
     `UID:${Date.now()}@rimsomglobal.com`,
     `SUMMARY:${params.eventName}`,
-    `LOCATION:${params.venueName}\\, ${params.venueAddress}`,
+    `LOCATION:${params.venueAddress}`,
     `DESCRIPTION:RSVP confirmed. We look forward to welcoming you.`,
     "STATUS:CONFIRMED",
     "END:VEVENT",
