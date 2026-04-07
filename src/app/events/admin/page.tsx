@@ -792,7 +792,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {invites.slice(1).map((row, i) => (
-                      <tr key={i} className={`border-b border-gray-100 ${(row[7] || "").toLowerCase() === "sent" ? "bg-green-50 hover:bg-green-100" : (row[7] || "").toLowerCase() === "bounced" ? "bg-red-50 hover:bg-red-100" : (row[7] || "").toLowerCase() === "working" ? "bg-orange-50 hover:bg-orange-100" : "hover:bg-gray-50"}`}>
+                      <tr key={i} className={`border-b border-gray-100 ${(row[7] || "").toLowerCase() === "sent" ? "bg-green-50 hover:bg-green-100" : (row[7] || "").toLowerCase() === "bounced" ? "bg-red-50 hover:bg-red-100" : (row[7] || "").toLowerCase() === "working" ? "bg-orange-50 hover:bg-orange-100" : (row[7] || "").toLowerCase() === "test" ? "bg-purple-50 hover:bg-purple-100" : "hover:bg-gray-50"}`}>
                         {[
                           { field: "email", idx: 0 },
                           { field: "first", idx: 1 },
@@ -917,6 +917,7 @@ export default function AdminPage() {
                               (row[7] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
                               (row[7] || "Not Sent") === "Bounced" ? "border-red-200 bg-red-50 text-red-700" :
                               (row[7] || "Not Sent") === "Working" ? "border-orange-200 bg-orange-50 text-orange-700" :
+                              (row[7] || "Not Sent") === "Test" ? "border-purple-200 bg-purple-50 text-purple-700" :
                               "border-gray-200 bg-gray-50 text-gray-600"
                             }`}
                           >
@@ -924,6 +925,7 @@ export default function AdminPage() {
                             <option value="Working">Working</option>
                             <option value="Sent">Sent</option>
                             <option value="Bounced">Bounced</option>
+                            <option value="Test">Test</option>
                           </select>
                         </td>
                         <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[8] || "—"}</td>
