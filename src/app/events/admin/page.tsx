@@ -54,6 +54,7 @@ export default function AdminPage() {
   const [editingNote, setEditingNote] = useState<number | null>(null);
   const [editingItem, setEditingItem] = useState<number | null>(null);
   const [editingCell, setEditingCell] = useState<{ row: number; field: string } | null>(null);
+  const [copiedCell, setCopiedCell] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -828,12 +829,33 @@ export default function AdminPage() {
                                 className={`w-full px-2 py-1 text-[13px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark ${field === "cc" ? "min-w-[160px]" : ""}`}
                               />
                             ) : (
-                              <span
-                                onClick={() => setEditingCell({ row: i, field })}
-                                className={`font-sans text-[${field === "cc" ? "11" : "13"}px] ${field === "email" ? "text-brand-dark" : field === "cc" ? "text-brand-muted break-all" : "text-brand-gray"} block cursor-pointer hover:text-brand-dark`}
-                                title={row[idx] || `Click to edit`}
-                              >
-                                {row[idx] || "—"}
+                              <span className="flex items-center gap-1 group/cell">
+                                <span
+                                  onClick={() => setEditingCell({ row: i, field })}
+                                  className={`font-sans text-[${field === "cc" ? "11" : "13"}px] ${field === "email" ? "text-brand-dark" : field === "cc" ? "text-brand-muted break-all" : "text-brand-gray"} cursor-pointer hover:text-brand-dark flex-1`}
+                                  title={`Click to edit`}
+                                >
+                                  {row[idx] || "—"}
+                                </span>
+                                {(field === "email" || field === "cc") && row[idx] && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigator.clipboard.writeText(row[idx]);
+                                      const key = `${i}-${field}`;
+                                      setCopiedCell(key);
+                                      setTimeout(() => setCopiedCell(prev => prev === key ? null : prev), 1500);
+                                    }}
+                                    className="opacity-0 group-hover/cell:opacity-100 transition-opacity shrink-0 p-1 rounded hover:bg-gray-200"
+                                    title="Copy"
+                                  >
+                                    {copiedCell === `${i}-${field}` ? (
+                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    ) : (
+                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    )}
+                                  </button>
+                                )}
                               </span>
                             )}
                           </td>
