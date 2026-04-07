@@ -486,7 +486,7 @@ export default function AdminPage() {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 no-print">
                     <div className="bg-white p-6 rounded-lg border border-gray-200">
                       <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Invited</p>
-                      <p className="font-sans text-3xl font-bold text-brand-dark">{invites.length > 1 ? invites.length - 1 : 0}</p>
+                      <p className="font-sans text-3xl font-bold text-brand-dark">{totalOutreach}</p>
                     </div>
                     <div className="bg-white p-6 rounded-lg border border-gray-200">
                       <p className="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted mb-1">Pending</p>
