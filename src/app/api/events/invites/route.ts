@@ -61,7 +61,10 @@ export async function GET(req: NextRequest) {
       range: `${event.sheetTabName}!A:J`,
     });
     const rows = res.data.values || [];
-    return NextResponse.json({ invites: rows });
+    // Keep header + rows with non-empty email
+    const header = rows[0] || [];
+    const dataRows = rows.slice(1).filter((row) => (row[0] || "").trim() !== "");
+    return NextResponse.json({ invites: [header, ...dataRows] });
   } catch (error) {
     console.error("Fetch invites error:", error);
     return NextResponse.json({ error: "Failed to fetch invites." }, { status: 500 });
