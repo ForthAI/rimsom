@@ -478,7 +478,7 @@ export default function AdminPage() {
               const noCount = respondedRows.filter((r) => r.status === "No").length;
               const pendingCount = pendingRows.length;
               // Total outreach = everyone who responded + those still pending
-              const totalOutreach = yesCount + noCount + pendingCount;
+              const totalOutreach = yesCount + totalGuests + noCount + pendingCount;
 
               return (
                 <>
