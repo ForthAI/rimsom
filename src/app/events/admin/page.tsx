@@ -792,7 +792,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {invites.slice(1).map((row, i) => (
-                      <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                      <tr key={i} className={`border-b border-gray-100 ${(row[7] || "").toLowerCase() === "sent" ? "bg-green-50 hover:bg-green-100" : (row[7] || "").toLowerCase() === "bounced" ? "bg-red-50 hover:bg-red-100" : "hover:bg-gray-50"}`}>
                         {[
                           { field: "email", idx: 0 },
                           { field: "first", idx: 1 },
