@@ -15,6 +15,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${event.name} | Rimsom Global`,
     description: event.subhead,
+    openGraph: {
+      title: `${event.name} | Rimsom Global`,
+      description: event.subhead,
+      type: "website",
+    },
   };
 }
 
