@@ -774,20 +774,33 @@ export default function AdminPage() {
               {inviteLoading ? (
                 <p className="p-6 font-sans text-[14px] text-brand-muted">Loading invites...</p>
               ) : (
-                <table className="w-full">
+                <table className="w-full table-fixed">
+                  <colgroup>
+                    <col className="w-[18%]" />{/* Email */}
+                    <col className="w-[8%]" />{/* First */}
+                    <col className="w-[8%]" />{/* Surname */}
+                    <col className="w-[9%]" />{/* Title */}
+                    <col className="w-[12%]" />{/* Org */}
+                    <col className="w-[15%]" />{/* CC */}
+                    <col className="w-[4%]" />{/* Guests */}
+                    <col className="w-[7%]" />{/* Status */}
+                    <col className="w-[10%]" />{/* Date Sent */}
+                    <col className="w-[4%]" />{/* VIP */}
+                    <col className="w-[3%]" />{/* Delete */}
+                  </colgroup>
                   <thead>
                     <tr className="border-b border-gray-200">
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">First Name</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Surname</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">CC</th>
-                      <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Guests</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Date Sent</th>
-                      <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
-                      <th className="px-4 py-3 w-10"></th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">First</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Surname</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Org</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">CC</th>
+                      <th className="px-2 py-2 text-center text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Gst</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Date Sent</th>
+                      <th className="px-2 py-2 text-center text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
+                      <th className="px-2 py-2"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -801,7 +814,7 @@ export default function AdminPage() {
                           { field: "organization", idx: 4 },
                           { field: "cc", idx: 5 },
                         ].map(({ field, idx }) => (
-                          <td key={field} className={`px-4 py-3 ${field === "cc" ? "min-w-[180px]" : ""}`}>
+                          <td key={field} className="px-2 py-2 overflow-hidden">
                             {editingCell?.row === i && editingCell?.field === field ? (
                               <input
                                 autoFocus
@@ -826,14 +839,14 @@ export default function AdminPage() {
                                   } catch { fetchInvites(); }
                                 }}
                                 onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingCell(null); }}
-                                className={`w-full px-2 py-1 text-[13px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark ${field === "cc" ? "min-w-[160px]" : ""}`}
+                                className="w-full px-1 py-1 text-[11px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark"
                               />
                             ) : (
                               <span className="flex items-center gap-1 group/cell">
                                 <span
                                   onClick={() => setEditingCell({ row: i, field })}
-                                  className={`font-sans text-[${field === "cc" ? "11" : "13"}px] ${field === "email" ? "text-brand-dark" : field === "cc" ? "text-brand-muted break-all" : "text-brand-gray"} cursor-pointer hover:text-brand-dark flex-1`}
-                                  title={`Click to edit`}
+                                  className={`font-sans text-[11px] ${field === "email" ? "text-brand-dark truncate" : field === "cc" ? "text-brand-muted break-all" : "text-brand-gray truncate"} cursor-pointer hover:text-brand-dark flex-1`}
+                                  title={row[idx] || `Click to edit`}
                                 >
                                   {row[idx] || "—"}
                                 </span>
@@ -860,7 +873,7 @@ export default function AdminPage() {
                             )}
                           </td>
                         ))}
-                        <td className="px-4 py-3 text-center">
+                        <td className="px-2 py-2 text-center">
                           <select
                             value={row[6] || "0"}
                             onChange={async (e) => {
@@ -879,7 +892,7 @@ export default function AdminPage() {
                                 });
                               } catch { fetchInvites(); }
                             }}
-                            className="px-1 py-1 text-[13px] font-sans text-brand-gray border border-transparent rounded outline-none cursor-pointer hover:border-brand-light focus:border-brand-dark bg-transparent"
+                            className="px-1 py-1 text-[11px] font-sans text-brand-gray border border-transparent rounded outline-none cursor-pointer hover:border-brand-light focus:border-brand-dark bg-transparent w-full"
                           >
                             <option value="0">0</option>
                             <option value="1">1</option>
@@ -888,7 +901,7 @@ export default function AdminPage() {
                             <option value="4">4</option>
                           </select>
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-2 py-2">
                           <select
                             value={row[7] || "Not Sent"}
                             onChange={async (e) => {
@@ -913,7 +926,7 @@ export default function AdminPage() {
                                 fetchInvites();
                               }
                             }}
-                            className={`px-2 py-1 text-[12px] font-sans font-medium border rounded outline-none cursor-pointer ${
+                            className={`px-1 py-1 text-[10px] font-sans font-medium border rounded outline-none cursor-pointer w-full ${
                               (row[7] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
                               (row[7] || "Not Sent") === "Bounced" ? "border-red-200 bg-red-50 text-red-700" :
                               (row[7] || "Not Sent") === "Working" ? "border-orange-200 bg-orange-50 text-orange-700" :
@@ -928,8 +941,8 @@ export default function AdminPage() {
                             <option value="Test">Test</option>
                           </select>
                         </td>
-                        <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row[8] || "—"}</td>
-                        <td className="px-4 py-3 text-center">
+                        <td className="px-2 py-2 font-sans text-[10px] text-brand-muted whitespace-nowrap truncate">{row[8] || "—"}</td>
+                        <td className="px-2 py-2 text-center">
                           <button
                             onClick={async () => {
                               const isVip = (row[9] || "").toLowerCase() === "yes";
@@ -960,7 +973,7 @@ export default function AdminPage() {
                             )}
                           </button>
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-2 py-2">
                           <button
                             onClick={() => removeInvite(row[0])}
                             className="text-[11px] font-sans text-red-400 hover:text-red-600 transition-colors"
