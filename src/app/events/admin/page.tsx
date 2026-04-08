@@ -781,10 +781,10 @@ export default function AdminPage() {
                     <col className="w-[8%]" />{/* Surname */}
                     <col className="w-[9%]" />{/* Title */}
                     <col className="w-[12%]" />{/* Org */}
-                    <col className="w-[15%]" />{/* CC */}
+                    <col className="w-[11%]" />{/* CC */}
                     <col className="w-[4%]" />{/* Guests */}
-                    <col className="w-[7%]" />{/* Status */}
-                    <col className="w-[10%]" />{/* Date Sent */}
+                    <col className="w-[8%]" />{/* Status */}
+                    <col className="w-[9%]" />{/* Date Sent */}
                     <col className="w-[4%]" />{/* VIP */}
                     <col className="w-[3%]" />{/* Delete */}
                   </colgroup>
@@ -907,7 +907,7 @@ export default function AdminPage() {
                             onChange={async (e) => {
                               const newStatus = e.target.value;
                               const dateSent = newStatus === "Sent"
-                                ? new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })
+                                ? new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
                                 : "";
                               setInvites(prev => {
                                 const updated = prev.map(r => [...r]);
