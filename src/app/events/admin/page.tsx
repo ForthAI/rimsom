@@ -776,17 +776,17 @@ export default function AdminPage() {
               ) : (
                 <table className="w-full table-fixed">
                   <colgroup>
-                    <col className="w-[18%]" />{/* Email */}
-                    <col className="w-[8%]" />{/* First */}
-                    <col className="w-[8%]" />{/* Surname */}
-                    <col className="w-[9%]" />{/* Title */}
-                    <col className="w-[12%]" />{/* Org */}
-                    <col className="w-[11%]" />{/* CC */}
+                    <col className="w-[20%]" />{/* Email */}
+                    <col className="w-[9%]" />{/* First */}
+                    <col className="w-[9%]" />{/* Surname */}
+                    <col className="w-[10%]" />{/* Title */}
+                    <col className="w-[14%]" />{/* Org */}
+                    <col className="w-[10%]" />{/* CC */}
                     <col className="w-[4%]" />{/* Guests */}
                     <col className="w-[8%]" />{/* Status */}
-                    <col className="w-[9%]" />{/* Date Sent */}
+                    <col className="w-[8%]" />{/* Date Sent */}
                     <col className="w-[4%]" />{/* VIP */}
-                    <col className="w-[3%]" />{/* Delete */}
+                    <col className="w-[4%]" />{/* Delete */}
                   </colgroup>
                   <thead>
                     <tr className="border-b border-gray-200">
