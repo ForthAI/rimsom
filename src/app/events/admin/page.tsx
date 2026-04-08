@@ -814,7 +814,7 @@ export default function AdminPage() {
                           { field: "organization", idx: 4 },
                           { field: "cc", idx: 5 },
                         ].map(({ field, idx }) => (
-                          <td key={field} className="px-2 py-2 overflow-hidden">
+                          <td key={field} className="px-2 py-2">
                             {editingCell?.row === i && editingCell?.field === field ? (
                               <input
                                 autoFocus
@@ -845,7 +845,7 @@ export default function AdminPage() {
                               <span className="flex items-center gap-1 group/cell">
                                 <span
                                   onClick={() => setEditingCell({ row: i, field })}
-                                  className={`font-sans text-[11px] ${field === "email" ? "text-brand-dark truncate" : field === "cc" ? "text-brand-muted break-all" : "text-brand-gray truncate"} cursor-pointer hover:text-brand-dark flex-1`}
+                                  className={`font-sans text-[11px] ${field === "email" ? "text-brand-dark break-all" : field === "cc" ? "text-brand-muted break-all" : "text-brand-gray"} cursor-pointer hover:text-brand-dark flex-1`}
                                   title={row[idx] || `Click to edit`}
                                 >
                                   {row[idx] || "—"}
@@ -941,7 +941,7 @@ export default function AdminPage() {
                             <option value="Test">Test</option>
                           </select>
                         </td>
-                        <td className="px-2 py-2 font-sans text-[10px] text-brand-muted whitespace-nowrap truncate">{row[8] ? row[8].replace(/,?\s*\d{1,2}:\d{2}\s*(AM|PM)/i, "") : "—"}</td>
+                        <td className="px-2 py-2 font-sans text-[10px] text-brand-muted">{row[8] ? row[8].replace(/,?\s*\d{1,2}:\d{2}\s*(AM|PM)/i, "") : "—"}</td>
                         <td className="px-2 py-2 text-center">
                           <button
                             onClick={async () => {
