@@ -499,40 +499,50 @@ export default function AdminPage() {
 
                   {/* RSVP Table with Pending rows */}
                   <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto no-print">
-                    <table className="w-full">
+                    <table className="w-full table-fixed">
+                      <colgroup>
+                        <col className="w-[22%]" />{/* Email */}
+                        <col className="w-[14%]" />{/* Name */}
+                        <col className="w-[10%]" />{/* Title */}
+                        <col className="w-[16%]" />{/* Org */}
+                        <col className="w-[14%]" />{/* Guests */}
+                        <col className="w-[8%]" />{/* Status */}
+                        <col className="w-[10%]" />{/* Date */}
+                        <col className="w-[6%]" />{/* VIP */}
+                      </colgroup>
                       <thead>
                         <tr className="border-b border-gray-200">
-                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Guests</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
-                          <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Date</th>
-                          <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
+                          <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Email</th>
+                          <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Name</th>
+                          <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Title</th>
+                          <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Organization</th>
+                          <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Guests</th>
+                          <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Status</th>
+                          <th className="px-2 py-2 text-left text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">Date</th>
+                          <th className="px-2 py-2 text-center text-[10px] font-sans font-semibold tracking-wider uppercase text-brand-muted">VIP</th>
                         </tr>
                       </thead>
                       <tbody>
                         {allRows.map((row, i) => (
                           <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-                            <td className="px-4 py-3 font-sans text-[13px] text-brand-dark whitespace-nowrap">{row.email}</td>
-                            <td className="px-4 py-3 font-sans text-[13px] text-brand-dark whitespace-nowrap">
+                            <td className="px-2 py-2 font-sans text-[11px] text-brand-dark break-all">{row.email}</td>
+                            <td className="px-2 py-2 font-sans text-[11px] text-brand-dark">
                               {row.status === "Pending"
                                 ? row.name || "—"
                                 : [row.firstName, row.surname].filter(Boolean).join(" ") || "—"
                               }
                             </td>
-                            <td className="px-4 py-3 font-sans text-[13px] text-brand-gray whitespace-nowrap">{row.title || "—"}</td>
-                            <td className="px-4 py-3 font-sans text-[13px] text-brand-gray whitespace-nowrap">{row.organization || "—"}</td>
-                            <td className="px-4 py-3 font-sans text-[12px] text-brand-gray">
+                            <td className="px-2 py-2 font-sans text-[11px] text-brand-gray">{row.title || "—"}</td>
+                            <td className="px-2 py-2 font-sans text-[11px] text-brand-gray">{row.organization || "—"}</td>
+                            <td className="px-2 py-2 font-sans text-[11px] text-brand-gray">
                               {row.guests > 0 ? (
                                 <span title={row.guestNames.join(", ")}>
                                   {row.guestNames.join(", ")}
                                 </span>
                               ) : "—"}
                             </td>
-                            <td className="px-4 py-3">
-                              <span className={`inline-block px-2 py-0.5 text-[11px] font-sans font-semibold rounded ${
+                            <td className="px-2 py-2">
+                              <span className={`inline-block px-2 py-0.5 text-[10px] font-sans font-semibold rounded ${
                                 row.status === "Yes" ? "bg-green-50 text-green-700" :
                                 row.status === "No" ? "bg-red-50 text-red-600" :
                                 "bg-amber-50 text-amber-600"
@@ -540,15 +550,15 @@ export default function AdminPage() {
                                 {row.status}
                               </span>
                             </td>
-                            <td className="px-4 py-3 font-sans text-[12px] text-brand-muted whitespace-nowrap">{row.date || "—"}</td>
-                            <td className="px-4 py-3 text-center">
+                            <td className="px-2 py-2 font-sans text-[10px] text-brand-muted">{row.date ? row.date.replace(/,?\s*\d{1,2}:\d{2}\s*(AM|PM)/i, "") : "—"}</td>
+                            <td className="px-2 py-2 text-center">
                               {row.isVip && row.status === "Yes" ? <span className="text-brand-gold text-lg">★</span> : ""}
                             </td>
                           </tr>
                         ))}
                         {allRows.length === 0 && (
                           <tr>
-                            <td colSpan={8} className="px-4 py-8 text-center font-sans text-[14px] text-brand-muted">No RSVPs yet.</td>
+                            <td colSpan={8} className="px-2 py-8 text-center font-sans text-[14px] text-brand-muted">No RSVPs yet.</td>
                           </tr>
                         )}
                       </tbody>
