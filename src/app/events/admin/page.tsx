@@ -941,7 +941,7 @@ export default function AdminPage() {
                             <option value="Test">Test</option>
                           </select>
                         </td>
-                        <td className="px-2 py-2 font-sans text-[10px] text-brand-muted whitespace-nowrap truncate">{row[8] || "—"}</td>
+                        <td className="px-2 py-2 font-sans text-[10px] text-brand-muted whitespace-nowrap truncate">{row[8] ? row[8].replace(/,?\s*\d{1,2}:\d{2}\s*(AM|PM)/i, "") : "—"}</td>
                         <td className="px-2 py-2 text-center">
                           <button
                             onClick={async () => {
