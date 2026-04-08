@@ -38,8 +38,6 @@ export default function AdminPage() {
   const [newOrg, setNewOrg] = useState("");
   const [newCC, setNewCC] = useState("");
   const [newGuests, setNewGuests] = useState("");
-  const [bulkEmails, setBulkEmails] = useState("");
-  const [showBulk, setShowBulk] = useState(false);
   const [inviteMessage, setInviteMessage] = useState("");
   // Asset management state
   const [assets, setAssets] = useState<string[][]>([]);
@@ -205,30 +203,6 @@ export default function AdminPage() {
     }
   };
 
-  const addBulkInvites = async () => {
-    if (!bulkEmails.trim() || !activeSlug) return;
-    setInviteMessage("");
-    const lines = bulkEmails.split("\n").filter((l) => l.trim());
-    const emails = lines.map((line) => {
-      const parts = line.split(",").map((s) => s.trim());
-      return { email: parts[0], name: parts[1] || "", organization: parts[2] || "" };
-    });
-    try {
-      const res = await fetch("/api/events/invites", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: activeSlug, emails }),
-      });
-      const data = await res.json();
-      setInviteMessage(`Added ${data.added}. ${data.duplicates > 0 ? `${data.duplicates} already on list.` : ""}`);
-      setBulkEmails("");
-      setShowBulk(false);
-      fetchInvites();
-      fetchData();
-    } catch {
-      setInviteMessage("Failed to add invites.");
-    }
-  };
 
   const removeInvite = async (email: string) => {
     if (!activeSlug || !confirm(`Remove ${email} from the invite list?`)) return;
@@ -670,12 +644,6 @@ export default function AdminPage() {
             <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-sans text-[14px] font-semibold text-brand-dark">Add to Invite List</h3>
-                <button
-                  onClick={() => setShowBulk(!showBulk)}
-                  className="text-[12px] font-sans font-semibold text-brand-gold hover:text-brand-gold-light transition-colors"
-                >
-                  {showBulk ? "Single add" : "Bulk add"}
-                </button>
               </div>
 
               {inviteMessage && (
@@ -684,27 +652,7 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {showBulk ? (
-                <div>
-                  <p className="font-sans text-[12px] text-brand-muted mb-2">
-                    One per line: email, name, organization (name and org are optional)
-                  </p>
-                  <textarea
-                    value={bulkEmails}
-                    onChange={(e) => setBulkEmails(e.target.value)}
-                    placeholder={"john@example.com, John Smith, Acme Corp\njane@example.com, Jane Doe"}
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-200 text-[13px] text-brand-dark font-sans outline-none focus:border-brand-dark transition-colors duration-200 resize-none mb-3 font-mono"
-                  />
-                  <button
-                    onClick={addBulkInvites}
-                    className="px-5 py-2.5 bg-brand-gold text-white text-[12px] font-sans font-semibold tracking-wide uppercase hover:bg-brand-gold-light transition-colors rounded"
-                  >
-                    Add All
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={addSingleInvite} className="flex flex-col md:flex-row gap-3">
+              <form onSubmit={addSingleInvite} className="flex flex-col md:flex-row gap-3">
                   <input
                     type="email"
                     value={newEmail}
@@ -765,8 +713,7 @@ export default function AdminPage() {
                   >
                     Add
                   </button>
-                </form>
-              )}
+              </form>
             </div>
 
             {/* Invite list table */}
