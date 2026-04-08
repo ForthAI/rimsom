@@ -797,7 +797,7 @@ export default function AdminPage() {
                                 >
                                   {row[idx] || "—"}
                                 </span>
-                                {(field === "email" || field === "cc") && row[idx] && (
+                                {(field === "email" || field === "cc" || field === "first" || field === "surname") && row[idx] && (
                                   <button
                                     onClick={(e) => {
                                       e.stopPropagation();
