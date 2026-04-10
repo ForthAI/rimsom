@@ -762,7 +762,7 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {invites.slice(1).map((row, i) => (
-                      <tr key={i} className={`border-b border-gray-100 ${(row[7] || "").toLowerCase() === "sent" ? "bg-green-50 hover:bg-green-100" : (row[7] || "").toLowerCase() === "bounced" ? "bg-red-50 hover:bg-red-100" : (row[7] || "").toLowerCase() === "working" ? "bg-orange-50 hover:bg-orange-100" : (row[7] || "").toLowerCase() === "test" ? "bg-purple-50 hover:bg-purple-100" : "hover:bg-gray-50"}`}>
+                      <tr key={i} className={`border-b border-gray-100 ${(row[7] || "").toLowerCase() === "sent" ? "bg-green-50 hover:bg-green-100" : (row[7] || "").toLowerCase() === "bounced" ? "bg-red-50 hover:bg-red-100" : (row[7] || "").toLowerCase() === "working" ? "bg-orange-50 hover:bg-orange-100" : (row[7] || "").toLowerCase() === "hold" ? "bg-yellow-50 hover:bg-yellow-100" : (row[7] || "").toLowerCase() === "test" ? "bg-purple-50 hover:bg-purple-100" : "hover:bg-gray-50"}`}>
                         {[
                           { field: "email", idx: 0 },
                           { field: "first", idx: 1 },
@@ -887,6 +887,7 @@ export default function AdminPage() {
                               (row[7] || "Not Sent") === "Sent" ? "border-green-200 bg-green-50 text-green-700" :
                               (row[7] || "Not Sent") === "Bounced" ? "border-red-200 bg-red-50 text-red-700" :
                               (row[7] || "Not Sent") === "Working" ? "border-orange-200 bg-orange-50 text-orange-700" :
+                              (row[7] || "Not Sent") === "Hold" ? "border-yellow-300 bg-yellow-50 text-yellow-700" :
                               (row[7] || "Not Sent") === "Test" ? "border-purple-200 bg-purple-50 text-purple-700" :
                               "border-gray-200 bg-gray-50 text-gray-600"
                             }`}
@@ -894,6 +895,7 @@ export default function AdminPage() {
                             <option value="Not Sent">Not Sent</option>
                             <option value="Working">Working</option>
                             <option value="Sent">Sent</option>
+                            <option value="Hold">Hold</option>
                             <option value="Bounced">Bounced</option>
                             <option value="Test">Test</option>
                           </select>
@@ -1116,7 +1118,13 @@ export default function AdminPage() {
                         </td>
                       );
                       return (
-                      <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                      <tr key={i} className={`border-b border-gray-100 ${
+                        (row[3] || "") === "In Progress" ? "bg-blue-50 hover:bg-blue-100" :
+                        (row[3] || "") === "Approved" ? "bg-amber-50 hover:bg-amber-100" :
+                        (row[3] || "") === "In Production" ? "bg-purple-50 hover:bg-purple-100" :
+                        (row[3] || "") === "Delivered" ? "bg-green-50 hover:bg-green-100" :
+                        "hover:bg-gray-50"
+                      }`}>
                         <td className="px-4 py-2 min-w-[160px]">
                           {editingItem === i ? (
                             <input
