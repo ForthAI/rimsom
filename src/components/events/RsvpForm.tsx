@@ -176,7 +176,7 @@ export default function RsvpForm({ event }: { event: EventConfig }) {
   return (
     <div>
       <h2 className="font-sans text-2xl md:text-[30px] font-bold leading-[1.15] text-brand-navy mb-6">
-        Please RSVP by April 13th
+        {event.rsvpDeadline ? `Please RSVP by ${event.rsvpDeadline}` : "RSVP"}
       </h2>
 
       {error && (

@@ -26,6 +26,7 @@ export interface EventConfig {
   sheetTabName: string;
   rsvpTabName: string;
   emailSubject: string;
+  rsvpDeadline?: string;
   ticketPdf?: string;
   inviteLayout?: boolean;
   inviteLabel?: string;
