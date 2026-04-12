@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 interface EventData {
   slug: string;
@@ -455,6 +457,76 @@ export default function AdminPage() {
               // Total outreach = everyone who responded + those still pending
               const totalOutreach = yesCount + totalGuests + noCount + pendingCount;
 
+              const exportAttendeesPdf = () => {
+                const doc = new jsPDF();
+                const confirmedRows = respondedRows.filter((r) => r.status === "Yes");
+
+                // Title
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text(selectedEvent.name, 14, 20);
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(100);
+                doc.text(`Generated ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`, 14, 27);
+                doc.setTextColor(0);
+
+                let yPos = 35;
+
+                // Confirmed section
+                if (confirmedRows.length > 0) {
+                  doc.setFontSize(12);
+                  doc.setFont("helvetica", "bold");
+                  doc.text(`Confirmed (${confirmedRows.length})`, 14, yPos);
+                  yPos += 2;
+
+                  const confirmedData = confirmedRows.map((r) => {
+                    const name = [r.firstName, r.surname].filter(Boolean).join(" ") || "—";
+                    const guests = r.guestNames.length > 0 ? r.guestNames.join(", ") : "—";
+                    return [name, r.title || "—", r.organization || "—", guests];
+                  });
+
+                  autoTable(doc, {
+                    startY: yPos,
+                    head: [["Name", "Title", "Organization", "Guests"]],
+                    body: confirmedData,
+                    theme: "grid",
+                    headStyles: { fillColor: [26, 26, 26], fontSize: 9, fontStyle: "bold" },
+                    bodyStyles: { fontSize: 9 },
+                    columnStyles: { 0: { cellWidth: 40 }, 3: { cellWidth: 45 } },
+                    margin: { left: 14, right: 14 },
+                  });
+
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  yPos = ((doc as any).lastAutoTable?.finalY || yPos + 20) + 12;
+                }
+
+                // Pending section
+                if (pendingRows.length > 0) {
+                  doc.setFontSize(12);
+                  doc.setFont("helvetica", "bold");
+                  doc.text(`Pending Response (${pendingRows.length})`, 14, yPos);
+                  yPos += 2;
+
+                  const pendingData = pendingRows.map((r) => {
+                    const name = r.name || [r.firstName, r.surname].filter(Boolean).join(" ") || "—";
+                    return [name, r.title || "—", r.organization || "—"];
+                  });
+
+                  autoTable(doc, {
+                    startY: yPos,
+                    head: [["Name", "Title", "Organization"]],
+                    body: pendingData,
+                    theme: "grid",
+                    headStyles: { fillColor: [180, 130, 30], fontSize: 9, fontStyle: "bold" },
+                    bodyStyles: { fontSize: 9 },
+                    margin: { left: 14, right: 14 },
+                  });
+                }
+
+                doc.save(`${selectedEvent.name.replace(/\s+/g, "-").toLowerCase()}-attendees.pdf`);
+              };
+
               return (
                 <>
                   {/* Stats */}
@@ -492,6 +564,11 @@ export default function AdminPage() {
                     <button onClick={exportCsv} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
                       Export CSV
                     </button>
+                    {selectedEvent.slug === "namibia-convening" && (
+                      <button onClick={exportAttendeesPdf} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
+                        Export Attendees PDF
+                      </button>
+                    )}
                     <button onClick={() => { fetchData(); fetchInvites(); }} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
                       Refresh
                     </button>
