@@ -479,14 +479,8 @@ export default function AdminPage() {
                 doc.setFontSize(16);
                 doc.setFont("helvetica", "bold");
                 doc.text(selectedEvent.name, 14, 20);
-                doc.setFontSize(10);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(100);
-                doc.text(`${allAttendees.length} attendees  •  Generated ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`, 14, 27);
-                doc.setTextColor(0);
-
                 autoTable(doc, {
-                  startY: 35,
+                  startY: 28,
                   head: [["Name", "Title", "Organization"]],
                   body: allAttendees.map((r) => [r.name, r.title, r.organization]),
                   theme: "grid",
