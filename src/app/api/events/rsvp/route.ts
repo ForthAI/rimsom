@@ -153,14 +153,14 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// PATCH: Admin manually marks a pending invite as attending
+// PATCH: Admin manually marks a pending invite as attending, or edits RSVP fields
 export async function PATCH(req: NextRequest) {
   if (!(await checkAuth())) {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
   try {
-    const { slug, email } = await req.json();
+    const { slug, email, field, value } = await req.json();
     const event = getEventBySlug(slug);
     if (!event) {
       return NextResponse.json({ error: "Event not found." }, { status: 404 });
@@ -168,7 +168,43 @@ export async function PATCH(req: NextRequest) {
 
     const emailLower = email.toLowerCase().trim();
 
-    // Check not already RSVP'd
+    // If field + value provided, this is an inline edit
+    if (field && value !== undefined) {
+      const colMap: Record<string, string> = { title: "D", organization: "E" };
+      const col = colMap[field];
+      if (!col) {
+        return NextResponse.json({ error: "Invalid field." }, { status: 400 });
+      }
+
+      // Find the row index for this email in the RSVP sheet
+      const { google: g } = await import("googleapis");
+      const creds = process.env.GOOGLE_CREDENTIALS
+        ? JSON.parse(process.env.GOOGLE_CREDENTIALS)
+        : { client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL, private_key: (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, "\n") };
+      const auth = new g.auth.GoogleAuth({ credentials: creds, scopes: ["https://www.googleapis.com/auth/spreadsheets"] });
+      const sheets = g.sheets({ version: "v4", auth });
+
+      const res = await sheets.spreadsheets.values.get({
+        spreadsheetId: event.googleSheetId,
+        range: `${event.rsvpTabName}!A:A`,
+      });
+      const rows = res.data.values || [];
+      const rowIndex = rows.findIndex((r, i) => i > 0 && (r[0] || "").toLowerCase() === emailLower);
+      if (rowIndex === -1) {
+        return NextResponse.json({ error: "RSVP not found." }, { status: 404 });
+      }
+
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: event.googleSheetId,
+        range: `${event.rsvpTabName}!${col}${rowIndex + 1}`,
+        valueInputOption: "USER_ENTERED",
+        requestBody: { values: [[value]] },
+      });
+
+      return NextResponse.json({ success: true });
+    }
+
+    // Otherwise, mark pending as attending
     const alreadyRsvpd = await checkDuplicate(event.googleSheetId, event.rsvpTabName, emailLower);
     if (alreadyRsvpd) {
       return NextResponse.json({ error: "Already has an RSVP entry." }, { status: 400 });

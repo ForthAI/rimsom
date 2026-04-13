@@ -54,6 +54,7 @@ export default function AdminPage() {
   const [editingNote, setEditingNote] = useState<number | null>(null);
   const [editingItem, setEditingItem] = useState<number | null>(null);
   const [editingCell, setEditingCell] = useState<{ row: number; field: string } | null>(null);
+  const [editingRsvpCell, setEditingRsvpCell] = useState<{ row: number; field: string } | null>(null);
   const [copiedCell, setCopiedCell] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -574,8 +575,43 @@ export default function AdminPage() {
                                 : [row.firstName, row.surname].filter(Boolean).join(" ") || "—"
                               }
                             </td>
-                            <td className="px-2 py-2 font-sans text-[11px] text-brand-gray">{row.title || "—"}</td>
-                            <td className="px-2 py-2 font-sans text-[11px] text-brand-gray">{row.organization || "—"}</td>
+                            {["title", "organization"].map((field) => {
+                              const val = field === "title" ? row.title : row.organization;
+                              return (
+                                <td key={field} className="px-2 py-2">
+                                  {row.status !== "Pending" && editingRsvpCell?.row === i && editingRsvpCell?.field === field ? (
+                                    <input
+                                      autoFocus
+                                      type="text"
+                                      defaultValue={val || ""}
+                                      onBlur={async (e) => {
+                                        const newVal = e.target.value;
+                                        setEditingRsvpCell(null);
+                                        if (newVal === (val || "")) return;
+                                        try {
+                                          await fetch("/api/events/rsvp", {
+                                            method: "PATCH",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({ slug: selectedEvent.slug, email: row.email, field, value: newVal }),
+                                          });
+                                          fetchData();
+                                        } catch { console.error("Failed to update"); }
+                                      }}
+                                      onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setEditingRsvpCell(null); }}
+                                      className="w-full px-1 py-1 text-[11px] font-sans text-brand-dark border border-brand-light rounded outline-none focus:border-brand-dark"
+                                    />
+                                  ) : (
+                                    <span
+                                      onClick={() => row.status !== "Pending" && setEditingRsvpCell({ row: i, field })}
+                                      className={`font-sans text-[11px] text-brand-gray block ${row.status !== "Pending" ? "cursor-pointer hover:text-brand-dark" : ""}`}
+                                      title={row.status !== "Pending" ? "Click to edit" : ""}
+                                    >
+                                      {val || "—"}
+                                    </span>
+                                  )}
+                                </td>
+                              );
+                            })}
                             <td className="px-2 py-2 font-sans text-[11px] text-brand-gray">
                               {row.guests > 0 ? (
                                 <span title={row.guestNames.join(", ")}>
