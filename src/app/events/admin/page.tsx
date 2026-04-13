@@ -584,13 +584,35 @@ export default function AdminPage() {
                               ) : "—"}
                             </td>
                             <td className="px-2 py-2">
-                              <span className={`inline-block px-2 py-0.5 text-[10px] font-sans font-semibold rounded ${
-                                row.status === "Yes" ? "bg-green-50 text-green-700" :
-                                row.status === "No" ? "bg-red-50 text-red-600" :
-                                "bg-amber-50 text-amber-600"
-                              }`}>
-                                {row.status}
-                              </span>
+                              {row.status === "Pending" ? (
+                                <button
+                                  onClick={async () => {
+                                    if (!confirm(`Mark ${row.email} as attending?`)) return;
+                                    try {
+                                      await fetch("/api/events/rsvp", {
+                                        method: "PATCH",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ slug: selectedEvent.slug, email: row.email }),
+                                      });
+                                      fetchData();
+                                      fetchInvites();
+                                    } catch {
+                                      console.error("Failed to mark attending");
+                                    }
+                                  }}
+                                  className="inline-block px-2 py-0.5 text-[10px] font-sans font-semibold rounded bg-amber-50 text-amber-600 border border-amber-200 hover:bg-green-50 hover:text-green-700 hover:border-green-200 cursor-pointer transition-colors"
+                                  title="Click to mark as attending"
+                                >
+                                  Pending
+                                </button>
+                              ) : (
+                                <span className={`inline-block px-2 py-0.5 text-[10px] font-sans font-semibold rounded ${
+                                  row.status === "Yes" ? "bg-green-50 text-green-700" :
+                                  "bg-red-50 text-red-600"
+                                }`}>
+                                  {row.status}
+                                </span>
+                              )}
                             </td>
                             <td className="px-2 py-2 font-sans text-[10px] text-brand-muted">{row.date ? row.date.replace(/,?\s*\d{1,2}:\d{2}\s*(AM|PM)/i, "") : "—"}</td>
                             <td className="px-2 py-2 text-center">

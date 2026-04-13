@@ -1,7 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import crypto from "crypto";
 import { getEventBySlug } from "@/config/events";
 import { getInviteList, checkDuplicate, appendRsvp, getInviteRow } from "@/lib/google-sheets";
 import { sendConfirmationEmail } from "@/lib/resend";
+
+const ADMIN_COOKIE = "rimsom_admin_token";
+const TOKEN_SECRET = process.env.ADMIN_PASSWORD || "changeme";
+
+function validateToken(token: string): boolean {
+  const parts = token.split(".");
+  if (parts.length !== 2) return false;
+  const [payload, sig] = parts;
+  const expected = crypto.createHmac("sha256", TOKEN_SECRET).update(payload).digest("hex");
+  if (sig !== expected) return false;
+  const timestamp = parseInt(payload.split("_")[0], 10);
+  return Date.now() - timestamp < 24 * 60 * 60 * 1000;
+}
+
+async function checkAuth() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(ADMIN_COOKIE)?.value;
+  return token && validateToken(token);
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -129,5 +150,52 @@ export async function POST(req: NextRequest) {
       { success: false, message: "Something went wrong. Please try again." },
       { status: 500 }
     );
+  }
+}
+
+// PATCH: Admin manually marks a pending invite as attending
+export async function PATCH(req: NextRequest) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
+  }
+
+  try {
+    const { slug, email } = await req.json();
+    const event = getEventBySlug(slug);
+    if (!event) {
+      return NextResponse.json({ error: "Event not found." }, { status: 404 });
+    }
+
+    const emailLower = email.toLowerCase().trim();
+
+    // Check not already RSVP'd
+    const alreadyRsvpd = await checkDuplicate(event.googleSheetId, event.rsvpTabName, emailLower);
+    if (alreadyRsvpd) {
+      return NextResponse.json({ error: "Already has an RSVP entry." }, { status: 400 });
+    }
+
+    // Get invite data to populate the RSVP row
+    const inviteRow = await getInviteRow(event.googleSheetId, event.sheetTabName, emailLower);
+    const firstName = inviteRow ? (inviteRow[1] || "") : "";
+    const surname = inviteRow ? (inviteRow[2] || "") : "";
+    const title = inviteRow ? (inviteRow[3] || "") : "";
+    const organization = inviteRow ? (inviteRow[4] || "") : "";
+
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    // Build row matching RSVP sheet format: Email, First Name, Surname, Title, Organization, Attending, Timestamp, Guests
+    const row = [emailLower, firstName, surname, title, organization, "Yes", formattedDate, "0"];
+
+    await appendRsvp(event.googleSheetId, event.rsvpTabName, row);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Manual RSVP error:", error);
+    return NextResponse.json({ error: "Failed to add RSVP." }, { status: 500 });
   }
 }
