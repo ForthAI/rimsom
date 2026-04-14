@@ -743,8 +743,8 @@ export default function AdminPage() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Surname</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">First Name</th>
+                        <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Surname</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Title</th>
                         <th className="px-4 py-3 text-left text-[11px] font-sans font-semibold">Organization</th>
                         <th className="px-4 py-3 text-center text-[11px] font-sans font-semibold">VIP</th>
@@ -754,8 +754,8 @@ export default function AdminPage() {
                     <tbody>
                       {doorEntries.map((entry, i) => (
                         <tr key={i} className={`border-b border-gray-100 ${entry.isGuest ? "bg-gray-50" : entry.isPending ? "bg-amber-50" : ""}`}>
-                          <td className={`px-4 py-2 text-[13px] ${entry.isGuest ? "pl-8 italic text-brand-gray" : "font-medium"}`}>{entry.surname}</td>
-                          <td className={`px-4 py-2 text-[12px] ${entry.isGuest ? "italic text-brand-gray" : ""}`}>{entry.firstName}</td>
+                          <td className={`px-4 py-2 text-[13px] ${entry.isGuest ? "pl-8 italic text-brand-gray" : "font-medium"}`}>{entry.firstName}</td>
+                          <td className={`px-4 py-2 text-[12px] ${entry.isGuest ? "italic text-brand-gray" : ""}`}>{entry.surname}</td>
                           <td className="px-4 py-2 text-[12px]">{entry.isGuest ? `Guest of ${entry.guestOf}` : entry.title}{entry.isPending ? " (pending)" : ""}</td>
                           <td className="px-4 py-2 text-[12px]">{entry.org}</td>
                           <td className="px-4 py-2 text-center">{entry.isVip ? "★" : ""}</td>
