@@ -680,17 +680,25 @@ export default function AdminPage() {
               const vipEmails = new Set(
                 invites.slice(1).filter((r) => (r[9] || "").toLowerCase() === "yes").map((r) => (r[0] || "").toLowerCase())
               );
+              const rsvpEmails = new Set(
+                selectedEvent.rsvps.map((r) => emailIdx >= 0 ? (r[emailIdx] || "").toLowerCase() : "")
+              );
               const attending = selectedEvent.rsvps
-                .filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes")
-                .sort((a, b) => {
-                  const surnameA = (surnameIdx >= 0 ? a[surnameIdx] : "").toLowerCase();
-                  const surnameB = (surnameIdx >= 0 ? b[surnameIdx] : "").toLowerCase();
-                  return surnameA.localeCompare(surnameB);
+                .filter((r) => attendingIdx >= 0 && (r[attendingIdx] || "").toLowerCase() === "yes");
+
+              // Pending = invited with status "Sent" but no RSVP
+              const pendingInvites = invites.slice(1)
+                .filter((inv) => {
+                  const email = (inv[0] || "").toLowerCase();
+                  const status = (inv[7] || "").toLowerCase();
+                  return status === "sent" && !rsvpEmails.has(email);
                 });
 
               // Build flat door list with guest sub-rows
-              type DoorEntry = { surname: string; firstName: string; title: string; org: string; isVip: boolean; isGuest: boolean; guestOf: string };
+              type DoorEntry = { surname: string; firstName: string; title: string; org: string; isVip: boolean; isGuest: boolean; guestOf: string; isPending: boolean };
               const doorEntries: DoorEntry[] = [];
+
+              // Add confirmed attendees + their guests
               attending.forEach((row) => {
                 const email = emailIdx >= 0 ? (row[emailIdx] || "").toLowerCase() : "";
                 const surname = surnameIdx >= 0 ? row[surnameIdx] || "" : "";
@@ -698,8 +706,7 @@ export default function AdminPage() {
                 const title = titleIdx >= 0 ? row[titleIdx] || "" : "";
                 const org = orgIdx >= 0 ? row[orgIdx] || "" : "";
                 const isVip = vipEmails.has(email);
-                doorEntries.push({ surname, firstName, title, org, isVip, isGuest: false, guestOf: "" });
-                // Add guest sub-rows
+                doorEntries.push({ surname, firstName, title, org, isVip, isGuest: false, guestOf: "", isPending: false });
                 if (guestsIdx >= 0) {
                   for (let g = guestsIdx + 1; g < row.length; g++) {
                     const guestName = (row[g] || "").trim();
@@ -707,18 +714,31 @@ export default function AdminPage() {
                       const parts = guestName.split(/\s+/);
                       const gFirst = parts[0] || "";
                       const gSurname = parts.slice(1).join(" ") || "";
-                      doorEntries.push({ surname: gSurname, firstName: gFirst, title: "", org: "", isVip: false, isGuest: true, guestOf: `${firstName} ${surname}`.trim() });
+                      doorEntries.push({ surname: gSurname, firstName: gFirst, title: "", org: "", isVip: false, isGuest: true, guestOf: `${firstName} ${surname}`.trim(), isPending: false });
                     }
                   }
                 }
               });
+
+              // Add pending invites
+              pendingInvites.forEach((inv) => {
+                const email = (inv[0] || "").toLowerCase();
+                const isVip = vipEmails.has(email);
+                doorEntries.push({ surname: inv[2] || "", firstName: inv[1] || "", title: inv[3] || "", org: inv[4] || "", isVip, isGuest: false, guestOf: "", isPending: true });
+              });
+
+              // Sort by first name alphabetically
+              doorEntries.sort((a, b) => (a.firstName || "").toLowerCase().localeCompare((b.firstName || "").toLowerCase()));
+
+              const confirmedCount = attending.length;
+              const pendingCount = pendingInvites.length;
 
               return (
                 <div className="hidden print:block">
                   <div className="p-6 border-b border-gray-200">
                     <h1 className="font-sans text-xl font-bold text-brand-dark">{selectedEvent.name} — Door List</h1>
                     <p className="font-sans text-[13px] text-brand-gray">{selectedEvent.date} &middot; {selectedEvent.venueName}</p>
-                    <p className="font-sans text-[12px] text-brand-muted mt-1">{doorEntries.length} total ({attending.length} invitees + {doorEntries.length - attending.length} guests)</p>
+                    <p className="font-sans text-[12px] text-brand-muted mt-1">{doorEntries.length} total ({confirmedCount} confirmed + {pendingCount} pending + {doorEntries.length - confirmedCount - pendingCount} guests)</p>
                   </div>
                   <table className="w-full">
                     <thead>
@@ -733,10 +753,10 @@ export default function AdminPage() {
                     </thead>
                     <tbody>
                       {doorEntries.map((entry, i) => (
-                        <tr key={i} className={`border-b border-gray-100 ${entry.isGuest ? "bg-gray-50" : ""}`}>
+                        <tr key={i} className={`border-b border-gray-100 ${entry.isGuest ? "bg-gray-50" : entry.isPending ? "bg-amber-50" : ""}`}>
                           <td className={`px-4 py-2 text-[13px] ${entry.isGuest ? "pl-8 italic text-brand-gray" : "font-medium"}`}>{entry.surname}</td>
                           <td className={`px-4 py-2 text-[12px] ${entry.isGuest ? "italic text-brand-gray" : ""}`}>{entry.firstName}</td>
-                          <td className="px-4 py-2 text-[12px]">{entry.isGuest ? `Guest of ${entry.guestOf}` : entry.title}</td>
+                          <td className="px-4 py-2 text-[12px]">{entry.isGuest ? `Guest of ${entry.guestOf}` : entry.title}{entry.isPending ? " (pending)" : ""}</td>
                           <td className="px-4 py-2 text-[12px]">{entry.org}</td>
                           <td className="px-4 py-2 text-center">{entry.isVip ? "★" : ""}</td>
                           <td className="px-4 py-2 text-center">☐</td>
