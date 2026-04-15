@@ -525,6 +525,7 @@ export default function AdminPage() {
                     organization: r.organization || "",
                   });
                 });
+                allAttendees.sort((a, b) => (a.firstName || "").toLowerCase().localeCompare((b.firstName || "").toLowerCase()));
                 const header = "First Name,Surname,Title,Organization";
                 const rows = allAttendees.map((r) =>
                   [r.firstName, r.surname, r.title, r.organization].map((v) => `"${v.replace(/"/g, '""')}"`).join(",")
