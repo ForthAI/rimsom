@@ -495,20 +495,36 @@ export default function AdminPage() {
 
               const exportNameTagsCsv = () => {
                 const confirmedRows = respondedRows.filter((r) => r.status === "Yes");
-                const allAttendees = [
-                  ...confirmedRows.map((r) => ({
+                const allAttendees: { firstName: string; surname: string; title: string; organization: string }[] = [];
+                // Add confirmed attendees + their guests
+                confirmedRows.forEach((r) => {
+                  allAttendees.push({
                     firstName: r.firstName || "",
                     surname: r.surname || "",
                     title: r.title || "",
                     organization: r.organization || "",
-                  })),
-                  ...pendingRows.map((r) => ({
+                  });
+                  r.guestNames.forEach((guestName) => {
+                    const parts = guestName.split(/\s+/);
+                    const gFirst = parts[0] || "";
+                    const gSurname = parts.slice(1).join(" ") || "";
+                    allAttendees.push({
+                      firstName: gFirst,
+                      surname: gSurname,
+                      title: `Guest of ${r.firstName} ${r.surname}`.trim(),
+                      organization: "",
+                    });
+                  });
+                });
+                // Add pending invites
+                pendingRows.forEach((r) => {
+                  allAttendees.push({
                     firstName: r.firstName || "",
                     surname: r.surname || "",
                     title: r.title || "",
                     organization: r.organization || "",
-                  })),
-                ];
+                  });
+                });
                 const header = "First Name,Surname,Title,Organization";
                 const rows = allAttendees.map((r) =>
                   [r.firstName, r.surname, r.title, r.organization].map((v) => `"${v.replace(/"/g, '""')}"`).join(",")
