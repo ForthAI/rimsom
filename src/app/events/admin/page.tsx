@@ -493,6 +493,36 @@ export default function AdminPage() {
                 doc.save(`${selectedEvent.name.replace(/\s+/g, "-").toLowerCase()}-attendees.pdf`);
               };
 
+              const exportNameTagsCsv = () => {
+                const confirmedRows = respondedRows.filter((r) => r.status === "Yes");
+                const allAttendees = [
+                  ...confirmedRows.map((r) => ({
+                    firstName: r.firstName || "",
+                    surname: r.surname || "",
+                    title: r.title || "",
+                    organization: r.organization || "",
+                  })),
+                  ...pendingRows.map((r) => ({
+                    firstName: r.firstName || "",
+                    surname: r.surname || "",
+                    title: r.title || "",
+                    organization: r.organization || "",
+                  })),
+                ];
+                const header = "First Name,Surname,Title,Organization";
+                const rows = allAttendees.map((r) =>
+                  [r.firstName, r.surname, r.title, r.organization].map((v) => `"${v.replace(/"/g, '""')}"`).join(",")
+                );
+                const csv = [header, ...rows].join("\n");
+                const blob = new Blob([csv], { type: "text/csv" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${selectedEvent.name.replace(/\s+/g, "-").toLowerCase()}-name-tags.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+              };
+
               return (
                 <>
                   {/* Stats */}
@@ -533,6 +563,11 @@ export default function AdminPage() {
                     {selectedEvent.slug === "namibia-convening" && (
                       <button onClick={exportAttendeesPdf} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
                         Export Attendees PDF
+                      </button>
+                    )}
+                    {selectedEvent.slug === "finance-after-hours" && (
+                      <button onClick={exportNameTagsCsv} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
+                        Export Name Tags CSV
                       </button>
                     )}
                     <button onClick={() => { fetchData(); fetchInvites(); }} className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wide uppercase border border-gray-300 text-brand-dark hover:bg-gray-100 transition-colors rounded">
