@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Contact, HONORIFICS } from "@/types/contacts";
 import { ContactInput } from "@/lib/contacts";
-import { ContactLog } from "./ContactLog";
+import { ContactLog, ContactLogHandle } from "./ContactLog";
 
 interface Props {
   /** When provided, form pre-fills from this contact (edit mode). */
@@ -60,6 +60,7 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const logRef = useRef<ContactLogHandle | null>(null);
 
   function update<K extends keyof ContactInput>(key: K, value: ContactInput[K]) {
     setInput((prev) => ({ ...prev, [key]: value }));
@@ -77,12 +78,26 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
 
     setSaving(true);
     try {
+      // Flush any pending log edits / unsubmitted new entry first so users
+      // never lose typed text by clicking the outer Save Changes.
+      if (logRef.current) {
+        await logRef.current.commit();
+      }
       await onSubmit({ ...input, email });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed.");
     } finally {
       setSaving(false);
     }
+  }
+
+  function handleCancelClick() {
+    if (logRef.current?.hasUnsaved()) {
+      if (!window.confirm("You have unsaved changes in the conversation log. Discard them?")) {
+        return;
+      }
+    }
+    onCancel();
   }
 
   async function handleDelete() {
@@ -361,7 +376,7 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
       {/* Conversation log replaces the old standalone Notes + Last Contacted
           fields. Available only when editing an existing contact — for new
           contacts you save first, then add log entries. */}
-      {initial && <ContactLog contactRowIndex={initial.rowIndex} />}
+      {initial && <ContactLog ref={logRef} contactRowIndex={initial.rowIndex} />}
 
       <div className="flex items-center justify-between pt-2 border-t border-gray-200">
         <div>
@@ -399,7 +414,7 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={onCancel}
+            onClick={handleCancelClick}
             disabled={saving}
             className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wider uppercase text-gray-700 hover:bg-gray-100 rounded"
           >
