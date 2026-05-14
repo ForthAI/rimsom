@@ -37,7 +37,7 @@ export const events: EventConfig[] = [
       { name: "Hon. Ericah Shafudah", title: "Minister of Finance, Republic of Namibia" },
       { name: "Mr. Ebson Uanguta", title: "Governor, Bank of Namibia" },
     ],
-    active: true,
+    active: false,
   },
   {
     slug: "finance-after-hours",
@@ -72,7 +72,7 @@ export const events: EventConfig[] = [
     inviteLocationLabel: "Washington, D.C.",
     locationNote: "Venue details to be provided upon RSVP confirmation",
     heroOverlay: 0.7,
-    active: true,
+    active: false,
   },
   {
     slug: "sample-reception",
@@ -109,6 +109,20 @@ export function getEventBySlug(slug: string): EventConfig | undefined {
   return events.find((e) => e.slug === slug && e.active);
 }
 
+/**
+ * Like {@link getEventBySlug} but does not filter by `active`.
+ * Use this in admin-side code paths so past (inactive) events are still
+ * resolvable. Public-facing and RSVP-submission paths should keep using
+ * {@link getEventBySlug} so past events 404 publicly.
+ */
+export function getEventBySlugAnyStatus(slug: string): EventConfig | undefined {
+  return events.find((e) => e.slug === slug);
+}
+
 export function getAllActiveEvents(): EventConfig[] {
   return events.filter((e) => e.active);
+}
+
+export function getAllPastEvents(): EventConfig[] {
+  return events.filter((e) => !e.active);
 }

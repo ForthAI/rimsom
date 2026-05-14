@@ -1,42 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import crypto from "crypto";
-import { getEventBySlug } from "@/config/events";
-import { getInviteList } from "@/lib/google-sheets";
-import { google } from "googleapis";
-
-const ADMIN_COOKIE = "rimsom_admin_token";
-const TOKEN_SECRET = process.env.ADMIN_PASSWORD || "changeme";
-
-function validateToken(token: string): boolean {
-  const parts = token.split(".");
-  if (parts.length !== 2) return false;
-  const [payload, sig] = parts;
-  const expected = crypto.createHmac("sha256", TOKEN_SECRET).update(payload).digest("hex");
-  if (sig !== expected) return false;
-  const timestamp = parseInt(payload.split("_")[0], 10);
-  return Date.now() - timestamp < 24 * 60 * 60 * 1000;
-}
-
-async function checkAuth() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(ADMIN_COOKIE)?.value;
-  return token && validateToken(token);
-}
-
-function getSheets() {
-  const creds = process.env.GOOGLE_CREDENTIALS
-    ? JSON.parse(process.env.GOOGLE_CREDENTIALS)
-    : {
-        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        private_key: (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, "\n"),
-      };
-  const auth = new google.auth.GoogleAuth({
-    credentials: creds,
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-  });
-  return google.sheets({ version: "v4", auth });
-}
+import { getEventBySlugAnyStatus } from "@/config/events";
+import { getInviteList, getSheets } from "@/lib/google-sheets";
+import { checkAuth } from "@/lib/admin-auth";
 
 // GET: fetch invite list for an event (now includes Status column D)
 export async function GET(req: NextRequest) {
@@ -49,7 +14,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing slug." }, { status: 400 });
   }
 
-  const event = getEventBySlug(slug);
+  const event = getEventBySlugAnyStatus(slug);
   if (!event) {
     return NextResponse.json({ error: "Event not found." }, { status: 404 });
   }
@@ -79,7 +44,7 @@ export async function POST(req: NextRequest) {
 
   const { slug, emails } = await req.json();
 
-  const event = getEventBySlug(slug);
+  const event = getEventBySlugAnyStatus(slug);
   if (!event) {
     return NextResponse.json({ error: "Event not found." }, { status: 404 });
   }
@@ -128,7 +93,7 @@ export async function PATCH(req: NextRequest) {
 
   const { slug, email, status, vip, field, value } = await req.json();
 
-  const event = getEventBySlug(slug);
+  const event = getEventBySlugAnyStatus(slug);
   if (!event) {
     return NextResponse.json({ error: "Event not found." }, { status: 404 });
   }
@@ -203,7 +168,7 @@ export async function DELETE(req: NextRequest) {
 
   const { slug, email } = await req.json();
 
-  const event = getEventBySlug(slug);
+  const event = getEventBySlugAnyStatus(slug);
   if (!event) {
     return NextResponse.json({ error: "Event not found." }, { status: 404 });
   }

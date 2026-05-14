@@ -1,28 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import crypto from "crypto";
-import { getEventBySlug } from "@/config/events";
+import { getEventBySlug, getEventBySlugAnyStatus } from "@/config/events";
 import { getInviteList, checkDuplicate, appendRsvp, getInviteRow } from "@/lib/google-sheets";
 import { sendConfirmationEmail } from "@/lib/resend";
-
-const ADMIN_COOKIE = "rimsom_admin_token";
-const TOKEN_SECRET = process.env.ADMIN_PASSWORD || "changeme";
-
-function validateToken(token: string): boolean {
-  const parts = token.split(".");
-  if (parts.length !== 2) return false;
-  const [payload, sig] = parts;
-  const expected = crypto.createHmac("sha256", TOKEN_SECRET).update(payload).digest("hex");
-  if (sig !== expected) return false;
-  const timestamp = parseInt(payload.split("_")[0], 10);
-  return Date.now() - timestamp < 24 * 60 * 60 * 1000;
-}
-
-async function checkAuth() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(ADMIN_COOKIE)?.value;
-  return token && validateToken(token);
-}
+import { checkAuth } from "@/lib/admin-auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -161,7 +141,8 @@ export async function PATCH(req: NextRequest) {
 
   try {
     const { slug, email, field, value } = await req.json();
-    const event = getEventBySlug(slug);
+    // Admin path — uses any-status so past events are still editable.
+    const event = getEventBySlugAnyStatus(slug);
     if (!event) {
       return NextResponse.json({ error: "Event not found." }, { status: 404 });
     }

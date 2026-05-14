@@ -1,28 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import crypto from "crypto";
-import { getAllActiveEvents, getEventBySlug } from "@/config/events";
+import { getAllActiveEvents, getEventBySlugAnyStatus } from "@/config/events";
 import { getAllRsvps, getInviteCount } from "@/lib/google-sheets";
-
-const ADMIN_COOKIE = "rimsom_admin_token";
-const TOKEN_SECRET = process.env.ADMIN_PASSWORD || "changeme";
-
-function generateToken(): string {
-  const payload = `${Date.now()}_${crypto.randomUUID()}`;
-  const hmac = crypto.createHmac("sha256", TOKEN_SECRET).update(payload).digest("hex");
-  return `${payload}.${hmac}`;
-}
-
-function validateToken(token: string): boolean {
-  const parts = token.split(".");
-  if (parts.length !== 2) return false;
-  const [payload, sig] = parts;
-  const expected = crypto.createHmac("sha256", TOKEN_SECRET).update(payload).digest("hex");
-  if (sig !== expected) return false;
-  // Check token age (24 hours)
-  const timestamp = parseInt(payload.split("_")[0], 10);
-  return Date.now() - timestamp < 24 * 60 * 60 * 1000;
-}
+import { ADMIN_COOKIE, generateToken, validateToken } from "@/lib/admin-auth";
 
 // POST: authenticate
 export async function POST(req: NextRequest) {
@@ -70,8 +50,10 @@ export async function GET(req: NextRequest) {
     }
 
     const slug = req.nextUrl.searchParams.get("slug");
+    // Admin uses `getEventBySlugAnyStatus` so past (inactive) events are still
+    // viewable in the admin. Public/RSVP routes still use `getEventBySlug`.
     const eventsToFetch = slug
-      ? [getEventBySlug(slug)].filter(Boolean)
+      ? [getEventBySlugAnyStatus(slug)].filter(Boolean)
       : getAllActiveEvents();
 
     const results = await Promise.all(
