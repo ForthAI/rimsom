@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Contact, HONORIFICS } from "@/types/contacts";
 import { ContactInput } from "@/lib/contacts";
+import { ContactLog } from "./ContactLog";
 
 interface Props {
   /** When provided, form pre-fills from this contact (edit mode). */
@@ -381,6 +382,9 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
           />
         </div>
       </div>
+
+      {/* Conversation log (only available when editing an existing contact). */}
+      {initial && <ContactLog contactRowIndex={initial.rowIndex} />}
 
       <div className="flex items-center justify-between pt-2 border-t border-gray-200">
         <div>

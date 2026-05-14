@@ -1,6 +1,7 @@
 "use client";
 
 import { Contact } from "@/types/contacts";
+import { ContactLog } from "./ContactLog";
 
 interface Props {
   contact: Contact;
@@ -133,6 +134,9 @@ export function ContactView({ contact: c, onEdit, onClose }: Props) {
           )}
         </>
       )}
+
+      {/* Conversation log (read-only here) */}
+      <ContactLog contactRowIndex={c.rowIndex} readOnly />
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-200">

@@ -30,6 +30,7 @@ export default function ContactsPage() {
 
   const [modal, setModal] = useState<ModalState>({ open: false });
   const [toast, setToast] = useState("");
+  const [staleFilter, setStaleFilter] = useState<"all" | "7" | "30" | "90" | "never">("all");
 
   // On mount, attempt the fetch — a 200 means the auth cookie is valid.
   const loadContacts = useCallback(async () => {
@@ -85,18 +86,39 @@ export default function ContactsPage() {
 
   // Filter + sort
   const search_lc = search.trim().toLowerCase();
+  // Compute the cutoff date for the staleness filter once per render.
+  const staleCutoff = (() => {
+    if (staleFilter === "all" || staleFilter === "never") return null;
+    const days = parseInt(staleFilter, 10);
+    const d = new Date();
+    d.setDate(d.getDate() - days);
+    return d.toISOString().slice(0, 10); // YYYY-MM-DD
+  })();
   const filtered = contacts.filter((c) => {
-    if (!search_lc) return true;
-    return (
-      c.firstName.toLowerCase().includes(search_lc) ||
-      c.surname.toLowerCase().includes(search_lc) ||
-      c.email.toLowerCase().includes(search_lc) ||
-      c.organization.toLowerCase().includes(search_lc) ||
-      c.secondaryEmail.toLowerCase().includes(search_lc) ||
-      c.schedulerEmail.toLowerCase().includes(search_lc) ||
-      c.schedulerName.toLowerCase().includes(search_lc) ||
-      c.additionalEmails.toLowerCase().includes(search_lc)
-    );
+    // Search across name/email/org/aliases.
+    if (search_lc) {
+      const matches =
+        c.firstName.toLowerCase().includes(search_lc) ||
+        c.surname.toLowerCase().includes(search_lc) ||
+        c.email.toLowerCase().includes(search_lc) ||
+        c.organization.toLowerCase().includes(search_lc) ||
+        c.secondaryEmail.toLowerCase().includes(search_lc) ||
+        c.schedulerEmail.toLowerCase().includes(search_lc) ||
+        c.schedulerName.toLowerCase().includes(search_lc) ||
+        c.additionalEmails.toLowerCase().includes(search_lc);
+      if (!matches) return false;
+    }
+    // Staleness filter.
+    if (staleFilter === "never") {
+      return !c.lastContacted;
+    }
+    if (staleCutoff) {
+      // Contact is "stale" if its last-contacted date is older than the cutoff,
+      // OR if it has no lastContacted at all (never contacted is stale too).
+      if (!c.lastContacted) return true;
+      return c.lastContacted < staleCutoff;
+    }
+    return true;
   });
 
   const sorted = [...filtered].sort((a, b) => {
@@ -239,7 +261,7 @@ export default function ContactsPage() {
                     : `${contacts.length} contacts`}
               </p>
             </div>
-            <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="flex items-center gap-3 w-full md:w-auto flex-wrap">
               <input
                 type="text"
                 value={search}
@@ -247,6 +269,18 @@ export default function ContactsPage() {
                 placeholder="Search name, email, organization…"
                 className="flex-1 md:w-80 px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans outline-none focus:border-gray-900 rounded"
               />
+              <select
+                value={staleFilter}
+                onChange={(e) => setStaleFilter(e.target.value as typeof staleFilter)}
+                title="Filter by last contact"
+                className="px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans text-gray-900 outline-none focus:border-gray-900 rounded"
+              >
+                <option value="all">All contacts</option>
+                <option value="7">Not contacted in 7+ days</option>
+                <option value="30">Not contacted in 30+ days</option>
+                <option value="90">Not contacted in 90+ days</option>
+                <option value="never">Never contacted</option>
+              </select>
               <button
                 type="button"
                 onClick={() => setModal({ open: true, mode: "add" })}

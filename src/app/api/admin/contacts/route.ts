@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkAuth } from "@/lib/admin-auth";
 import { appendContact, listContacts, DuplicateEmailError } from "@/lib/contacts";
+import { listAllLogs } from "@/lib/log";
 import { normalizeContactInput, EMAIL_RE } from "@/lib/contacts-normalize";
 
 export async function GET() {
@@ -9,9 +10,32 @@ export async function GET() {
   }
 
   try {
-    const contacts = await listContacts();
+    // Fetch both in parallel — sheets API is the slow path.
+    const [contacts, allLogs] = await Promise.all([listContacts(), listAllLogs()]);
+
+    // Compute most-recent log date per email.
+    const latestByEmail = new Map<string, string>();
+    for (const log of allLogs) {
+      const existing = latestByEmail.get(log.email);
+      if (!existing || log.createdAt > existing) {
+        latestByEmail.set(log.email, log.createdAt);
+      }
+    }
+
+    // Augment each contact with a computed `lastContacted` derived from logs,
+    // falling back to the manually-entered sheet value. The computed value is
+    // the ISO date portion of the most recent log entry's createdAt.
+    const augmented = contacts.map((c) => {
+      const logIso = latestByEmail.get(c.email);
+      const fromLog = logIso ? logIso.slice(0, 10) : "";
+      const manual = c.lastContacted;
+      // Prefer whichever is more recent (string compare works on YYYY-MM-DD).
+      const lastContacted = !manual ? fromLog : !fromLog ? manual : fromLog > manual ? fromLog : manual;
+      return { ...c, lastContacted };
+    });
+
     return NextResponse.json({
-      contacts,
+      contacts: augmented,
       fetchedAt: new Date().toISOString(),
     });
   } catch (error) {
