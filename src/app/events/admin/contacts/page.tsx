@@ -3,9 +3,16 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Contact } from "@/types/contacts";
+import { ContactInput } from "@/lib/contacts";
+import { ContactModal } from "@/components/admin/ContactModal";
 
 type SortKey = "name" | "organization";
 type SortDir = "asc" | "desc";
+
+type ModalState =
+  | { open: false }
+  | { open: true; mode: "add" }
+  | { open: true; mode: "edit"; contact: Contact };
 
 export default function ContactsPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -20,6 +27,9 @@ export default function ContactsPage() {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
+
+  const [modal, setModal] = useState<ModalState>({ open: false });
+  const [toast, setToast] = useState("");
 
   // On mount, attempt the fetch — a 200 means the auth cookie is valid.
   const loadContacts = useCallback(async () => {
@@ -110,6 +120,50 @@ export default function ContactsPage() {
     return <span className="ml-1 text-white/40">{sortDir === "asc" ? "▲" : "▼"}</span>;
   }
 
+  function showToast(msg: string) {
+    setToast(msg);
+    window.setTimeout(() => setToast(""), 3500);
+  }
+
+  async function handleCreate(input: ContactInput) {
+    const res = await fetch("/api/admin/contacts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to add contact.");
+    setModal({ open: false });
+    await loadContacts();
+    showToast(`Added ${input.firstName || input.email}.`);
+  }
+
+  async function handleUpdate(contact: Contact, input: ContactInput) {
+    const res = await fetch(`/api/admin/contacts/${contact.rowIndex}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...input, priorEmail: contact.email }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to update contact.");
+    setModal({ open: false });
+    await loadContacts();
+    showToast(`Saved ${input.firstName || input.email}.`);
+  }
+
+  async function handleDelete(contact: Contact) {
+    const res = await fetch(`/api/admin/contacts/${contact.rowIndex}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ priorEmail: contact.email }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || "Failed to delete contact.");
+    setModal({ open: false });
+    await loadContacts();
+    showToast(`Deleted ${contact.firstName || contact.email}.`);
+  }
+
   // Login screen — same look as the existing per-event admin login.
   if (!authenticated) {
     return (
@@ -182,13 +236,22 @@ export default function ContactsPage() {
                     : `${contacts.length} contacts`}
               </p>
             </div>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search name, email, organization…"
-              className="w-full md:w-80 px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans outline-none focus:border-gray-900 rounded"
-            />
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search name, email, organization…"
+                className="flex-1 md:w-80 px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans outline-none focus:border-gray-900 rounded"
+              />
+              <button
+                type="button"
+                onClick={() => setModal({ open: true, mode: "add" })}
+                className="px-4 py-2 text-[12px] font-sans font-semibold tracking-wider uppercase bg-gray-900 text-white hover:bg-black rounded whitespace-nowrap"
+              >
+                + Add Contact
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -216,6 +279,31 @@ export default function ContactsPage() {
           </div>
         )}
 
+        {toast && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 px-4 py-2.5 bg-gray-900 text-white text-[13px] font-sans rounded shadow-lg">
+            {toast}
+          </div>
+        )}
+
+        <ContactModal
+          open={modal.open}
+          mode={modal.open ? modal.mode : "add"}
+          contact={modal.open && modal.mode === "edit" ? modal.contact : undefined}
+          onClose={() => setModal({ open: false })}
+          onSubmit={async (input) => {
+            if (modal.open && modal.mode === "edit") {
+              await handleUpdate(modal.contact, input);
+            } else {
+              await handleCreate(input);
+            }
+          }}
+          onDelete={
+            modal.open && modal.mode === "edit"
+              ? () => handleDelete(modal.contact)
+              : undefined
+          }
+        />
+
         {sorted.length > 0 && (
           <div className="bg-white border border-gray-200 rounded overflow-hidden">
             <table className="w-full text-[13px] font-sans">
@@ -241,7 +329,11 @@ export default function ContactsPage() {
                 {sorted.map((c) => {
                   const fullName = [c.firstName, c.surname].filter(Boolean).join(" ") || "—";
                   return (
-                    <tr key={`${c.rowIndex}-${c.email}`} className="border-t border-gray-100 hover:bg-gray-50">
+                    <tr
+                      key={`${c.rowIndex}-${c.email}`}
+                      onClick={() => setModal({ open: true, mode: "edit", contact: c })}
+                      className="border-t border-gray-100 hover:bg-gray-50 cursor-pointer"
+                    >
                       <td className="px-4 py-2.5 text-gray-900">
                         {c.honorific ? <span className="text-gray-500">{c.honorific} </span> : null}
                         {fullName}
@@ -249,7 +341,7 @@ export default function ContactsPage() {
                           <span className="ml-2 text-[10px] tracking-wider uppercase text-gray-400">cc of {c.ccOf}</span>
                         )}
                       </td>
-                      <td className="px-4 py-2.5">
+                      <td className="px-4 py-2.5" onClick={(e) => e.stopPropagation()}>
                         <a href={`mailto:${c.email}`} className="text-gray-700 hover:text-gray-900 underline">
                           {c.email}
                         </a>
