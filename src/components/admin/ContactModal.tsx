@@ -6,7 +6,6 @@ import { ContactInput } from "@/lib/contacts";
 import { ContactForm } from "./ContactForm";
 
 interface Props {
-  open: boolean;
   mode: "add" | "edit";
   contact?: Contact;
   onClose: () => void;
@@ -14,28 +13,31 @@ interface Props {
   onDelete?: () => Promise<void>;
 }
 
-export function ContactModal({ open, mode, contact, onClose, onSubmit, onDelete }: Props) {
+/**
+ * Renders the contact form in a modal. Parent should only render this
+ * component when the modal should be open — there is no `open` prop;
+ * mount = open, unmount = closed. Effects guarantee body scroll is
+ * restored on unmount even if the parent forgets to.
+ */
+export function ContactModal({ mode, contact, onClose, onSubmit, onDelete }: Props) {
   // Close on Escape.
   useEffect(() => {
-    if (!open) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  }, [onClose]);
 
-  // Lock body scroll while open.
+  // Lock body scroll while mounted. Always reset to empty string on
+  // cleanup — safer than capturing `prev` in case the page never had
+  // scroll locked and `prev` happened to be a stale value.
   useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = "";
     };
-  }, [open]);
-
-  if (!open) return null;
+  }, []);
 
   const title = mode === "add" ? "Add Contact" : "Edit Contact";
   const submitLabel = mode === "add" ? "Add Contact" : "Save Changes";

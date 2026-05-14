@@ -280,29 +280,28 @@ export default function ContactsPage() {
         )}
 
         {toast && (
-          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 px-4 py-2.5 bg-gray-900 text-white text-[13px] font-sans rounded shadow-lg">
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 px-4 py-2.5 bg-gray-900 text-white text-[13px] font-sans rounded shadow-lg pointer-events-none">
             {toast}
           </div>
         )}
 
-        <ContactModal
-          open={modal.open}
-          mode={modal.open ? modal.mode : "add"}
-          contact={modal.open && modal.mode === "edit" ? modal.contact : undefined}
-          onClose={() => setModal({ open: false })}
-          onSubmit={async (input) => {
-            if (modal.open && modal.mode === "edit") {
-              await handleUpdate(modal.contact, input);
-            } else {
-              await handleCreate(input);
+        {modal.open && (
+          <ContactModal
+            mode={modal.mode}
+            contact={modal.mode === "edit" ? modal.contact : undefined}
+            onClose={() => setModal({ open: false })}
+            onSubmit={async (input) => {
+              if (modal.mode === "edit") {
+                await handleUpdate(modal.contact, input);
+              } else {
+                await handleCreate(input);
+              }
+            }}
+            onDelete={
+              modal.mode === "edit" ? () => handleDelete(modal.contact) : undefined
             }
-          }}
-          onDelete={
-            modal.open && modal.mode === "edit"
-              ? () => handleDelete(modal.contact)
-              : undefined
-          }
-        />
+          />
+        )}
 
         {sorted.length > 0 && (
           <div className="bg-white border border-gray-200 rounded overflow-hidden">
