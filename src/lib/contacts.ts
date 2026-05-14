@@ -13,8 +13,8 @@ export const CONTACTS_TAB = "Contacts";
 
 /**
  * Header order — must match the sheet's row 1 exactly.
- * If the sheet's columns are reordered, this array (and column-indexed
- * reads/writes) must be updated together.
+ * If columns are reordered, this array and the column-indexed reads/writes
+ * (toRow / fromRow / ROW_RANGE / DATA_RANGE) must be updated together.
  */
 export const CONTACT_HEADERS = [
   "email",
@@ -26,15 +26,22 @@ export const CONTACT_HEADERS = [
   "ccOf",
   "notes",
   "lastContacted",
+  "phoneCountry",
   "phone",
-  "address",
+  "whatsapp",
+  "linkedin",
   "website",
+  "addressLine1",
+  "addressLine2",
+  "city",
+  "state",
+  "postalCode",
+  "country",
 ] as const;
 
-/** Column range for a single contact row (A:L). */
-const ROW_RANGE = "A:L";
-/** Range to read all data rows (skip header). */
-const DATA_RANGE = "A2:L";
+/** Sheet columns A through T (20 columns). */
+const ROW_RANGE = "A:T";
+const DATA_RANGE = "A2:T";
 
 export type ContactInput = Omit<Contact, "rowIndex">;
 
@@ -52,7 +59,7 @@ export class ContactNotFoundError extends Error {
   }
 }
 
-/** Serialize a contact into the 12-column row order used in the sheet. */
+/** Serialize a contact into the 20-column row order used in the sheet. */
 function toRow(input: ContactInput): string[] {
   return [
     input.email.toLowerCase().trim(),
@@ -64,9 +71,17 @@ function toRow(input: ContactInput): string[] {
     input.ccOf || "",
     input.notes || "",
     input.lastContacted || "",
+    input.phoneCountry || "",
     input.phone || "",
-    input.address || "",
+    input.whatsapp || "",
+    input.linkedin || "",
     input.website || "",
+    input.addressLine1 || "",
+    input.addressLine2 || "",
+    input.city || "",
+    input.state || "",
+    input.postalCode || "",
+    input.country || "",
   ];
 }
 
@@ -83,9 +98,17 @@ function fromRow(row: string[], rowIndex: number): Contact {
     ccOf: (row[6] || "").trim(),
     notes: (row[7] || "").trim(),
     lastContacted: (row[8] || "").trim(),
-    phone: (row[9] || "").trim(),
-    address: (row[10] || "").trim(),
-    website: (row[11] || "").trim(),
+    phoneCountry: (row[9] || "").trim(),
+    phone: (row[10] || "").trim(),
+    whatsapp: (row[11] || "").trim(),
+    linkedin: (row[12] || "").trim(),
+    website: (row[13] || "").trim(),
+    addressLine1: (row[14] || "").trim(),
+    addressLine2: (row[15] || "").trim(),
+    city: (row[16] || "").trim(),
+    state: (row[17] || "").trim(),
+    postalCode: (row[18] || "").trim(),
+    country: (row[19] || "").trim(),
   };
 }
 
@@ -120,9 +143,6 @@ export async function findContactByEmail(email: string): Promise<Contact | null>
 /**
  * Append a new contact to the bottom of the sheet. Throws
  * `DuplicateEmailError` if the email already exists.
- *
- * Returns the new contact, with the assigned `rowIndex` derived from the
- * append response's updated range.
  */
 export async function appendContact(input: ContactInput): Promise<Contact> {
   const email = input.email.toLowerCase().trim();
@@ -139,7 +159,6 @@ export async function appendContact(input: ContactInput): Promise<Contact> {
     requestBody: { values: [toRow({ ...input, email })] },
   });
 
-  // updatedRange looks like "Contacts!A150:L150" — pull the row number.
   const updatedRange = res.data.updates?.updatedRange || "";
   const match = updatedRange.match(/!A(\d+):/);
   const rowIndex = match ? parseInt(match[1], 10) : 0;
@@ -149,11 +168,7 @@ export async function appendContact(input: ContactInput): Promise<Contact> {
 
 /**
  * Update a contact row in place. Verifies the row's current email matches
- * `priorEmail` to guard against shifted indices (e.g., if someone deleted
- * another row between read and write).
- *
- * If `input.email` differs from `priorEmail`, the new email is checked for
- * uniqueness against the rest of the sheet.
+ * `priorEmail` to guard against shifted indices.
  */
 export async function updateContact(
   rowIndex: number,
@@ -165,7 +180,6 @@ export async function updateContact(
   const newEmailLc = input.email.toLowerCase().trim();
   if (!newEmailLc) throw new Error("Email is required.");
 
-  // Verify the row's current email matches `priorEmail`.
   const current = await sheets.spreadsheets.values.get({
     spreadsheetId: CONTACTS_SHEET_ID,
     range: `${CONTACTS_TAB}!A${rowIndex}`,
@@ -175,7 +189,6 @@ export async function updateContact(
     throw new ContactNotFoundError(rowIndex);
   }
 
-  // If email is changing, ensure it's not used elsewhere.
   if (newEmailLc !== priorEmailLc) {
     const other = await findContactByEmail(newEmailLc);
     if (other && other.rowIndex !== rowIndex) {
@@ -185,7 +198,7 @@ export async function updateContact(
 
   await sheets.spreadsheets.values.update({
     spreadsheetId: CONTACTS_SHEET_ID,
-    range: `${CONTACTS_TAB}!A${rowIndex}:L${rowIndex}`,
+    range: `${CONTACTS_TAB}!A${rowIndex}:T${rowIndex}`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [toRow({ ...input, email: newEmailLc })] },
   });
@@ -193,15 +206,11 @@ export async function updateContact(
   return { ...input, email: newEmailLc, rowIndex };
 }
 
-/**
- * Hard-delete a contact row. Verifies the row's email matches `priorEmail`
- * before deleting to guard against shifted indices.
- */
+/** Hard-delete a contact row. Verifies email matches before deleting. */
 export async function deleteContact(rowIndex: number, priorEmail: string): Promise<void> {
   const sheets = getSheets();
   const priorEmailLc = priorEmail.toLowerCase().trim();
 
-  // Verify match.
   const current = await sheets.spreadsheets.values.get({
     spreadsheetId: CONTACTS_SHEET_ID,
     range: `${CONTACTS_TAB}!A${rowIndex}`,
@@ -211,7 +220,6 @@ export async function deleteContact(rowIndex: number, priorEmail: string): Promi
     throw new ContactNotFoundError(rowIndex);
   }
 
-  // Resolve the tab's numeric sheetId (required for deleteDimension).
   const meta = await sheets.spreadsheets.get({ spreadsheetId: CONTACTS_SHEET_ID });
   const tab = meta.data.sheets?.find((s) => s.properties?.title === CONTACTS_TAB);
   const sheetId = tab?.properties?.sheetId;
@@ -228,7 +236,7 @@ export async function deleteContact(rowIndex: number, priorEmail: string): Promi
             range: {
               sheetId,
               dimension: "ROWS",
-              startIndex: rowIndex - 1, // API is 0-indexed
+              startIndex: rowIndex - 1,
               endIndex: rowIndex,
             },
           },

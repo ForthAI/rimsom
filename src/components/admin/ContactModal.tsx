@@ -40,16 +40,12 @@ export function ContactModal({ open, mode, contact, onClose, onSubmit, onDelete 
   const title = mode === "add" ? "Add Contact" : "Edit Contact";
   const submitLabel = mode === "add" ? "Add Contact" : "Save Changes";
 
+  // Outside-click intentionally does NOT close — protects in-progress edits.
+  // Close via X, Cancel button, or Escape key.
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/50 overflow-y-auto"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 bg-black/50 overflow-y-auto">
       <div className="min-h-full flex items-start justify-center p-4 py-8 sm:py-16">
-        <div
-          className="bg-white rounded-lg shadow-xl w-full max-w-2xl"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white rounded-t-lg z-10">
             <h2 className="font-sans text-[16px] font-semibold text-gray-900">{title}</h2>
             <button

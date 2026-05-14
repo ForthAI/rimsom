@@ -25,9 +25,17 @@ function emptyInput(): ContactInput {
     ccOf: "",
     notes: "",
     lastContacted: "",
+    phoneCountry: "",
     phone: "",
-    address: "",
+    whatsapp: "",
+    linkedin: "",
     website: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
   };
 }
 
@@ -40,6 +48,7 @@ function inputFromContact(c: Contact): ContactInput {
 const labelCls = "block text-[11px] font-sans font-semibold tracking-wider uppercase text-gray-600 mb-1.5";
 const fieldCls =
   "w-full px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans text-gray-900 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-200 rounded transition-colors";
+const sectionCls = "text-[10px] font-sans font-semibold tracking-widest uppercase text-gray-500 pt-2 pb-1 border-b border-gray-200";
 
 export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel = "Save" }: Props) {
   const [input, setInput] = useState<ContactInput>(initial ? inputFromContact(initial) : emptyInput());
@@ -85,12 +94,14 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
         <div className="p-3 border-l-2 border-red-500 bg-red-50 text-[13px] font-sans text-red-700">
           {error}
         </div>
       )}
+
+      <div className={sectionCls}>Identity</div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
@@ -117,7 +128,6 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
             ))}
           </select>
         </div>
-
         <div />
 
         <div>
@@ -129,7 +139,6 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
             className={fieldCls}
           />
         </div>
-
         <div>
           <label className={labelCls}>Surname</label>
           <input
@@ -159,19 +168,54 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
             className={fieldCls}
           />
         </div>
+      </div>
 
-        <div>
+      <div className={sectionCls}>Contact Methods</div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+        <div className="sm:col-span-2">
+          <label className={labelCls}>Country Code</label>
+          <input
+            type="text"
+            value={input.phoneCountry}
+            onChange={(e) => update("phoneCountry", e.target.value)}
+            placeholder="+1"
+            className={fieldCls}
+          />
+        </div>
+        <div className="sm:col-span-4">
           <label className={labelCls}>Phone</label>
           <input
             type="text"
             value={input.phone}
             onChange={(e) => update("phone", e.target.value)}
-            placeholder="+1 555-1212"
+            placeholder="555-555-1212"
             className={fieldCls}
           />
         </div>
 
-        <div>
+        <div className="sm:col-span-3">
+          <label className={labelCls}>WhatsApp</label>
+          <input
+            type="text"
+            value={input.whatsapp}
+            onChange={(e) => update("whatsapp", e.target.value)}
+            placeholder="+1 555-555-1212 or same as phone"
+            className={fieldCls}
+          />
+        </div>
+        <div className="sm:col-span-3">
+          <label className={labelCls}>LinkedIn</label>
+          <input
+            type="text"
+            value={input.linkedin}
+            onChange={(e) => update("linkedin", e.target.value)}
+            placeholder="linkedin.com/in/…"
+            className={fieldCls}
+          />
+        </div>
+
+        <div className="sm:col-span-6">
           <label className={labelCls}>Website</label>
           <input
             type="text"
@@ -181,17 +225,70 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
             className={fieldCls}
           />
         </div>
+      </div>
 
-        <div className="sm:col-span-2">
-          <label className={labelCls}>Address</label>
+      <div className={sectionCls}>Address</div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+        <div className="sm:col-span-6">
+          <label className={labelCls}>Street / Line 1</label>
           <input
             type="text"
-            value={input.address}
-            onChange={(e) => update("address", e.target.value)}
+            value={input.addressLine1}
+            onChange={(e) => update("addressLine1", e.target.value)}
             className={fieldCls}
           />
         </div>
+        <div className="sm:col-span-6">
+          <label className={labelCls}>Line 2 (apt, suite, floor)</label>
+          <input
+            type="text"
+            value={input.addressLine2}
+            onChange={(e) => update("addressLine2", e.target.value)}
+            className={fieldCls}
+          />
+        </div>
+        <div className="sm:col-span-3">
+          <label className={labelCls}>City</label>
+          <input
+            type="text"
+            value={input.city}
+            onChange={(e) => update("city", e.target.value)}
+            className={fieldCls}
+          />
+        </div>
+        <div className="sm:col-span-3">
+          <label className={labelCls}>State / Province / Region</label>
+          <input
+            type="text"
+            value={input.state}
+            onChange={(e) => update("state", e.target.value)}
+            className={fieldCls}
+          />
+        </div>
+        <div className="sm:col-span-3">
+          <label className={labelCls}>Postal Code</label>
+          <input
+            type="text"
+            value={input.postalCode}
+            onChange={(e) => update("postalCode", e.target.value)}
+            className={fieldCls}
+          />
+        </div>
+        <div className="sm:col-span-3">
+          <label className={labelCls}>Country</label>
+          <input
+            type="text"
+            value={input.country}
+            onChange={(e) => update("country", e.target.value)}
+            className={fieldCls}
+          />
+        </div>
+      </div>
 
+      <div className={sectionCls}>CRM Metadata</div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
           <label className={labelCls}>CC Of (scheduler / proxy for…)</label>
           <input
@@ -212,7 +309,6 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
             className={fieldCls}
           />
         </div>
-
         <div />
 
         <div className="sm:col-span-2">

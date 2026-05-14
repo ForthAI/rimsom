@@ -5,18 +5,31 @@
  */
 export interface Contact {
   rowIndex: number;
+  // Identity
   email: string;
   honorific: string;
   firstName: string;
   surname: string;
+  // Professional
   title: string;
   organization: string;
+  // CRM metadata
   ccOf: string;
   notes: string;
   lastContacted: string;
+  // Contact methods
+  phoneCountry: string;
   phone: string;
-  address: string;
+  whatsapp: string;
+  linkedin: string;
   website: string;
+  // Address (structured for international contacts)
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
 }
 
 /** Honorific dropdown values. Empty string = "(none)". */
