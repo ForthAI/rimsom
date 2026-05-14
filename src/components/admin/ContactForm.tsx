@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Contact, HONORIFICS } from "@/types/contacts";
 import { ContactInput } from "@/lib/contacts";
+import { CcOfPicker } from "./CcOfPicker";
 
 interface Props {
   /** When provided, form pre-fills from this contact (edit mode). */
@@ -12,6 +13,10 @@ interface Props {
   /** Show the delete button (edit mode only). */
   onDelete?: () => Promise<void>;
   submitLabel?: string;
+  /** Full contacts list — drives the CC Of picker and the Schedulers reverse view. */
+  allContacts?: Contact[];
+  /** Open another contact in the modal (used by the Schedulers list). */
+  onOpenContact?: (c: Contact) => void;
 }
 
 function emptyInput(): ContactInput {
@@ -50,12 +55,32 @@ const fieldCls =
   "w-full px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans text-gray-900 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-200 rounded transition-colors";
 const sectionCls = "text-[10px] font-sans font-semibold tracking-widest uppercase text-gray-500 pt-2 pb-1 border-b border-gray-200";
 
-export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel = "Save" }: Props) {
+export function ContactForm({
+  initial,
+  onSubmit,
+  onCancel,
+  onDelete,
+  submitLabel = "Save",
+  allContacts = [],
+  onOpenContact,
+}: Props) {
   const [input, setInput] = useState<ContactInput>(initial ? inputFromContact(initial) : emptyInput());
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  // Contacts available to pick as the primary (exclude self).
+  const ccOfCandidates = useMemo(
+    () => allContacts.filter((c) => !initial || c.email !== initial.email),
+    [allContacts, initial]
+  );
+
+  // Contacts that CC the current one (reverse lookup). Only meaningful in edit mode.
+  const schedulers = useMemo(() => {
+    if (!initial?.email) return [];
+    return allContacts.filter((c) => c.ccOf === initial.email);
+  }, [allContacts, initial]);
 
   function update<K extends keyof ContactInput>(key: K, value: ContactInput[K]) {
     setInput((prev) => ({ ...prev, [key]: value }));
@@ -291,12 +316,11 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
           <label className={labelCls}>CC Of (scheduler / proxy for…)</label>
-          <input
-            type="email"
+          <CcOfPicker
             value={input.ccOf}
-            onChange={(e) => update("ccOf", e.target.value)}
-            placeholder="primary-contact@example.com"
-            className={fieldCls}
+            onChange={(email) => update("ccOf", email)}
+            contacts={ccOfCandidates}
+            fieldCls={fieldCls}
           />
         </div>
 
@@ -321,6 +345,40 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
           />
         </div>
       </div>
+
+      {initial && schedulers.length > 0 && (
+        <>
+          <div className={sectionCls}>Schedulers / CCs ({schedulers.length})</div>
+          <ul className="space-y-1.5">
+            {schedulers.map((s) => {
+              const name = [s.firstName, s.surname].filter(Boolean).join(" ") || s.email;
+              return (
+                <li
+                  key={s.rowIndex}
+                  className="flex items-center justify-between gap-3 px-3 py-2 bg-gray-50 rounded"
+                >
+                  <div className="min-w-0">
+                    <div className="text-[13px] font-sans text-gray-900 truncate">{name}</div>
+                    <div className="text-[11px] font-sans text-gray-500 truncate">
+                      {s.email}
+                      {s.title && <span> · {s.title}</span>}
+                    </div>
+                  </div>
+                  {onOpenContact && (
+                    <button
+                      type="button"
+                      onClick={() => onOpenContact(s)}
+                      className="text-[11px] font-sans font-semibold tracking-wider uppercase text-gray-700 hover:text-gray-900 px-2 py-1 hover:bg-white rounded shrink-0"
+                    >
+                      Open →
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
 
       <div className="flex items-center justify-between pt-2 border-t border-gray-200">
         <div>

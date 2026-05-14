@@ -289,6 +289,7 @@ export default function ContactsPage() {
           <ContactModal
             mode={modal.mode}
             contact={modal.mode === "edit" ? modal.contact : undefined}
+            allContacts={contacts}
             onClose={() => setModal({ open: false })}
             onSubmit={async (input) => {
               if (modal.mode === "edit") {
@@ -300,6 +301,7 @@ export default function ContactsPage() {
             onDelete={
               modal.mode === "edit" ? () => handleDelete(modal.contact) : undefined
             }
+            onOpenContact={(c) => setModal({ open: true, mode: "edit", contact: c })}
           />
         )}
 

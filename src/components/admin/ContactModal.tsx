@@ -11,6 +11,10 @@ interface Props {
   onClose: () => void;
   onSubmit: (input: ContactInput) => Promise<void>;
   onDelete?: () => Promise<void>;
+  /** Full contacts list — passed through to the form for CC-Of picker + Schedulers view. */
+  allContacts?: Contact[];
+  /** Switch the modal to a different contact (used by Schedulers section). */
+  onOpenContact?: (c: Contact) => void;
 }
 
 /**
@@ -19,7 +23,15 @@ interface Props {
  * mount = open, unmount = closed. Effects guarantee body scroll is
  * restored on unmount even if the parent forgets to.
  */
-export function ContactModal({ mode, contact, onClose, onSubmit, onDelete }: Props) {
+export function ContactModal({
+  mode,
+  contact,
+  onClose,
+  onSubmit,
+  onDelete,
+  allContacts,
+  onOpenContact,
+}: Props) {
   // Close on Escape.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -67,6 +79,8 @@ export function ContactModal({ mode, contact, onClose, onSubmit, onDelete }: Pro
               onCancel={onClose}
               onDelete={mode === "edit" ? onDelete : undefined}
               submitLabel={submitLabel}
+              allContacts={allContacts}
+              onOpenContact={onOpenContact}
             />
           </div>
         </div>
