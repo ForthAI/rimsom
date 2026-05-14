@@ -92,7 +92,9 @@ export default function ContactsPage() {
       c.surname.toLowerCase().includes(search_lc) ||
       c.email.toLowerCase().includes(search_lc) ||
       c.organization.toLowerCase().includes(search_lc) ||
-      c.ccOf.toLowerCase().includes(search_lc)
+      c.personalEmail.toLowerCase().includes(search_lc) ||
+      c.schedulerEmail.toLowerCase().includes(search_lc) ||
+      c.alternativeEmail.toLowerCase().includes(search_lc)
     );
   });
 
@@ -289,7 +291,6 @@ export default function ContactsPage() {
           <ContactModal
             mode={modal.mode}
             contact={modal.mode === "edit" ? modal.contact : undefined}
-            allContacts={contacts}
             onClose={() => setModal({ open: false })}
             onSubmit={async (input) => {
               if (modal.mode === "edit") {
@@ -301,7 +302,6 @@ export default function ContactsPage() {
             onDelete={
               modal.mode === "edit" ? () => handleDelete(modal.contact) : undefined
             }
-            onOpenContact={(c) => setModal({ open: true, mode: "edit", contact: c })}
           />
         )}
 
@@ -338,9 +338,6 @@ export default function ContactsPage() {
                       <td className="px-4 py-2.5 text-gray-900">
                         {c.honorific ? <span className="text-gray-500">{c.honorific} </span> : null}
                         {fullName}
-                        {c.ccOf && (
-                          <span className="ml-2 text-[10px] tracking-wider uppercase text-gray-400">cc of {c.ccOf}</span>
-                        )}
                       </td>
                       <td className="px-4 py-2.5" onClick={(e) => e.stopPropagation()}>
                         <a href={`mailto:${c.email}`} className="text-gray-700 hover:text-gray-900 underline">

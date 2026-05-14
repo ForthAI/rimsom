@@ -23,7 +23,6 @@ export const CONTACT_HEADERS = [
   "surname",
   "title",
   "organization",
-  "ccOf",
   "notes",
   "lastContacted",
   "phoneCountry",
@@ -37,11 +36,14 @@ export const CONTACT_HEADERS = [
   "state",
   "postalCode",
   "country",
+  "personalEmail",
+  "schedulerEmail",
+  "alternativeEmail",
 ] as const;
 
-/** Sheet columns A through T (20 columns). */
-const ROW_RANGE = "A:T";
-const DATA_RANGE = "A2:T";
+/** Sheet columns A through V (22 columns). */
+const ROW_RANGE = "A:V";
+const DATA_RANGE = "A2:V";
 
 export type ContactInput = Omit<Contact, "rowIndex">;
 
@@ -59,7 +61,7 @@ export class ContactNotFoundError extends Error {
   }
 }
 
-/** Serialize a contact into the 20-column row order used in the sheet. */
+/** Serialize a contact into the 22-column row order used in the sheet. */
 function toRow(input: ContactInput): string[] {
   return [
     input.email.toLowerCase().trim(),
@@ -68,7 +70,6 @@ function toRow(input: ContactInput): string[] {
     input.surname || "",
     input.title || "",
     input.organization || "",
-    input.ccOf || "",
     input.notes || "",
     input.lastContacted || "",
     input.phoneCountry || "",
@@ -82,6 +83,9 @@ function toRow(input: ContactInput): string[] {
     input.state || "",
     input.postalCode || "",
     input.country || "",
+    input.personalEmail || "",
+    input.schedulerEmail || "",
+    input.alternativeEmail || "",
   ];
 }
 
@@ -95,28 +99,26 @@ function fromRow(row: string[], rowIndex: number): Contact {
     surname: (row[3] || "").trim(),
     title: (row[4] || "").trim(),
     organization: (row[5] || "").trim(),
-    ccOf: (row[6] || "").trim(),
-    notes: (row[7] || "").trim(),
-    lastContacted: (row[8] || "").trim(),
-    phoneCountry: (row[9] || "").trim(),
-    phone: (row[10] || "").trim(),
-    whatsapp: (row[11] || "").trim(),
-    linkedin: (row[12] || "").trim(),
-    website: (row[13] || "").trim(),
-    addressLine1: (row[14] || "").trim(),
-    addressLine2: (row[15] || "").trim(),
-    city: (row[16] || "").trim(),
-    state: (row[17] || "").trim(),
-    postalCode: (row[18] || "").trim(),
-    country: (row[19] || "").trim(),
+    notes: (row[6] || "").trim(),
+    lastContacted: (row[7] || "").trim(),
+    phoneCountry: (row[8] || "").trim(),
+    phone: (row[9] || "").trim(),
+    whatsapp: (row[10] || "").trim(),
+    linkedin: (row[11] || "").trim(),
+    website: (row[12] || "").trim(),
+    addressLine1: (row[13] || "").trim(),
+    addressLine2: (row[14] || "").trim(),
+    city: (row[15] || "").trim(),
+    state: (row[16] || "").trim(),
+    postalCode: (row[17] || "").trim(),
+    country: (row[18] || "").trim(),
+    personalEmail: (row[19] || "").trim(),
+    schedulerEmail: (row[20] || "").trim(),
+    alternativeEmail: (row[21] || "").trim(),
   };
 }
 
-/**
- * Read all contact rows from the master sheet. Empty-email rows are
- * skipped. The returned `rowIndex` is 1-based and reflects the sheet, so
- * row 2 is the first data row.
- */
+/** Read all contact rows. Empty-email rows skipped. rowIndex is 1-based sheet row. */
 export async function listContacts(): Promise<Contact[]> {
   const sheets = getSheets();
   const res = await sheets.spreadsheets.values.get({
@@ -140,10 +142,7 @@ export async function findContactByEmail(email: string): Promise<Contact | null>
   return all.find((c) => c.email === target) || null;
 }
 
-/**
- * Append a new contact to the bottom of the sheet. Throws
- * `DuplicateEmailError` if the email already exists.
- */
+/** Append a new contact. Throws DuplicateEmailError on email collision. */
 export async function appendContact(input: ContactInput): Promise<Contact> {
   const email = input.email.toLowerCase().trim();
   if (!email) throw new Error("Email is required.");
@@ -166,10 +165,7 @@ export async function appendContact(input: ContactInput): Promise<Contact> {
   return { ...input, email, rowIndex };
 }
 
-/**
- * Update a contact row in place. Verifies the row's current email matches
- * `priorEmail` to guard against shifted indices.
- */
+/** Update a contact row in place. Verifies email matches priorEmail. */
 export async function updateContact(
   rowIndex: number,
   priorEmail: string,
@@ -198,7 +194,7 @@ export async function updateContact(
 
   await sheets.spreadsheets.values.update({
     spreadsheetId: CONTACTS_SHEET_ID,
-    range: `${CONTACTS_TAB}!A${rowIndex}:T${rowIndex}`,
+    range: `${CONTACTS_TAB}!A${rowIndex}:V${rowIndex}`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [toRow({ ...input, email: newEmailLc })] },
   });

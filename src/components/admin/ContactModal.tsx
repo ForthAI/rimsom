@@ -11,27 +11,14 @@ interface Props {
   onClose: () => void;
   onSubmit: (input: ContactInput) => Promise<void>;
   onDelete?: () => Promise<void>;
-  /** Full contacts list — passed through to the form for CC-Of picker + Schedulers view. */
-  allContacts?: Contact[];
-  /** Switch the modal to a different contact (used by Schedulers section). */
-  onOpenContact?: (c: Contact) => void;
 }
 
 /**
  * Renders the contact form in a modal. Parent should only render this
- * component when the modal should be open — there is no `open` prop;
- * mount = open, unmount = closed. Effects guarantee body scroll is
- * restored on unmount even if the parent forgets to.
+ * component when the modal should be open — mount = open, unmount = closed.
+ * Effects guarantee body scroll is restored on unmount.
  */
-export function ContactModal({
-  mode,
-  contact,
-  onClose,
-  onSubmit,
-  onDelete,
-  allContacts,
-  onOpenContact,
-}: Props) {
+export function ContactModal({ mode, contact, onClose, onSubmit, onDelete }: Props) {
   // Close on Escape.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -41,9 +28,7 @@ export function ContactModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Lock body scroll while mounted. Always reset to empty string on
-  // cleanup — safer than capturing `prev` in case the page never had
-  // scroll locked and `prev` happened to be a stale value.
+  // Lock body scroll while mounted.
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -79,8 +64,6 @@ export function ContactModal({
               onCancel={onClose}
               onDelete={mode === "edit" ? onDelete : undefined}
               submitLabel={submitLabel}
-              allContacts={allContacts}
-              onOpenContact={onOpenContact}
             />
           </div>
         </div>

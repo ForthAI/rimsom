@@ -10,7 +10,6 @@ export function normalizeContactInput(raw: Partial<ContactInput>): ContactInput 
     surname: s(raw.surname).trim(),
     title: s(raw.title).trim(),
     organization: s(raw.organization).trim(),
-    ccOf: s(raw.ccOf).toLowerCase().trim(),
     notes: s(raw.notes),
     lastContacted: s(raw.lastContacted).trim(),
     phoneCountry: s(raw.phoneCountry).trim(),
@@ -24,6 +23,9 @@ export function normalizeContactInput(raw: Partial<ContactInput>): ContactInput 
     state: s(raw.state).trim(),
     postalCode: s(raw.postalCode).trim(),
     country: s(raw.country).trim(),
+    personalEmail: s(raw.personalEmail).toLowerCase().trim(),
+    schedulerEmail: s(raw.schedulerEmail).toLowerCase().trim(),
+    alternativeEmail: s(raw.alternativeEmail).toLowerCase().trim(),
   };
 }
 

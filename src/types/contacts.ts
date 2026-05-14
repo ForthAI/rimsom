@@ -14,7 +14,6 @@ export interface Contact {
   title: string;
   organization: string;
   // CRM metadata
-  ccOf: string;
   notes: string;
   lastContacted: string;
   // Contact methods
@@ -30,6 +29,10 @@ export interface Contact {
   state: string;
   postalCode: string;
   country: string;
+  // Additional emails — labeled. Most contacts will only have a primary.
+  personalEmail: string;
+  schedulerEmail: string;
+  alternativeEmail: string;
 }
 
 /** Honorific dropdown values. Empty string = "(none)". */
