@@ -252,23 +252,21 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
           />
         </div>
 
-        <div className="sm:col-span-3">
-          <div className="flex items-baseline justify-between gap-2 mb-1.5">
-            <label className={`${labelCls} mb-0`}>WhatsApp</label>
-            {(input.phoneCountry || input.phone) && (
-              <button
-                type="button"
-                onClick={() => {
-                  const cc = input.phoneCountry.replace(/^\+/, "");
-                  const composed = `${cc ? "+" + cc + " " : ""}${input.phone}`.trim();
-                  update("whatsapp", composed);
-                }}
-                className="text-[10px] font-sans font-semibold tracking-wider uppercase text-gray-500 hover:text-gray-900"
-              >
-                ↻ Same as phone
-              </button>
-            )}
-          </div>
+        <div className="sm:col-span-3 relative">
+          <label className={labelCls}>WhatsApp</label>
+          {(input.phoneCountry || input.phone) && (
+            <button
+              type="button"
+              onClick={() => {
+                const cc = input.phoneCountry.replace(/^\+/, "");
+                const composed = `${cc ? "+" + cc + " " : ""}${input.phone}`.trim();
+                update("whatsapp", composed);
+              }}
+              className="absolute top-0 right-0 text-[10px] font-sans font-semibold tracking-wider uppercase text-gray-500 hover:text-gray-900"
+            >
+              ↻ Same as phone
+            </button>
+          )}
           <input
             type="text"
             value={input.whatsapp}
@@ -278,9 +276,7 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
           />
         </div>
         <div className="sm:col-span-3">
-          <div className="flex items-baseline justify-between gap-2 mb-1.5">
-            <label className={`${labelCls} mb-0`}>LinkedIn</label>
-          </div>
+          <label className={labelCls}>LinkedIn</label>
           <input
             type="text"
             value={input.linkedin}
