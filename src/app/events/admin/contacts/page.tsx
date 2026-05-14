@@ -149,8 +149,7 @@ export default function ContactsPage() {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to update contact.");
-    // After save, drop back to view mode showing the updated values.
-    setModal({ open: true, mode: "view", contact: data.contact || { ...contact, ...input } });
+    setModal({ open: false });
     await loadContacts();
     showToast(`Saved ${input.firstName || input.email}.`);
   }
