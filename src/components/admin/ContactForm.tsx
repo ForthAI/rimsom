@@ -278,7 +278,9 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
           />
         </div>
         <div className="sm:col-span-3">
-          <label className={labelCls}>LinkedIn</label>
+          <div className="flex items-baseline justify-between gap-2 mb-1.5">
+            <label className={`${labelCls} mb-0`}>LinkedIn</label>
+          </div>
           <input
             type="text"
             value={input.linkedin}
