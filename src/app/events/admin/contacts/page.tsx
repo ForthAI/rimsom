@@ -92,9 +92,10 @@ export default function ContactsPage() {
       c.surname.toLowerCase().includes(search_lc) ||
       c.email.toLowerCase().includes(search_lc) ||
       c.organization.toLowerCase().includes(search_lc) ||
-      c.personalEmail.toLowerCase().includes(search_lc) ||
+      c.secondaryEmail.toLowerCase().includes(search_lc) ||
       c.schedulerEmail.toLowerCase().includes(search_lc) ||
-      c.alternativeEmail.toLowerCase().includes(search_lc)
+      c.schedulerName.toLowerCase().includes(search_lc) ||
+      c.additionalEmails.toLowerCase().includes(search_lc)
     );
   });
 

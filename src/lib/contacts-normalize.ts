@@ -23,9 +23,10 @@ export function normalizeContactInput(raw: Partial<ContactInput>): ContactInput 
     state: s(raw.state).trim(),
     postalCode: s(raw.postalCode).trim(),
     country: s(raw.country).trim(),
-    personalEmail: s(raw.personalEmail).toLowerCase().trim(),
+    secondaryEmail: s(raw.secondaryEmail).toLowerCase().trim(),
+    schedulerName: s(raw.schedulerName).trim(),
     schedulerEmail: s(raw.schedulerEmail).toLowerCase().trim(),
-    alternativeEmail: s(raw.alternativeEmail).toLowerCase().trim(),
+    additionalEmails: s(raw.additionalEmails).toLowerCase().trim(),
   };
 }
 

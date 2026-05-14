@@ -35,9 +35,10 @@ function emptyInput(): ContactInput {
     state: "",
     postalCode: "",
     country: "",
-    personalEmail: "",
+    secondaryEmail: "",
+    schedulerName: "",
     schedulerEmail: "",
-    alternativeEmail: "",
+    additionalEmails: "",
   };
 }
 
@@ -174,19 +175,30 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
 
       <div className={sectionCls}>Additional Emails</div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-        <div>
-          <label className={labelCls}>Personal</label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="sm:col-span-2">
+          <label className={labelCls}>Secondary Email</label>
           <input
             type="email"
-            value={input.personalEmail}
-            onChange={(e) => update("personalEmail", e.target.value)}
-            placeholder="e.g. gmail address"
+            value={input.secondaryEmail}
+            onChange={(e) => update("secondaryEmail", e.target.value)}
+            placeholder="e.g. personal / gmail address"
+            className={fieldCls}
+          />
+        </div>
+
+        <div>
+          <label className={labelCls}>Scheduler / Assistant Name</label>
+          <input
+            type="text"
+            value={input.schedulerName}
+            onChange={(e) => update("schedulerName", e.target.value)}
+            placeholder="Jane Smith"
             className={fieldCls}
           />
         </div>
         <div>
-          <label className={labelCls}>Scheduler / Assistant</label>
+          <label className={labelCls}>Scheduler / Assistant Email</label>
           <input
             type="email"
             value={input.schedulerEmail}
@@ -195,13 +207,14 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
             className={fieldCls}
           />
         </div>
-        <div>
-          <label className={labelCls}>Alternative</label>
+
+        <div className="sm:col-span-2">
+          <label className={labelCls}>Additional Emails</label>
           <input
             type="text"
-            value={input.alternativeEmail}
-            onChange={(e) => update("alternativeEmail", e.target.value)}
-            placeholder="catch-all — multiple emails ok, comma-separated"
+            value={input.additionalEmails}
+            onChange={(e) => update("additionalEmails", e.target.value)}
+            placeholder="catch-all — multiple ok, comma-separated"
             className={fieldCls}
           />
         </div>

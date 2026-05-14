@@ -30,9 +30,10 @@ export interface Contact {
   postalCode: string;
   country: string;
   // Additional emails — labeled. Most contacts will only have a primary.
-  personalEmail: string;
+  secondaryEmail: string;
+  schedulerName: string;
   schedulerEmail: string;
-  alternativeEmail: string;
+  additionalEmails: string;
 }
 
 /** Honorific dropdown values. Empty string = "(none)". */

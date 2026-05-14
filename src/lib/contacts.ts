@@ -36,14 +36,15 @@ export const CONTACT_HEADERS = [
   "state",
   "postalCode",
   "country",
-  "personalEmail",
+  "secondaryEmail",
+  "schedulerName",
   "schedulerEmail",
-  "alternativeEmail",
+  "additionalEmails",
 ] as const;
 
-/** Sheet columns A through V (22 columns). */
-const ROW_RANGE = "A:V";
-const DATA_RANGE = "A2:V";
+/** Sheet columns A through W (23 columns). */
+const ROW_RANGE = "A:W";
+const DATA_RANGE = "A2:W";
 
 export type ContactInput = Omit<Contact, "rowIndex">;
 
@@ -61,7 +62,7 @@ export class ContactNotFoundError extends Error {
   }
 }
 
-/** Serialize a contact into the 22-column row order used in the sheet. */
+/** Serialize a contact into the 23-column row order used in the sheet. */
 function toRow(input: ContactInput): string[] {
   return [
     input.email.toLowerCase().trim(),
@@ -83,9 +84,10 @@ function toRow(input: ContactInput): string[] {
     input.state || "",
     input.postalCode || "",
     input.country || "",
-    input.personalEmail || "",
+    input.secondaryEmail || "",
+    input.schedulerName || "",
     input.schedulerEmail || "",
-    input.alternativeEmail || "",
+    input.additionalEmails || "",
   ];
 }
 
@@ -112,9 +114,10 @@ function fromRow(row: string[], rowIndex: number): Contact {
     state: (row[16] || "").trim(),
     postalCode: (row[17] || "").trim(),
     country: (row[18] || "").trim(),
-    personalEmail: (row[19] || "").trim(),
-    schedulerEmail: (row[20] || "").trim(),
-    alternativeEmail: (row[21] || "").trim(),
+    secondaryEmail: (row[19] || "").trim(),
+    schedulerName: (row[20] || "").trim(),
+    schedulerEmail: (row[21] || "").trim(),
+    additionalEmails: (row[22] || "").trim(),
   };
 }
 
@@ -194,7 +197,7 @@ export async function updateContact(
 
   await sheets.spreadsheets.values.update({
     spreadsheetId: CONTACTS_SHEET_ID,
-    range: `${CONTACTS_TAB}!A${rowIndex}:V${rowIndex}`,
+    range: `${CONTACTS_TAB}!A${rowIndex}:W${rowIndex}`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [toRow({ ...input, email: newEmailLc })] },
   });
