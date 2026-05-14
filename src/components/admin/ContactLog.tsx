@@ -53,8 +53,7 @@ export function ContactLog({ contactRowIndex, readOnly = false }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contactRowIndex]);
 
-  async function handleAdd(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleAdd() {
     const note = newNote.trim();
     if (!note) return;
     setAdding(true);
@@ -127,24 +126,32 @@ export function ContactLog({ contactRowIndex, readOnly = false }: Props) {
       )}
 
       {!readOnly && (
-        <form onSubmit={handleAdd} className="mb-4">
+        <div className="mb-4">
           <textarea
             value={newNote}
             onChange={(e) => setNewNote(e.target.value)}
+            onKeyDown={(e) => {
+              // Cmd/Ctrl+Enter to submit, matching common chat-style affordance
+              if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                e.preventDefault();
+                handleAdd();
+              }
+            }}
             placeholder="Add a note — anything you want to remember about this conversation"
             rows={2}
             className="w-full px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans text-gray-900 outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-200 rounded transition-colors"
           />
           <div className="flex justify-end mt-2">
             <button
-              type="submit"
+              type="button"
+              onClick={handleAdd}
               disabled={adding || !newNote.trim()}
               className="px-4 py-1.5 text-[11px] font-sans font-semibold tracking-wider uppercase bg-gray-900 text-white hover:bg-black disabled:opacity-50 rounded"
             >
               {adding ? "Adding…" : "+ Add Entry"}
             </button>
           </div>
-        </form>
+        </div>
       )}
 
       {loading && (

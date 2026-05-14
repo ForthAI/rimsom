@@ -119,23 +119,7 @@ export function ContactView({ contact: c, onEdit, onClose }: Props) {
         </>
       )}
 
-      {/* CRM metadata */}
-      {(c.notes || c.lastContacted) && (
-        <>
-          <div className={sectionCls}>CRM</div>
-          {c.lastContacted && <Row label="Last Contacted">{c.lastContacted}</Row>}
-          {c.notes && (
-            <div className="flex items-start gap-3 py-1.5">
-              <div className={labelCls}>Notes</div>
-              <div className="text-[13px] font-sans text-gray-900 whitespace-pre-line min-w-0 flex-1">
-                {c.notes}
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
-      {/* Conversation log (read-only here) */}
+      {/* Conversation log replaces CRM notes + lastContacted fields. */}
       <ContactLog contactRowIndex={c.rowIndex} readOnly />
 
       {/* Actions */}

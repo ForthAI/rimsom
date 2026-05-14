@@ -358,32 +358,9 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
         </div>
       </div>
 
-      <div className={sectionCls}>CRM Metadata</div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className={labelCls}>Last Contacted</label>
-          <input
-            type="date"
-            value={input.lastContacted}
-            onChange={(e) => update("lastContacted", e.target.value)}
-            className={fieldCls}
-          />
-        </div>
-        <div />
-
-        <div className="sm:col-span-2">
-          <label className={labelCls}>Notes</label>
-          <textarea
-            value={input.notes}
-            onChange={(e) => update("notes", e.target.value)}
-            rows={3}
-            className={fieldCls}
-          />
-        </div>
-      </div>
-
-      {/* Conversation log (only available when editing an existing contact). */}
+      {/* Conversation log replaces the old standalone Notes + Last Contacted
+          fields. Available only when editing an existing contact — for new
+          contacts you save first, then add log entries. */}
       {initial && <ContactLog contactRowIndex={initial.rowIndex} />}
 
       <div className="flex items-center justify-between pt-2 border-t border-gray-200">
