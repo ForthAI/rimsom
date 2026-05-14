@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Contact } from "@/types/contacts";
 import { ContactInput } from "@/lib/contacts";
 import { ContactForm } from "./ContactForm";
+import { ContactView } from "./ContactView";
+
+type Mode = "add" | "view" | "edit";
 
 interface Props {
-  mode: "add" | "edit";
+  initialMode: Mode;
   contact?: Contact;
   onClose: () => void;
   onSubmit: (input: ContactInput) => Promise<void>;
@@ -14,11 +17,18 @@ interface Props {
 }
 
 /**
- * Renders the contact form in a modal. Parent should only render this
- * component when the modal should be open — mount = open, unmount = closed.
- * Effects guarantee body scroll is restored on unmount.
+ * Renders a contact in either a read-only view or an editable form,
+ * with the ability to switch from view -> edit internally. Parent only
+ * mounts this when the modal should be open; mount = open, unmount = closed.
+ *
+ * `initialMode`:
+ *   "add"  -> form, blank
+ *   "view" -> read-only view of `contact`, with an Edit button to switch
+ *   "edit" -> form pre-filled with `contact`
  */
-export function ContactModal({ mode, contact, onClose, onSubmit, onDelete }: Props) {
+export function ContactModal({ initialMode, contact, onClose, onSubmit, onDelete }: Props) {
+  const [mode, setMode] = useState<Mode>(initialMode);
+
   // Close on Escape.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -36,11 +46,10 @@ export function ContactModal({ mode, contact, onClose, onSubmit, onDelete }: Pro
     };
   }, []);
 
-  const title = mode === "add" ? "Add Contact" : "Edit Contact";
+  const title =
+    mode === "add" ? "Add Contact" : mode === "view" ? "Contact" : "Edit Contact";
   const submitLabel = mode === "add" ? "Add Contact" : "Save Changes";
 
-  // Outside-click intentionally does NOT close — protects in-progress edits.
-  // Close via X, Cancel button, or Escape key.
   return (
     <div className="fixed inset-0 z-50 bg-black/50 overflow-y-auto">
       <div className="min-h-full flex items-start justify-center p-4 py-8 sm:py-16">
@@ -57,14 +66,22 @@ export function ContactModal({ mode, contact, onClose, onSubmit, onDelete }: Pro
             </button>
           </div>
           <div className="px-6 py-5">
-            <ContactForm
-              key={contact?.rowIndex || "new"}
-              initial={contact}
-              onSubmit={onSubmit}
-              onCancel={onClose}
-              onDelete={mode === "edit" ? onDelete : undefined}
-              submitLabel={submitLabel}
-            />
+            {mode === "view" && contact ? (
+              <ContactView
+                contact={contact}
+                onEdit={() => setMode("edit")}
+                onClose={onClose}
+              />
+            ) : (
+              <ContactForm
+                key={contact?.rowIndex || "new"}
+                initial={mode === "edit" ? contact : undefined}
+                onSubmit={onSubmit}
+                onCancel={onClose}
+                onDelete={mode === "edit" ? onDelete : undefined}
+                submitLabel={submitLabel}
+              />
+            )}
           </div>
         </div>
       </div>

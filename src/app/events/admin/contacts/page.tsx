@@ -12,7 +12,7 @@ type SortDir = "asc" | "desc";
 type ModalState =
   | { open: false }
   | { open: true; mode: "add" }
-  | { open: true; mode: "edit"; contact: Contact };
+  | { open: true; mode: "view"; contact: Contact };
 
 export default function ContactsPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -149,7 +149,8 @@ export default function ContactsPage() {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to update contact.");
-    setModal({ open: false });
+    // After save, drop back to view mode showing the updated values.
+    setModal({ open: true, mode: "view", contact: data.contact || { ...contact, ...input } });
     await loadContacts();
     showToast(`Saved ${input.firstName || input.email}.`);
   }
@@ -290,18 +291,19 @@ export default function ContactsPage() {
 
         {modal.open && (
           <ContactModal
-            mode={modal.mode}
-            contact={modal.mode === "edit" ? modal.contact : undefined}
+            key={modal.mode === "view" ? `v-${modal.contact.rowIndex}` : modal.mode}
+            initialMode={modal.mode}
+            contact={modal.mode === "view" ? modal.contact : undefined}
             onClose={() => setModal({ open: false })}
             onSubmit={async (input) => {
-              if (modal.mode === "edit") {
+              if (modal.mode === "view") {
                 await handleUpdate(modal.contact, input);
               } else {
                 await handleCreate(input);
               }
             }}
             onDelete={
-              modal.mode === "edit" ? () => handleDelete(modal.contact) : undefined
+              modal.mode === "view" ? () => handleDelete(modal.contact) : undefined
             }
           />
         )}
@@ -333,7 +335,7 @@ export default function ContactsPage() {
                   return (
                     <tr
                       key={`${c.rowIndex}-${c.email}`}
-                      onClick={() => setModal({ open: true, mode: "edit", contact: c })}
+                      onClick={() => setModal({ open: true, mode: "view", contact: c })}
                       className="border-t border-gray-100 hover:bg-gray-50 cursor-pointer"
                     >
                       <td className="px-4 py-2.5 text-gray-900">
