@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# script outputs (may contain PII — keep local only)
+/scripts/output/
