@@ -34,7 +34,44 @@ export interface Contact {
   schedulerName: string;
   schedulerEmail: string;
   additionalEmails: string;
+  // Follow-up pipeline status.
+  status: ContactStatus | "";
 }
+
+/** Lifecycle states for follow-up tracking. */
+export const CONTACT_STATUSES = [
+  "New",
+  "Outreach Sent",
+  "Connected",
+  "Cold",
+  "Do Not Contact",
+] as const;
+
+export type ContactStatus = (typeof CONTACT_STATUSES)[number];
+
+/** Display config per status — color + short description. */
+export const STATUS_STYLES: Record<ContactStatus, { badge: string; description: string }> = {
+  "New": {
+    badge: "bg-blue-100 text-blue-800 border-blue-200",
+    description: "Just added — hasn't been reached out to yet",
+  },
+  "Outreach Sent": {
+    badge: "bg-amber-100 text-amber-800 border-amber-200",
+    description: "Email/LinkedIn sent, waiting on reply",
+  },
+  "Connected": {
+    badge: "bg-green-100 text-green-800 border-green-200",
+    description: "Replied / accepted / engaged",
+  },
+  "Cold": {
+    badge: "bg-gray-100 text-gray-700 border-gray-200",
+    description: "No response after follow-ups",
+  },
+  "Do Not Contact": {
+    badge: "bg-red-100 text-red-800 border-red-200",
+    description: "Explicitly off-list",
+  },
+};
 
 /** Honorific dropdown values. Empty string = "(none)". */
 export const HONORIFICS = [

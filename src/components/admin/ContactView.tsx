@@ -2,6 +2,8 @@
 
 import { Contact } from "@/types/contacts";
 import { ContactLog } from "./ContactLog";
+import { StatusBadge } from "./StatusBadge";
+import { FollowUpActions } from "./FollowUpActions";
 
 interface Props {
   contact: Contact;
@@ -46,9 +48,15 @@ export function ContactView({ contact: c, onEdit, onClose }: Props) {
     <div className="space-y-4">
       {/* Identity heading */}
       <div className="pb-2">
-        <h3 className="text-[20px] font-sans font-semibold text-gray-900">{fullName}</h3>
+        <div className="flex items-baseline gap-3 flex-wrap">
+          <h3 className="text-[20px] font-sans font-semibold text-gray-900">{fullName}</h3>
+          <StatusBadge status={c.status} size="md" />
+        </div>
         {titleOrg && <p className="text-[13px] font-sans text-gray-600 mt-1">{titleOrg}</p>}
       </div>
+
+      {/* Quick follow-up actions */}
+      <FollowUpActions contact={c} onStatusChanged={onClose} />
 
       {/* Emails */}
       <div className={sectionCls}>Emails</div>

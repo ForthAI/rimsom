@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Contact, HONORIFICS } from "@/types/contacts";
+import { Contact, HONORIFICS, CONTACT_STATUSES } from "@/types/contacts";
 import { ContactInput } from "@/lib/contacts";
 import { ContactLog, ContactLogHandle } from "./ContactLog";
 
@@ -40,6 +40,7 @@ function emptyInput(): ContactInput {
     schedulerName: "",
     schedulerEmail: "",
     additionalEmails: "",
+    status: "New",
   };
 }
 
@@ -147,7 +148,19 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
             ))}
           </select>
         </div>
-        <div />
+        <div>
+          <label className={labelCls}>Follow-up Status</label>
+          <select
+            value={input.status || ""}
+            onChange={(e) => update("status", e.target.value as typeof input.status)}
+            className={fieldCls}
+          >
+            <option value="">— Not Set —</option>
+            {CONTACT_STATUSES.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
 
         <div>
           <label className={labelCls}>First Name</label>

@@ -27,6 +27,7 @@ export function normalizeContactInput(raw: Partial<ContactInput>): ContactInput 
     schedulerName: s(raw.schedulerName).trim(),
     schedulerEmail: s(raw.schedulerEmail).toLowerCase().trim(),
     additionalEmails: s(raw.additionalEmails).toLowerCase().trim(),
+    status: (s(raw.status).trim() as ContactInput["status"]) || "",
   };
 }
 

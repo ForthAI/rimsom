@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Contact } from "@/types/contacts";
+import { Contact, CONTACT_STATUSES, ContactStatus } from "@/types/contacts";
 import { ContactInput } from "@/lib/contacts";
 import { ContactModal } from "@/components/admin/ContactModal";
+import { StatusBadge } from "@/components/admin/StatusBadge";
 
 type SortKey = "name" | "organization";
 type SortDir = "asc" | "desc";
@@ -32,6 +33,7 @@ export default function ContactsPage() {
   const [modal, setModal] = useState<ModalState>({ open: false });
   const [toast, setToast] = useState("");
   const [staleFilter, setStaleFilter] = useState<"all" | "7" | "30" | "90" | "never">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | ContactStatus | "unset">("all");
 
   // Selection state for the invite-from-contacts flow (Phase 3).
   // Keyed by sheet rowIndex since that's stable across the page lifetime.
@@ -115,6 +117,12 @@ export default function ContactsPage() {
         c.schedulerName.toLowerCase().includes(search_lc) ||
         c.additionalEmails.toLowerCase().includes(search_lc);
       if (!matches) return false;
+    }
+    // Status filter.
+    if (statusFilter === "unset") {
+      if (c.status) return false;
+    } else if (statusFilter !== "all") {
+      if (c.status !== statusFilter) return false;
     }
     // Staleness filter.
     if (staleFilter === "never") {
@@ -325,15 +333,27 @@ export default function ContactsPage() {
                 className="flex-1 md:w-80 px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans outline-none focus:border-gray-900 rounded"
               />
               <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+                title="Filter by follow-up status"
+                className="px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans text-gray-900 outline-none focus:border-gray-900 rounded"
+              >
+                <option value="all">All statuses</option>
+                {CONTACT_STATUSES.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+                <option value="unset">— Not Set —</option>
+              </select>
+              <select
                 value={staleFilter}
                 onChange={(e) => setStaleFilter(e.target.value as typeof staleFilter)}
                 title="Filter by last contact"
                 className="px-3 py-2 bg-white border border-gray-300 text-[13px] font-sans text-gray-900 outline-none focus:border-gray-900 rounded"
               >
-                <option value="all">All contacts</option>
-                <option value="7">Not contacted in 7+ days</option>
-                <option value="30">Not contacted in 30+ days</option>
-                <option value="90">Not contacted in 90+ days</option>
+                <option value="all">All times</option>
+                <option value="7">Stale 7+ days</option>
+                <option value="30">Stale 30+ days</option>
+                <option value="90">Stale 90+ days</option>
                 <option value="never">Never contacted</option>
               </select>
               <button
@@ -433,7 +453,12 @@ export default function ContactsPage() {
             key={modal.mode === "view" ? `v-${modal.contact.rowIndex}` : modal.mode}
             initialMode={modal.mode}
             contact={modal.mode === "view" ? modal.contact : undefined}
-            onClose={() => setModal({ open: false })}
+            onClose={() => {
+              setModal({ open: false });
+              // Refresh so any status / log changes from quick actions
+              // (which don't go through handleUpdate) are reflected.
+              loadContacts();
+            }}
             onSubmit={async (input) => {
               if (modal.mode === "view") {
                 await handleUpdate(modal.contact, input);
@@ -497,6 +522,7 @@ export default function ContactsPage() {
                   >
                     Organization {sortIndicator("organization")}
                   </th>
+                  <th className="text-left px-4 py-3 text-[11px] font-semibold tracking-wider uppercase">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -530,6 +556,7 @@ export default function ContactsPage() {
                       </td>
                       <td className="px-4 py-2.5 text-gray-700">{c.title || "—"}</td>
                       <td className="px-4 py-2.5 text-gray-700">{c.organization || "—"}</td>
+                      <td className="px-4 py-2.5"><StatusBadge status={c.status} /></td>
                     </tr>
                   );
                 })}
