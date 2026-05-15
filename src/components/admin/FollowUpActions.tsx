@@ -33,6 +33,7 @@ interface Props {
 export function FollowUpActions({ contact, onStatusChanged }: Props) {
   const [latestLog, setLatestLog] = useState<LogEntry | null>(null);
   const [pendingAction, setPendingAction] = useState<null | "email" | "linkedin">(null);
+  const [confirmNote, setConfirmNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [client, setClient] = useState<EmailClient>("gmail");
@@ -93,14 +94,21 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
 
   function handleEmailClick() {
     setPendingAction("email");
+    setConfirmNote("Sent follow-up email");
   }
 
   function handleLinkedInClick() {
     setPendingAction("linkedin");
+    setConfirmNote("Sent LinkedIn message");
   }
 
   async function confirmSent() {
     if (!pendingAction) return;
+    const note = confirmNote.trim();
+    if (!note) {
+      setError("Add a short note describing what you did.");
+      return;
+    }
     setBusy(true);
     setError("");
     try {
@@ -117,18 +125,15 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
         throw new Error(data.error || "Failed to update status.");
       }
 
-      // 2. Add a log entry recording the action.
-      const noteText =
-        pendingAction === "email"
-          ? "Sent follow-up email"
-          : "Opened LinkedIn — connection requested";
+      // 2. Add the log entry with the user's (possibly edited) note.
       await fetch(`/api/admin/contacts/${contact.rowIndex}/log`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ note: noteText }),
+        body: JSON.stringify({ note }),
       });
 
       setPendingAction(null);
+      setConfirmNote("");
       onStatusChanged?.(newStatus);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed.");
@@ -139,6 +144,7 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
 
   function cancelSent() {
     setPendingAction(null);
+    setConfirmNote("");
   }
 
   return (
@@ -218,9 +224,16 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
       {pendingAction && (
         <div className="p-3 bg-amber-50 border-l-2 border-amber-400 rounded-r">
           <p className="text-[12px] font-sans text-gray-800 mb-2">
-            Did you {pendingAction === "email" ? "send the email" : "send a connection request"}?
-            Mark this contact as <strong>Outreach Sent</strong> and log it?
+            Done? Mark this contact as <strong>Outreach Sent</strong> and add a log entry:
           </p>
+          <input
+            type="text"
+            value={confirmNote}
+            onChange={(e) => setConfirmNote(e.target.value)}
+            placeholder="What did you do?"
+            className="w-full px-2 py-1.5 mb-2 bg-white border border-amber-300 text-[12px] font-sans text-gray-900 outline-none focus:border-amber-600 rounded"
+            autoFocus
+          />
           {error && (
             <p className="text-[11px] font-sans text-red-700 mb-2">{error}</p>
           )}
@@ -228,10 +241,10 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
             <button
               type="button"
               onClick={confirmSent}
-              disabled={busy}
+              disabled={busy || !confirmNote.trim()}
               className="px-3 py-1 text-[11px] font-sans font-semibold tracking-wider uppercase bg-amber-700 text-white hover:bg-amber-800 disabled:opacity-50 rounded"
             >
-              {busy ? "Saving…" : "Yes, mark + log"}
+              {busy ? "Saving…" : "Mark + log"}
             </button>
             <button
               type="button"
@@ -239,7 +252,7 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
               disabled={busy}
               className="px-3 py-1 text-[11px] font-sans text-gray-600 hover:text-gray-900"
             >
-              No / not yet
+              Not yet
             </button>
           </div>
         </div>
