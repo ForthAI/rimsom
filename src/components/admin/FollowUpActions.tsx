@@ -6,9 +6,17 @@ import { LogEntry } from "@/types/log";
 import {
   buildFollowUpEmail,
   buildLinkedInUrl,
-  buildMailtoUrl,
   pickLatestLogForContact,
 } from "@/lib/follow-up-template";
+import {
+  EMAIL_CLIENT_LABELS,
+  EmailClient,
+  buildComposeUrl,
+  getPreferredClient,
+  isWebClient,
+  setPreferredClient,
+  LS_GMAIL_INDEX_KEY,
+} from "@/lib/email-clients";
 
 interface Props {
   contact: Contact;
@@ -27,6 +35,30 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
   const [pendingAction, setPendingAction] = useState<null | "email" | "linkedin">(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [client, setClient] = useState<EmailClient>("gmail");
+  const [showSettings, setShowSettings] = useState(false);
+  const [gmailIndex, setGmailIndex] = useState("");
+
+  useEffect(() => {
+    // Initialize preferences from localStorage on first render (client-only).
+    setClient(getPreferredClient());
+    if (typeof window !== "undefined") {
+      setGmailIndex(window.localStorage.getItem(LS_GMAIL_INDEX_KEY) || "");
+    }
+  }, []);
+
+  function chooseClient(c: EmailClient) {
+    setClient(c);
+    setPreferredClient(c);
+  }
+
+  function saveGmailIndex(v: string) {
+    setGmailIndex(v);
+    if (typeof window !== "undefined") {
+      if (v.trim()) window.localStorage.setItem(LS_GMAIL_INDEX_KEY, v.trim());
+      else window.localStorage.removeItem(LS_GMAIL_INDEX_KEY);
+    }
+  }
 
   useEffect(() => {
     // Fetch all logs for this contact so we can use the latest as context.
@@ -49,17 +81,21 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
     };
   }, [contact.rowIndex, contact.email]);
 
-  function handleEmailClick() {
+  // Pre-build the compose URL for the currently-selected client so we
+  // can render it as a real <a> href (avoids window.open's flaky behavior
+  // with mailto:, which is what was producing the blank tab).
+  const composeEmail = (() => {
     const { subject, body } = buildFollowUpEmail(contact, latestLog?.note);
     const cc = contact.schedulerEmail || undefined;
-    const url = buildMailtoUrl(contact.email, subject, body, cc);
-    window.open(url, "_blank");
+    return buildComposeUrl(client, contact.email, subject, body, cc);
+  })();
+  const linkedInUrl = buildLinkedInUrl(contact);
+
+  function handleEmailClick() {
     setPendingAction("email");
   }
 
   function handleLinkedInClick() {
-    const url = buildLinkedInUrl(contact);
-    window.open(url, "_blank", "noopener,noreferrer");
     setPendingAction("linkedin");
   }
 
@@ -108,23 +144,76 @@ export function FollowUpActions({ contact, onStatusChanged }: Props) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <button
-          type="button"
+        <a
+          href={composeEmail}
+          target={isWebClient(client) ? "_blank" : undefined}
+          rel={isWebClient(client) ? "noopener noreferrer" : undefined}
           onClick={handleEmailClick}
           className="px-3 py-1.5 text-[12px] font-sans font-semibold tracking-wider uppercase bg-gray-900 text-white hover:bg-black rounded inline-flex items-center gap-1.5"
-          title="Open a pre-filled follow-up email in your mail client"
+          title={`Compose in ${EMAIL_CLIENT_LABELS[client]}`}
         >
-          ✉ Compose Email
-        </button>
-        <button
-          type="button"
+          ✉ Compose in {EMAIL_CLIENT_LABELS[client]}
+        </a>
+        <a
+          href={linkedInUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={handleLinkedInClick}
           className="px-3 py-1.5 text-[12px] font-sans font-semibold tracking-wider uppercase border border-gray-300 text-gray-700 hover:bg-gray-50 rounded inline-flex items-center gap-1.5"
           title="Open LinkedIn search for this contact"
         >
           in Find on LinkedIn
+        </a>
+      </div>
+
+      <div className="text-[11px] font-sans text-gray-500 flex items-center flex-wrap gap-x-3 gap-y-1">
+        <span>Or open in:</span>
+        {(["gmail", "outlook", "mailto"] as EmailClient[])
+          .filter((c) => c !== client)
+          .map((c) => (
+            <button
+              type="button"
+              key={c}
+              onClick={() => chooseClient(c)}
+              className="underline hover:text-gray-900"
+            >
+              {EMAIL_CLIENT_LABELS[c]}
+            </button>
+          ))}
+        <button
+          type="button"
+          onClick={() => setShowSettings((v) => !v)}
+          className="underline hover:text-gray-900 ml-auto"
+        >
+          {showSettings ? "Hide" : "Multi-account?"}
         </button>
       </div>
+
+      {showSettings && (
+        <div className="p-3 bg-gray-50 border border-gray-200 rounded text-[12px] font-sans text-gray-700 space-y-2">
+          <p className="leading-relaxed">
+            If you&apos;re signed into multiple Google accounts, Gmail opens with your default one.
+            To target a different account, find its index by opening any Gmail tab and looking at the URL —
+            you&apos;ll see <code className="bg-white px-1 rounded">/mail/u/0/</code>, <code className="bg-white px-1 rounded">/mail/u/1/</code>, etc.
+            Enter that number here:
+          </p>
+          <div className="flex items-center gap-2">
+            <label className="text-[11px] font-semibold tracking-wider uppercase text-gray-600">
+              Gmail account index:
+            </label>
+            <input
+              type="text"
+              value={gmailIndex}
+              onChange={(e) => saveGmailIndex(e.target.value)}
+              placeholder="(blank = primary)"
+              className="px-2 py-1 border border-gray-300 rounded text-[12px] w-32 font-sans"
+            />
+          </div>
+          <p className="text-[10px] text-gray-500">
+            Saved on this browser only. Each user can set their own.
+          </p>
+        </div>
+      )}
 
       {pendingAction && (
         <div className="p-3 bg-amber-50 border-l-2 border-amber-400 rounded-r">
