@@ -3,6 +3,7 @@ import { checkAuth } from "@/lib/admin-auth";
 import { appendContact, listContacts, DuplicateEmailError } from "@/lib/contacts";
 import { listAllLogs } from "@/lib/log";
 import { normalizeContactInput, EMAIL_RE } from "@/lib/contacts-normalize";
+import { getAllActiveEvents } from "@/config/events";
 
 export async function GET() {
   if (!(await checkAuth())) {
@@ -34,8 +35,13 @@ export async function GET() {
       return { ...c, lastContacted };
     });
 
+    // Bundle the active events list so the contacts page can populate
+    // the invite-from-contacts dropdown without an extra round-trip.
+    const activeEvents = getAllActiveEvents().map((e) => ({ slug: e.slug, name: e.name }));
+
     return NextResponse.json({
       contacts: augmented,
+      activeEvents,
       fetchedAt: new Date().toISOString(),
     });
   } catch (error) {

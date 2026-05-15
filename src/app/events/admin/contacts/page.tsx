@@ -22,6 +22,7 @@ export default function ContactsPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [activeEvents, setActiveEvents] = useState<{ slug: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [search, setSearch] = useState("");
@@ -31,6 +32,12 @@ export default function ContactsPage() {
   const [modal, setModal] = useState<ModalState>({ open: false });
   const [toast, setToast] = useState("");
   const [staleFilter, setStaleFilter] = useState<"all" | "7" | "30" | "90" | "never">("all");
+
+  // Selection state for the invite-from-contacts flow (Phase 3).
+  // Keyed by sheet rowIndex since that's stable across the page lifetime.
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [inviteSlug, setInviteSlug] = useState("");
+  const [inviting, setInviting] = useState(false);
 
   // On mount, attempt the fetch — a 200 means the auth cookie is valid.
   const loadContacts = useCallback(async () => {
@@ -48,6 +55,7 @@ export default function ContactsPage() {
         return;
       }
       setContacts(data.contacts || []);
+      setActiveEvents(data.activeEvents || []);
       setAuthenticated(true);
     } catch {
       setFetchError("Network error.");
@@ -147,7 +155,54 @@ export default function ContactsPage() {
 
   function showToast(msg: string) {
     setToast(msg);
-    window.setTimeout(() => setToast(""), 3500);
+    window.setTimeout(() => setToast(""), 4500);
+  }
+
+  // Default the invite dropdown to the first active event once they load.
+  useEffect(() => {
+    if (activeEvents.length > 0 && !inviteSlug) {
+      setInviteSlug(activeEvents[0].slug);
+    }
+  }, [activeEvents, inviteSlug]);
+
+  function toggleOne(rowIndex: number) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(rowIndex)) next.delete(rowIndex);
+      else next.add(rowIndex);
+      return next;
+    });
+  }
+
+  function clearSelection() {
+    setSelected(new Set());
+  }
+
+  async function handleInviteSelected() {
+    if (!inviteSlug || selected.size === 0) return;
+    setInviting(true);
+    try {
+      const res = await fetch("/api/admin/contacts/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventSlug: inviteSlug, rowIndices: Array.from(selected) }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.error || "Invite failed.");
+        return;
+      }
+      const parts: string[] = [];
+      if (data.invited > 0) parts.push(`Invited ${data.invited} to ${data.eventName}`);
+      if (data.skipped > 0) parts.push(`skipped ${data.skipped} already invited`);
+      showToast(parts.length > 0 ? parts.join(" · ") : "Nothing to invite.");
+      clearSelection();
+      await loadContacts(); // refresh — picks up new lastContacted from auto-log entries
+    } catch {
+      showToast("Network error.");
+    } finally {
+      setInviting(false);
+    }
   }
 
   async function handleCreate(input: ContactInput) {
@@ -322,6 +377,57 @@ export default function ContactsPage() {
           </div>
         )}
 
+        {/* Invite-from-contacts sticky action bar (Phase 3). Appears
+            whenever ≥1 contact is selected via the row checkboxes. */}
+        {selected.size > 0 && (
+          <div className="fixed bottom-0 left-0 right-0 z-30 bg-gray-900 text-white shadow-2xl border-t border-gray-700">
+            <div className="max-w-content mx-auto px-6 md:px-10 py-3 flex flex-wrap items-center gap-4">
+              <span className="text-[13px] font-sans">
+                <strong>{selected.size}</strong> contact{selected.size === 1 ? "" : "s"} selected
+              </span>
+              <div className="flex-1" />
+              {activeEvents.length === 0 ? (
+                <span className="text-[12px] font-sans text-amber-300">
+                  No active events — mark one active in code to enable inviting
+                </span>
+              ) : (
+                <>
+                  <span className="text-[11px] font-sans tracking-wider uppercase text-white/50">
+                    Invite to →
+                  </span>
+                  <select
+                    value={inviteSlug}
+                    onChange={(e) => setInviteSlug(e.target.value)}
+                    className="px-3 py-1.5 bg-white/10 border border-white/20 text-[13px] text-white font-sans outline-none rounded"
+                  >
+                    {activeEvents.map((ev) => (
+                      <option key={ev.slug} value={ev.slug} className="text-gray-900">
+                        {ev.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={handleInviteSelected}
+                    disabled={inviting || !inviteSlug}
+                    className="px-4 py-1.5 text-[12px] font-sans font-semibold tracking-wider uppercase bg-white text-gray-900 hover:bg-gray-100 disabled:opacity-50 rounded"
+                  >
+                    {inviting ? "Inviting…" : "Invite →"}
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={clearSelection}
+                disabled={inviting}
+                className="text-[11px] font-sans tracking-wider uppercase text-white/60 hover:text-white px-2"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        )}
+
         {modal.open && (
           <ContactModal
             key={modal.mode === "view" ? `v-${modal.contact.rowIndex}` : modal.mode}
@@ -346,6 +452,37 @@ export default function ContactsPage() {
             <table className="w-full text-[13px] font-sans">
               <thead className="bg-gray-900 text-white">
                 <tr>
+                  <th className="px-3 py-3 w-8">
+                    <input
+                      type="checkbox"
+                      aria-label="Select all visible"
+                      checked={sorted.length > 0 && sorted.every((c) => selected.has(c.rowIndex))}
+                      ref={(el) => {
+                        if (!el) return;
+                        const some = sorted.some((c) => selected.has(c.rowIndex));
+                        const all = sorted.length > 0 && sorted.every((c) => selected.has(c.rowIndex));
+                        el.indeterminate = some && !all;
+                      }}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          // Add all currently visible (post-filter) rows.
+                          setSelected((prev) => {
+                            const next = new Set(prev);
+                            sorted.forEach((c) => next.add(c.rowIndex));
+                            return next;
+                          });
+                        } else {
+                          // Remove all currently visible rows; preserve any others.
+                          setSelected((prev) => {
+                            const next = new Set(prev);
+                            sorted.forEach((c) => next.delete(c.rowIndex));
+                            return next;
+                          });
+                        }
+                      }}
+                      className="cursor-pointer"
+                    />
+                  </th>
                   <th
                     onClick={() => toggleSort("name")}
                     className="text-left px-4 py-3 text-[11px] font-semibold tracking-wider uppercase cursor-pointer hover:bg-gray-800 select-none"
@@ -369,8 +506,19 @@ export default function ContactsPage() {
                     <tr
                       key={`${c.rowIndex}-${c.email}`}
                       onClick={() => setModal({ open: true, mode: "view", contact: c })}
-                      className="border-t border-gray-100 hover:bg-gray-50 cursor-pointer"
+                      className={`border-t border-gray-100 hover:bg-gray-50 cursor-pointer ${
+                        selected.has(c.rowIndex) ? "bg-amber-50 hover:bg-amber-100" : ""
+                      }`}
                     >
+                      <td className="px-3 py-2.5 w-8" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selected.has(c.rowIndex)}
+                          onChange={() => toggleOne(c.rowIndex)}
+                          aria-label={`Select ${fullName}`}
+                          className="cursor-pointer"
+                        />
+                      </td>
                       <td className="px-4 py-2.5 text-gray-900">
                         {c.honorific ? <span className="text-gray-500">{c.honorific} </span> : null}
                         {fullName}
