@@ -152,7 +152,7 @@ export default function Home() {
               },
               {
                 title: "Institutional Capital",
-                description: "Connecting projects with DFIs, sovereign funds, and institutional investors.",
+                description: "Mobilizing finance from IFIs, sovereign wealth funds, pension funds and institutional investors.",
               },
               {
                 title: "Risk & Structuring",
