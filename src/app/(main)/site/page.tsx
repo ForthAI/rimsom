@@ -191,8 +191,8 @@ export default function Home() {
           {/* Left — full-height image */}
           <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[600px]">
             <Image
-              src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=1000&fit=crop"
-              alt="Executive boardroom"
+              src="/strategic-access.png"
+              alt="Strategic access"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
