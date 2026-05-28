@@ -48,7 +48,7 @@ export default function Home() {
                 },
                 {
                   title: "Industrial Development",
-                  description: "Driving growth in manufacturing, technology, and heavy industry — from concept to commissioning.",
+                  description: "Driving growth in manufacturing, technology, and heavy industry — from concept development to full scale operation.",
                   href: "/advisory",
                 },
                 {
