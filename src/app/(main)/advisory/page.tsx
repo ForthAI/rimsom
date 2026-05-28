@@ -19,7 +19,7 @@ const services = [
       "Development finance institution partnerships",
       "Innovative financing solutions",
     ],
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
+    img: "/capital-mobilization.png",
   },
   {
     title: "Business Development & Market Entry",
