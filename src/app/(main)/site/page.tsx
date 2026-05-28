@@ -99,8 +99,8 @@ export default function Home() {
         {/* Full background image */}
         <div className="absolute inset-0">
           <Image
-            src="/capital-mobilization-bg.jpg"
-            alt="Capital mobilization"
+            src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=1600&q=80"
+            alt="Financial district"
             fill
             className="object-cover"
             sizes="100vw"
