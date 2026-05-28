@@ -31,7 +31,7 @@ const services = [
       "Public-private partnership development",
       "Competitive positioning",
     ],
-    img: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=500&fit=crop",
+    img: "/business-development.png",
   },
   {
     title: "Government Relations & Trade Policy",
