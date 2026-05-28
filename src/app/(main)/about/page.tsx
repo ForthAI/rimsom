@@ -60,8 +60,8 @@ export default function AboutPage() {
             <div className="reveal img-zoom">
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
                 <Image
-                  src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&h=600&fit=crop"
-                  alt="Global business strategy"
+                  src="/the-firm.png"
+                  alt="The Firm"
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
