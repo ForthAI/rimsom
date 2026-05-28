@@ -82,7 +82,7 @@ const sectors = [
     title: "Critical Industries",
     description:
       "Critical minerals, sustainable agriculture, and supply chain industries vital to global economic security.",
-    img: "https://images.unsplash.com/photo-1473621038790-b778b4750efe?w=600&h=400&fit=crop",
+    img: "/critical-industries.jpg",
   },
 ];
 
