@@ -48,7 +48,7 @@ export default function Home() {
                 },
                 {
                   title: "Industrial Development",
-                  description: "Driving growth in manufacturing, technology, and heavy industry — from concept development to full scale operation.",
+                  description: "Driving growth in manufacturing, technology, and heavy industry, from concept development to full scale operation.",
                   href: "/advisory",
                 },
                 {
@@ -212,14 +212,14 @@ export default function Home() {
                 <span className="text-brand-gold">where to move, and when.</span>
               </h2>
               <p className="font-sans text-[15px] text-white/60 leading-relaxed mb-6">
-                Rimsom was built for precision. The firm thrives in complexity —
+                Rimsom was built for precision. The firm thrives in complexity ,
                 operating where trust, timing, and access decide everything.
                 Movement is never just activity. It&apos;s alignment: bringing
                 people, capital, and ideas together to create outcomes that last.
               </p>
               <p className="font-sans text-[15px] text-white/60 leading-relaxed mb-10">
                 Decades of relationships across governments, institutions, and
-                private sector leaders — that&apos;s the access that drives results.
+                private sector leaders, that&apos;s the access that drives results.
               </p>
               <ArrowLink
                 href="/about"

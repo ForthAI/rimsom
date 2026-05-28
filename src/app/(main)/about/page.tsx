@@ -40,7 +40,7 @@ export default function AboutPage() {
                 The Firm
               </p>
               <h2 className="font-sans text-3xl md:text-[42px] font-bold leading-[1.1] text-brand-dark mb-8">
-                Discretion isn&apos;t a limitation — it&apos;s a strategy.
+                Discretion isn&apos;t a limitation, it&apos;s a strategy.
               </h2>
               <div className="space-y-6 font-sans text-[15px] text-brand-gray leading-relaxed">
                 <p>
@@ -131,7 +131,7 @@ export default function AboutPage() {
               {
                 title: "Discretion",
                 description:
-                  "Operating with the measured restraint that defines trusted advisors — present when it matters, never reactive.",
+                  "Operating with the measured restraint that defines trusted advisors, present when it matters, never reactive.",
                 icon: "M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z",
               },
             ].map((value, i) => (

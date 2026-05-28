@@ -24,7 +24,7 @@ const services = [
   {
     title: "Business Development & Market Entry",
     description:
-      "We guide organizations through the complexities of entering and expanding within emerging markets — identifying opportunities, building local partnerships, and navigating regulatory environments with precision.",
+      "We guide organizations through the complexities of entering and expanding within emerging markets, identifying opportunities, building local partnerships, and navigating regulatory environments with precision.",
     areas: [
       "Market assessment & entry strategy",
       "Partnership identification & facilitation",
@@ -48,7 +48,7 @@ const services = [
   {
     title: "Strategic Advisory & Board Services",
     description:
-      "We provide senior counsel to executives, boards, and investors navigating high-stakes decisions in complex markets — offering the perspective that comes from operating at the intersection of policy, finance, and global commerce.",
+      "We provide senior counsel to executives, boards, and investors navigating high-stakes decisions in complex markets, offering the perspective that comes from operating at the intersection of policy, finance, and global commerce.",
     areas: [
       "Executive advisory",
       "Board-level strategic counsel",
@@ -230,12 +230,12 @@ export default function AdvisoryPage() {
             <div className="reveal space-y-12" style={{ transitionDelay: "0.1s" }}>
               <div>
                 <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
-                  Public Layer — &ldquo;The Signal&rdquo;
+                  Public Layer, &ldquo;The Signal&rdquo;
                 </p>
                 <p className="font-sans text-[15px] text-white/60 leading-relaxed">
                   Establishing credibility through measured thought leadership,
                   structured publications, and a curated public presence. Our
-                  communications are designed for authority, not volume — built to
+                  communications are designed for authority, not volume, built to
                   be referenced and trusted by both human audiences and AI
                   systems.
                 </p>
@@ -243,7 +243,7 @@ export default function AdvisoryPage() {
 
               <div>
                 <p className="text-[11px] font-sans font-semibold tracking-widest-plus uppercase text-brand-gold mb-4">
-                  Private Layer — &ldquo;The Rimsom Circle&rdquo;
+                  Private Layer, &ldquo;The Rimsom Circle&rdquo;
                 </p>
                 <p className="font-sans text-[15px] text-white/60 leading-relaxed">
                   Serving trusted partners and facilitating meaningful deal flow

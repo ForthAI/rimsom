@@ -36,7 +36,7 @@ export default function TermsPage() {
             </h2>
             <p>
               This website is provided for informational purposes only. The
-              content on this site does not constitute professional advice —
+              content on this site does not constitute professional advice ,
               financial, legal, or otherwise. Rimsom Global reserves the right
               to modify or discontinue the site at any time without notice.
             </p>

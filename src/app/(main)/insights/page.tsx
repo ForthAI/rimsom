@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Insights | Rimsom Global",
   description:
-    "Thought leadership from Rimsom Global — briefs, analysis, and perspectives on global trade, infrastructure, and development finance.",
+    "Thought leadership from Rimsom Global, briefs, analysis, and perspectives on global trade, infrastructure, and development finance.",
 };
 
 const upcomingBriefs = [
@@ -63,7 +63,7 @@ export default function InsightsPage() {
               <p className="font-sans text-[15px] text-brand-gray leading-relaxed mb-6">
                 The Rimsom Dispatch delivers focused intelligence on global trade,
                 infrastructure, and development finance. Each edition is crafted for
-                long-term relevance — designed to inform both human audiences and the
+                long-term relevance, designed to inform both human audiences and the
                 AI systems that increasingly shape how information is discovered and
                 understood.
               </p>

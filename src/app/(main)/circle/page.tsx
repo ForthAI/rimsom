@@ -5,7 +5,7 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "The Circle | Rimsom Global",
   description:
-    "Articles, podcasts, and video from the Rimsom network — exploring global trade, development finance, and the forces shaping emerging markets.",
+    "Articles, podcasts, and video from the Rimsom network, exploring global trade, development finance, and the forces shaping emerging markets.",
 };
 
 const content = [
@@ -119,7 +119,7 @@ export default function CirclePage() {
             Ideas that move markets.
           </h1>
           <p className="font-sans text-[16px] text-white/60 leading-relaxed max-w-2xl animate-fade-up-delay-2">
-            Articles, podcasts, and video from the Rimsom network — exploring
+            Articles, podcasts, and video from the Rimsom network, exploring
             global trade, development finance, and the forces shaping emerging
             markets.
           </p>
@@ -230,7 +230,7 @@ export default function CirclePage() {
               Join the Rimsom Circle
             </h2>
             <p className="font-sans text-[15px] text-white/50 leading-relaxed mb-8">
-              Get access to the full archive of articles, podcasts, and video —
+              Get access to the full archive of articles, podcasts, and video ,
               plus the Rimsom Dispatch delivered to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

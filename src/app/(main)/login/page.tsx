@@ -25,7 +25,7 @@ export default function LoginPage() {
               Welcome back.
             </h1>
             <p className="font-sans text-[15px] text-white/50 leading-relaxed mb-10">
-              Enter your email to access the full Rimsom Circle — articles,
+              Enter your email to access the full Rimsom Circle, articles,
               podcasts, video, and the Rimsom Dispatch.
             </p>
 
