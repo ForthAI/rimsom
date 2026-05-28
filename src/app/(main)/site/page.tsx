@@ -148,7 +148,7 @@ export default function Home() {
             {[
               {
                 title: "Project Finance",
-                description: "Structuring bankable deals across energy, infrastructure, and critical industries.",
+                description: "Structuring bankable transactions across energy, infrastructure, and critical industries.",
               },
               {
                 title: "Institutional Capital",
