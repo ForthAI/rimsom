@@ -85,6 +85,7 @@ export const HONORIFICS = [
   "Excellency",
   "Amb.",
   "Prof.",
+  "Prince",
 ] as const;
 
 export type Honorific = (typeof HONORIFICS)[number];
