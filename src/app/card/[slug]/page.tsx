@@ -36,7 +36,7 @@ export default async function CardPage({ params }: PageProps) {
     <div className="min-h-screen bg-brand-navy text-white flex items-start justify-center px-4 py-10 sm:py-16">
       <div className="w-full max-w-md">
         {/* Photo */}
-        <div className="reveal mx-auto mb-8 relative w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden ring-2 ring-brand-gold/40 shadow-2xl">
+        <div className="mx-auto mb-8 relative w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden ring-2 ring-brand-gold/40 shadow-2xl">
           <Image
             src={card.photo}
             alt={displayName}
