@@ -128,7 +128,7 @@ export function ContactView({ contact: c, onEdit, onClose }: Props) {
       )}
 
       {/* Conversation log replaces CRM notes + lastContacted fields. */}
-      <ContactLog contactRowIndex={c.rowIndex} readOnly />
+      <ContactLog contactRowIndex={c.rowIndex} contactEmail={c.email} readOnly />
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-200">

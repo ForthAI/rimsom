@@ -61,8 +61,16 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const input = normalizeContactInput(body);
-    if (!input.email || !EMAIL_RE.test(input.email)) {
-      return NextResponse.json({ error: "Valid email is required." }, { status: 400 });
+    // Email is optional — but if present, must look like an email.
+    if (input.email && !EMAIL_RE.test(input.email)) {
+      return NextResponse.json({ error: "Email format is invalid." }, { status: 400 });
+    }
+    // Need at least an email OR a name.
+    if (!input.email && !input.firstName && !input.surname) {
+      return NextResponse.json(
+        { error: "Add an email or at least a name." },
+        { status: 400 }
+      );
     }
 
     const contact = await appendContact(input);

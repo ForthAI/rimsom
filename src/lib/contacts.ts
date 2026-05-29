@@ -124,7 +124,12 @@ function fromRow(row: string[], rowIndex: number): Contact {
   };
 }
 
-/** Read all contact rows. Empty-email rows skipped. rowIndex is 1-based sheet row. */
+/**
+ * Read all contact rows. A row is included if it has at least one of
+ * email, firstName, or surname — emailless contacts (e.g., business
+ * cards with only a phone) are valid as long as they have a name.
+ * Truly empty trailing rows are skipped.
+ */
 export async function listContacts(): Promise<Contact[]> {
   const sheets = getSheets();
   const res = await sheets.spreadsheets.values.get({
@@ -135,7 +140,9 @@ export async function listContacts(): Promise<Contact[]> {
   const contacts: Contact[] = [];
   rows.forEach((row, i) => {
     const email = (row[0] || "").toLowerCase().trim();
-    if (!email) return;
+    const firstName = (row[2] || "").trim();
+    const surname = (row[3] || "").trim();
+    if (!email && !firstName && !surname) return;
     contacts.push(fromRow(row, i + 2));
   });
   return contacts;
@@ -148,13 +155,18 @@ export async function findContactByEmail(email: string): Promise<Contact | null>
   return all.find((c) => c.email === target) || null;
 }
 
-/** Append a new contact. Throws DuplicateEmailError on email collision. */
+/**
+ * Append a new contact. Throws DuplicateEmailError on email collision.
+ * Email is optional — emailless contacts skip the dedup check.
+ */
 export async function appendContact(input: ContactInput): Promise<Contact> {
   const email = input.email.toLowerCase().trim();
-  if (!email) throw new Error("Email is required.");
 
-  const existing = await findContactByEmail(email);
-  if (existing) throw new DuplicateEmailError(email);
+  // Only dedup-check when there's actually an email.
+  if (email) {
+    const existing = await findContactByEmail(email);
+    if (existing) throw new DuplicateEmailError(email);
+  }
 
   const sheets = getSheets();
   const res = await sheets.spreadsheets.values.append({
@@ -172,6 +184,10 @@ export async function appendContact(input: ContactInput): Promise<Contact> {
 }
 
 /** Update a contact row in place. Verifies email matches priorEmail. */
+/**
+ * Update a contact row. Email is optional. Both priorEmail and the new
+ * email may be empty for emailless contacts.
+ */
 export async function updateContact(
   rowIndex: number,
   priorEmail: string,
@@ -180,7 +196,6 @@ export async function updateContact(
   const sheets = getSheets();
   const priorEmailLc = priorEmail.toLowerCase().trim();
   const newEmailLc = input.email.toLowerCase().trim();
-  if (!newEmailLc) throw new Error("Email is required.");
 
   const current = await sheets.spreadsheets.values.get({
     spreadsheetId: CONTACTS_SHEET_ID,
@@ -191,7 +206,8 @@ export async function updateContact(
     throw new ContactNotFoundError(rowIndex);
   }
 
-  if (newEmailLc !== priorEmailLc) {
+  // If email is changing AND there's a new value, ensure it's unique elsewhere.
+  if (newEmailLc && newEmailLc !== priorEmailLc) {
     const other = await findContactByEmail(newEmailLc);
     if (other && other.rowIndex !== rowIndex) {
       throw new DuplicateEmailError(newEmailLc);

@@ -72,8 +72,14 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
     setError("");
 
     const email = input.email.toLowerCase().trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("A valid primary email is required.");
+    // Email is now optional — but if provided, it must look like an email.
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Email format is invalid.");
+      return;
+    }
+    // Need at least *something* to identify this contact — email or a name.
+    if (!email && !input.firstName.trim() && !input.surname.trim()) {
+      setError("Add an email or at least a name.");
       return;
     }
 
@@ -125,15 +131,17 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
-          <label className={labelCls}>Primary Email *</label>
+          <label className={labelCls}>Primary Email <span className="text-gray-400 normal-case tracking-normal">(optional)</span></label>
           <input
             type="email"
             value={input.email}
             onChange={(e) => update("email", e.target.value)}
-            required
             autoFocus={!initial}
             className={fieldCls}
           />
+          <p className="mt-1 text-[10px] font-sans text-gray-500">
+            Leave blank if the card only has phone / LinkedIn. Conversation log entries require an email — you can add one later.
+          </p>
         </div>
 
         <div>
@@ -388,8 +396,16 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
 
       {/* Conversation log replaces the old standalone Notes + Last Contacted
           fields. Available only when editing an existing contact — for new
-          contacts you save first, then add log entries. */}
-      {initial && <ContactLog ref={logRef} contactRowIndex={initial.rowIndex} />}
+          contacts you save first, then add log entries. We pass the *current
+          form* email (not initial.email) so the "needs email" notice clears
+          as soon as the user types one in. */}
+      {initial && (
+        <ContactLog
+          ref={logRef}
+          contactRowIndex={initial.rowIndex}
+          contactEmail={input.email || initial.email}
+        />
+      )}
 
       <div className="flex items-center justify-between pt-2 border-t border-gray-200">
         <div>

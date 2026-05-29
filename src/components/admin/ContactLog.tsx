@@ -11,6 +11,12 @@ import { LogEntry } from "@/types/log";
 interface Props {
   /** Sheet row index of the contact. Used to scope the API calls. */
   contactRowIndex: number;
+  /**
+   * The contact's primary email. If empty, log entries are disabled —
+   * logs are currently keyed by email, so emailless contacts can't have
+   * them until an email is added.
+   */
+  contactEmail?: string;
   /** Read-only mode disables add/edit/delete UI. */
   readOnly?: boolean;
 }
@@ -40,9 +46,10 @@ const sectionCls =
   "text-[10px] font-sans font-semibold tracking-widest uppercase text-gray-500 pt-2 pb-1 border-b border-gray-200 mb-3";
 
 export const ContactLog = forwardRef<ContactLogHandle, Props>(function ContactLog(
-  { contactRowIndex, readOnly = false },
+  { contactRowIndex, contactEmail = "", readOnly = false },
   ref
 ) {
+  const hasEmail = contactEmail.trim().length > 0;
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -210,7 +217,13 @@ export const ContactLog = forwardRef<ContactLogHandle, Props>(function ContactLo
         </div>
       )}
 
-      {!readOnly && (
+      {!hasEmail && (
+        <div className="p-3 mb-3 bg-amber-50 border-l-2 border-amber-400 text-[12px] font-sans text-gray-800 rounded-r">
+          Conversation log entries are linked by primary email. Add an email above to enable log entries for this contact.
+        </div>
+      )}
+
+      {!readOnly && hasEmail && (
         <div className="mb-4">
           <textarea
             value={newNote}

@@ -550,9 +550,13 @@ export default function ContactsPage() {
                         {fullName}
                       </td>
                       <td className="px-4 py-2.5" onClick={(e) => e.stopPropagation()}>
-                        <a href={`mailto:${c.email}`} className="text-gray-700 hover:text-gray-900 underline">
-                          {c.email}
-                        </a>
+                        {c.email ? (
+                          <a href={`mailto:${c.email}`} className="text-gray-700 hover:text-gray-900 underline">
+                            {c.email}
+                          </a>
+                        ) : (
+                          <span className="text-gray-400">—</span>
+                        )}
                       </td>
                       <td className="px-4 py-2.5 text-gray-700">{c.title || "—"}</td>
                       <td className="px-4 py-2.5 text-gray-700">{c.organization || "—"}</td>

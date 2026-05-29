@@ -30,13 +30,18 @@ export async function PATCH(
 
   try {
     const body = await req.json();
+    // priorEmail may be empty for contacts that were saved without one.
     const priorEmail = (body.priorEmail || "").toString().toLowerCase().trim();
-    if (!priorEmail) {
-      return NextResponse.json({ error: "priorEmail is required." }, { status: 400 });
-    }
     const input = normalizeContactInput(body);
-    if (!input.email || !EMAIL_RE.test(input.email)) {
-      return NextResponse.json({ error: "Valid email is required." }, { status: 400 });
+    // Email is optional — but if present, must look like an email.
+    if (input.email && !EMAIL_RE.test(input.email)) {
+      return NextResponse.json({ error: "Email format is invalid." }, { status: 400 });
+    }
+    if (!input.email && !input.firstName && !input.surname) {
+      return NextResponse.json(
+        { error: "Add an email or at least a name." },
+        { status: 400 }
+      );
     }
 
     const contact = await updateContact(rowIndex, priorEmail, input);
@@ -75,10 +80,8 @@ export async function DELETE(
 
   try {
     const body = await req.json();
+    // priorEmail may be empty for emailless contacts.
     const priorEmail = (body.priorEmail || "").toString().toLowerCase().trim();
-    if (!priorEmail) {
-      return NextResponse.json({ error: "priorEmail is required." }, { status: 400 });
-    }
 
     await deleteContact(rowIndex, priorEmail);
     return NextResponse.json({ deleted: true });
