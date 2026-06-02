@@ -43,6 +43,18 @@ export const cards: BusinessCard[] = [
     city: "Washington, DC",
     website: "https://rimsomglobal.com",
   },
+  {
+    slug: "matthew",
+    photo: "/matthew.jpg",
+    firstName: "Matthew",
+    lastName: "Snyder",
+    title: "Senior Advisor",
+    company: "Rimsom Global",
+    mobile: "+12023601889",
+    email: "matthew.s@rimsomglobal.com",
+    city: "Washington, DC",
+    website: "https://rimsomglobal.com",
+  },
 ];
 
 export function getCardBySlug(slug: string): BusinessCard | undefined {
