@@ -181,7 +181,7 @@ export async function appendContact(input: ContactInput): Promise<Contact> {
   const res = await sheets.spreadsheets.values.append({
     spreadsheetId: CONTACTS_SHEET_ID,
     range: `${CONTACTS_TAB}!${ROW_RANGE}`,
-    valueInputOption: "USER_ENTERED",
+    valueInputOption: "RAW",
     requestBody: { values: [toRow({ ...input, email })] },
   });
 
@@ -226,7 +226,7 @@ export async function updateContact(
   await sheets.spreadsheets.values.update({
     spreadsheetId: CONTACTS_SHEET_ID,
     range: `${CONTACTS_TAB}!A${rowIndex}:AA${rowIndex}`,
-    valueInputOption: "USER_ENTERED",
+    valueInputOption: "RAW",
     requestBody: { values: [toRow({ ...input, email: newEmailLc })] },
   });
 
