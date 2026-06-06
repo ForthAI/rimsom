@@ -129,7 +129,18 @@ export function ContactView({ contact: c, onEdit, onClose }: Props) {
         </>
       )}
 
-      {/* Conversation log replaces CRM notes + lastContacted fields. */}
+      {/* Standing notes — durable context about the person. Separate from
+          the timestamped conversation log below. */}
+      {c.notes && (
+        <>
+          <div className={sectionCls}>Notes</div>
+          <div className="text-[13px] font-sans text-gray-900 whitespace-pre-line">
+            {c.notes}
+          </div>
+        </>
+      )}
+
+      {/* Timestamped conversation log. */}
       <ContactLog contactRowIndex={c.rowIndex} contactEmail={c.email} readOnly />
 
       {/* Actions */}

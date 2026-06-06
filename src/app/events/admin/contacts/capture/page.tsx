@@ -485,7 +485,7 @@ export default function CapturePage() {
               {/* Address (collapsed by default — open with a button to reduce scrolling) */}
               <AddressBlock extracted={extracted} updateField={updateField} />
 
-              <FieldRow label="Notes">
+              <FieldRow label="Notes (taglines, certifications, any standing context)">
                 <textarea
                   value={extracted.notes}
                   onChange={(e) => updateField("notes", e.target.value)}

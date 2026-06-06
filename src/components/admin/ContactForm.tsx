@@ -426,8 +426,26 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
         </div>
       </div>
 
-      {/* Conversation log replaces the old standalone Notes + Last Contacted
-          fields. Available only when editing an existing contact — for new
+      <div className={sectionCls}>Notes</div>
+
+      <div>
+        <label className={labelCls}>
+          About this contact{" "}
+          <span className="text-gray-400 normal-case tracking-normal font-normal">
+            (long-lived context — kids&apos; names, birthdays, allergies, card taglines, etc.)
+          </span>
+        </label>
+        <textarea
+          value={input.notes}
+          onChange={(e) => update("notes", e.target.value)}
+          rows={3}
+          placeholder="Anything you want to remember about who this person is — separate from individual conversations, which go in the log below."
+          className={fieldCls}
+        />
+      </div>
+
+      {/* Conversation log: timestamped per-interaction history.
+          Available only when editing an existing contact — for new
           contacts you save first, then add log entries. We pass the *current
           form* email (not initial.email) so the "needs email" notice clears
           as soon as the user types one in. */}
