@@ -29,6 +29,8 @@ export function normalizeContactInput(raw: Partial<ContactInput>): ContactInput 
     additionalEmails: s(raw.additionalEmails).toLowerCase().trim(),
     status: (s(raw.status).trim() as ContactInput["status"]) || "",
     cardPhoto: s(raw.cardPhoto).trim(),
+    officePhoneCountry: s(raw.officePhoneCountry).trim().replace(/^\+/, ""),
+    officePhone: s(raw.officePhone).trim(),
   };
 }
 

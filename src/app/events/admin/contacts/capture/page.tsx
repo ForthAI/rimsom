@@ -428,11 +428,36 @@ export default function CapturePage() {
                   />
                 </FieldRow>
                 <div className="col-span-2">
-                  <FieldRow label="Phone">
+                  <FieldRow label="Mobile">
                     <input
                       type="text"
                       value={extracted.phone}
                       onChange={(e) => updateField("phone", e.target.value)}
+                      className={fieldCls}
+                    />
+                  </FieldRow>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                <FieldRow label="+">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={extracted.officePhoneCountry}
+                    onChange={(e) =>
+                      updateField("officePhoneCountry", e.target.value.replace(/\D/g, ""))
+                    }
+                    placeholder="1"
+                    className={fieldCls}
+                  />
+                </FieldRow>
+                <div className="col-span-2">
+                  <FieldRow label="Office Phone">
+                    <input
+                      type="text"
+                      value={extracted.officePhone}
+                      onChange={(e) => updateField("officePhone", e.target.value)}
                       className={fieldCls}
                     />
                   </FieldRow>

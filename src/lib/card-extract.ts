@@ -69,6 +69,8 @@ export async function extractContactFromCard(
     lastContacted: "",
     phoneCountry: str(json.phoneCountry).replace(/^\+/, ""),
     phone: str(json.phone),
+    officePhoneCountry: str(json.officePhoneCountry).replace(/^\+/, ""),
+    officePhone: str(json.officePhone),
     whatsapp: str(json.whatsapp),
     linkedin: str(json.linkedin),
     website: str(json.website),
@@ -120,9 +122,11 @@ Return ONLY a JSON object (no prose, no markdown fences). Keys you may use:
 - firstName, surname: split the name. If the card shows full name only, do your best.
 - title: job title verbatim
 - organization: company / org name verbatim
-- phoneCountry: country-code digits only (no +), e.g. "1" for US, "44" for UK, "212" for Morocco. Infer from country if not explicit.
-- phone: primary phone number, kept in human-readable formatting (dashes, dots, spaces ok)
-- whatsapp: only if the card explicitly labels a WhatsApp number; otherwise empty
+- phoneCountry: country-code digits only (no +) for the MOBILE number, e.g. "1" for US, "44" for UK, "212" for Morocco. Infer from country if not explicit.
+- phone: the MOBILE / CELL number, in human-readable formatting (dashes, dots, spaces ok). Cards label this as "M", "Mobile", "Cell", "Cell:", or "Mobile:". If the card only shows one phone number, put it here.
+- officePhoneCountry: country code digits (no +) for the OFFICE / DIRECT / LANDLINE number. Often the same as phoneCountry; if so, repeat it here.
+- officePhone: the OFFICE number. Cards label this as "T", "Tel", "Office", "Office:", "Direct", "Direct Dial", "D:", or "O:". Leave empty if the card only shows one phone.
+- whatsapp: only if the card EXPLICITLY labels a WhatsApp number (e.g. "WhatsApp" or the green logo). Do NOT use this slot for a mobile that wasn't explicitly tagged as WhatsApp.
 - linkedin: full LinkedIn profile URL or handle (whatever's on the card)
 - website: company / personal website URL
 - addressLine1, addressLine2: street address; line 2 for apt/suite/floor

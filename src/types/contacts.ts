@@ -16,9 +16,12 @@ export interface Contact {
   // CRM metadata
   notes: string;
   lastContacted: string;
-  // Contact methods
+  // Contact methods. `phone` is the primary / mobile number; `officePhone`
+  // is a separate landline-style number when a card lists both.
   phoneCountry: string;
   phone: string;
+  officePhoneCountry: string;
+  officePhone: string;
   whatsapp: string;
   linkedin: string;
   website: string;

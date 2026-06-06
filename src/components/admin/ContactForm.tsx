@@ -27,6 +27,8 @@ function emptyInput(): ContactInput {
     lastContacted: "",
     phoneCountry: "",
     phone: "",
+    officePhoneCountry: "",
+    officePhone: "",
     whatsapp: "",
     linkedin: "",
     website: "",
@@ -262,7 +264,7 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
 
       <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
         <div className="sm:col-span-2">
-          <label className={labelCls}>Country Code</label>
+          <label className={labelCls}>Mobile · Country Code</label>
           <div className="flex items-stretch">
             <span className="px-3 py-2 border border-gray-300 border-r-0 bg-gray-50 text-gray-500 text-[13px] font-sans rounded-l flex items-center">
               +
@@ -280,12 +282,41 @@ export function ContactForm({ initial, onSubmit, onCancel, onDelete, submitLabel
           </div>
         </div>
         <div className="sm:col-span-4">
-          <label className={labelCls}>Phone</label>
+          <label className={labelCls}>Mobile</label>
           <input
             type="text"
             value={input.phone}
             onChange={(e) => update("phone", e.target.value)}
             placeholder="555-555-1212 — dashes, dots, spaces all ok"
+            className={fieldCls}
+          />
+        </div>
+
+        <div className="sm:col-span-2">
+          <label className={labelCls}>Office · Country Code</label>
+          <div className="flex items-stretch">
+            <span className="px-3 py-2 border border-gray-300 border-r-0 bg-gray-50 text-gray-500 text-[13px] font-sans rounded-l flex items-center">
+              +
+            </span>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={input.officePhoneCountry.replace(/^\+/, "")}
+              onChange={(e) =>
+                update("officePhoneCountry", e.target.value.replace(/\D/g, ""))
+              }
+              placeholder="1"
+              className={`${fieldCls} rounded-l-none border-l-0`}
+            />
+          </div>
+        </div>
+        <div className="sm:col-span-4">
+          <label className={labelCls}>Office Phone</label>
+          <input
+            type="text"
+            value={input.officePhone}
+            onChange={(e) => update("officePhone", e.target.value)}
+            placeholder="If different from mobile"
             className={fieldCls}
           />
         </div>

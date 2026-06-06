@@ -40,8 +40,9 @@ export function ContactView({ contact: c, onEdit, onClose }: Props) {
   const fullName = [c.honorific, c.firstName, c.surname].filter(Boolean).join(" ").trim() || c.email;
   const titleOrg = [c.title, c.organization].filter(Boolean).join(" · ");
   const phoneFull = `${c.phoneCountry ? "+" + c.phoneCountry + " " : ""}${c.phone}`.trim();
+  const officeFull = `${c.officePhoneCountry ? "+" + c.officePhoneCountry + " " : ""}${c.officePhone}`.trim();
   const address = buildAddress(c);
-  const hasContactMethods = phoneFull || c.whatsapp || c.linkedin || c.website;
+  const hasContactMethods = phoneFull || officeFull || c.whatsapp || c.linkedin || c.website;
   const hasExtraEmails = c.secondaryEmail || c.schedulerEmail || c.additionalEmails;
 
   return (
@@ -85,7 +86,8 @@ export function ContactView({ contact: c, onEdit, onClose }: Props) {
       {hasContactMethods && (
         <>
           <div className={sectionCls}>Contact Methods</div>
-          {phoneFull && <Row label="Phone">{phoneFull}</Row>}
+          {phoneFull && <Row label="Mobile">{phoneFull}</Row>}
+          {officeFull && <Row label="Office">{officeFull}</Row>}
           {c.whatsapp && <Row label="WhatsApp">{c.whatsapp}</Row>}
           {c.linkedin && (
             <Row label="LinkedIn">
