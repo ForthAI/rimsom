@@ -137,7 +137,17 @@ Rules:
 - Leave a field as an empty string ("") if not present on the card. Do NOT guess or fabricate.
 - If something is ambiguous (e.g., name in non-Latin script, hard to read), leave it blank.
 - Preserve the language as printed (don't translate).
-- If multiple phones are present, pick the most prominent / mobile-looking one as phone, ignore the rest.
 - Strip parentheses around country codes; e.g. "+1 (202) 555-1212" -> phoneCountry "1", phone "(202) 555-1212".
+
+Capitalization normalization (very important for data consistency):
+- Names (firstName, surname): Title Case. Preserve diacritics (Mirošič stays Mirošič). Honor surnames with internal capitalization: McDonald, MacArthur, von Habsburg, de la Cruz.
+- Title: Title Case for ordinary words; preserve real acronyms (CEO, VP, COO, CTO, SVP, EVP, MD).
+- Organization: Title Case for ordinary words; preserve real acronyms (NATO, IMF, UN, IFC, AfDB, DFC, USAID, etc.). E.g., "EMBASSY OF SLOVENIA" (visual all-caps for branding) -> "Embassy of Slovenia". But "IMF" stays "IMF".
+- Lowercase articles inside Title Case strings: of, the, and, for, in, on, at, to, a, an. E.g., "Director of the Office" not "Director Of The Office".
+- City, state, country: Title Case for full names ("Washington"); preserve two-letter postal codes uppercase ("DC", "NY"); preserve country codes ("USA", "UK").
+- Emails: lowercase entirely.
+- Phones: leave the digits / formatting as-is; don't reformat.
+
+The goal is consistent, scan-friendly data in our database — not faithful reproduction of the card's typography.
 
 Return the JSON object now.`;
