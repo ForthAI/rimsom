@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.101.0",
+    "@vercel/blob": "^2.4.0",
     "googleapis": "^171.4.0",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.7",

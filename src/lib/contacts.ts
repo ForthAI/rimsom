@@ -41,11 +41,12 @@ export const CONTACT_HEADERS = [
   "schedulerEmail",
   "additionalEmails",
   "status",
+  "cardPhoto",
 ] as const;
 
-/** Sheet columns A through X (24 columns). */
-const ROW_RANGE = "A:X";
-const DATA_RANGE = "A2:X";
+/** Sheet columns A through Y (25 columns). */
+const ROW_RANGE = "A:Y";
+const DATA_RANGE = "A2:Y";
 
 export type ContactInput = Omit<Contact, "rowIndex">;
 
@@ -63,7 +64,7 @@ export class ContactNotFoundError extends Error {
   }
 }
 
-/** Serialize a contact into the 24-column row order used in the sheet. */
+/** Serialize a contact into the 25-column row order used in the sheet. */
 function toRow(input: ContactInput): string[] {
   return [
     input.email.toLowerCase().trim(),
@@ -90,6 +91,7 @@ function toRow(input: ContactInput): string[] {
     input.schedulerEmail || "",
     input.additionalEmails || "",
     input.status || "",
+    input.cardPhoto || "",
   ];
 }
 
@@ -121,6 +123,7 @@ function fromRow(row: string[], rowIndex: number): Contact {
     schedulerEmail: (row[21] || "").trim(),
     additionalEmails: (row[22] || "").trim(),
     status: ((row[23] || "").trim() as Contact["status"]) || "",
+    cardPhoto: (row[24] || "").trim(),
   };
 }
 
@@ -216,7 +219,7 @@ export async function updateContact(
 
   await sheets.spreadsheets.values.update({
     spreadsheetId: CONTACTS_SHEET_ID,
-    range: `${CONTACTS_TAB}!A${rowIndex}:X${rowIndex}`,
+    range: `${CONTACTS_TAB}!A${rowIndex}:Y${rowIndex}`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [toRow({ ...input, email: newEmailLc })] },
   });

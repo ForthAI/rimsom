@@ -36,6 +36,11 @@ export interface Contact {
   additionalEmails: string;
   // Follow-up pipeline status.
   status: ContactStatus | "";
+  /**
+   * URL of the original business-card photo (when captured via the
+   * Quick Capture flow). Stored in Vercel Blob. Optional.
+   */
+  cardPhoto: string;
 }
 
 /** Lifecycle states for follow-up tracking. */

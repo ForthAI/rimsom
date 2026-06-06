@@ -41,6 +41,7 @@ function emptyInput(): ContactInput {
     schedulerEmail: "",
     additionalEmails: "",
     status: "New",
+    cardPhoto: "",
   };
 }
 

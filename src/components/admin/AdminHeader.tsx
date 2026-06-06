@@ -30,6 +30,12 @@ export function AdminHeader() {
           >
             Contacts
           </Link>
+          <Link
+            href="/events/admin/contacts/capture"
+            className="px-3 py-1.5 text-[11px] font-sans font-semibold tracking-wider uppercase text-white/70 hover:text-white hover:bg-white/5 rounded transition-colors"
+          >
+            📷 Capture
+          </Link>
 
           {activeEvents.length > 0 && (
             <span className="ml-3 mr-1 text-[10px] font-sans tracking-widest uppercase text-white/30">Active</span>
