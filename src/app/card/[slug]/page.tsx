@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { cards, getCardBySlug, formatPhone } from "@/data/cards";
+import { CardBio } from "@/components/CardBio";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -60,6 +61,12 @@ export default async function CardPage({ params }: PageProps) {
             {card.company}
           </p>
         </div>
+
+        {/* Optional expandable bio between identity and actions. Rendered
+            only if the card config provides both a teaser and a bio. */}
+        {card.bioTeaser && card.bio && (
+          <CardBio teaser={card.bioTeaser} bio={card.bio} />
+        )}
 
         {/* Action: Save to Contacts (primary) */}
         <a
