@@ -52,7 +52,7 @@ export const cards: BusinessCard[] = [
     email: "ufo@rimsomglobal.com",
     city: "Washington, DC",
     website: "https://rimsomglobal.com",
-    bioTeaser: "Where policy, finance, and international commerce intersect",
+    bioTeaser: "Turning Opportunity Into Investment",
     bio: `Ufo Eric-Atuanya is a global business development executive and international trade strategist with more than 30 years of experience advancing U.S. commercial engagement and market-based finance across emerging markets. His career bridges public service and private-sector leadership, with a consistent focus on mobilizing capital, expanding U.S. exports, and building sustainable market ecosystems.
 
 Mr. Eric-Atuanya currently serves as Chief Executive Officer of Rimsom Global, where he structures bankable projects and mobilizes financing for energy, infrastructure, technology, and critical-industry clients in advance of engagement with institutional and commercial lenders. He is also Global Head of Business Development and Executive Advisor to the CEO of the Pernix Group, where he is expanding U.S. Engineering, Procurement, and Construction (EPC)–plus–Finance capabilities across Africa, the Caribbean, and Latin America. He is Founder and Chairman of the Africa Alliance for Artificial Intelligence, an initiative advancing equitable participation in emerging digital and critical-minerals value chains.

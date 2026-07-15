@@ -26,8 +26,8 @@ export function CardBio({ teaser, bio }: Props) {
         aria-expanded={open}
         className="w-full flex items-center justify-between gap-3 px-1 py-3 text-left border-t border-b border-white/10 hover:border-white/25 transition-colors"
       >
-        <span className="text-[13px] font-sans text-white/70 leading-snug italic pr-2">
-          &ldquo;{teaser}&rdquo;
+        <span className="text-[11px] font-sans font-semibold text-white/80 tracking-widest-plus uppercase leading-snug pr-2">
+          {teaser}
         </span>
         <svg
           className={`w-4 h-4 text-white/50 flex-shrink-0 transition-transform duration-200 ${
