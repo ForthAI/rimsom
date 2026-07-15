@@ -29,18 +29,23 @@ export function CardBio({ teaser, bio }: Props) {
         <span className="text-[11px] font-sans font-semibold text-white/80 tracking-widest-plus uppercase leading-snug pr-2">
           {teaser}
         </span>
-        <svg
-          className={`w-4 h-4 text-white/50 flex-shrink-0 transition-transform duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-          aria-hidden="true"
-        >
-          <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <span className="flex items-center gap-1.5 flex-shrink-0 text-brand-gold group-hover:text-brand-gold-light transition-colors">
+          <span className="text-[10px] font-sans font-semibold tracking-widest uppercase">
+            {open ? "Hide" : "Full Bio"}
+          </span>
+          <svg
+            className={`w-3.5 h-3.5 transition-transform duration-200 ${
+              open ? "rotate-180" : ""
+            }`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            aria-hidden="true"
+          >
+            <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
       </button>
       {open && (
         <div className="pt-4 pb-2 space-y-3">
